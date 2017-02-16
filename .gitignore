@@ -3,3 +3,4 @@ node_modules
 .npm
 lib
 playground/bundle.js
+.vscode
