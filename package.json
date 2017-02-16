@@ -1,6 +1,6 @@
 {
   "name": "fnx",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Wickedly quick, stunningly simple, reactive state management.",
   "main": "lib/fnx.js",
   "typings": "lib/fnx.d.ts",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bradenhs/fnx.git"
+    "url": "git+https://github.com/fnxjs/fnx.git"
   },
   "author": "Braden Snell",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bradenhs/fnx/issues"
+    "url": "https://github.com/fnxjs/fnx/issues"
   },
-  "homepage": "https://github.com/bradenhs/fnx#readme",
+  "homepage": "https://github.com/fnxjs/fnx#readme",
   "devDependencies": {
     "awesome-typescript-loader": "^3.0.4-rc.2",
     "react": "^15.4.2",
