@@ -5,10 +5,14 @@ import * as actions from './actions';
 
 export interface IState {
   counter: number;
+  readonly countPlusOne: number;
 }
 
 const initialState: IState = {
   counter: 0,
+  get countPlusOne(this: IState) {
+    return this.counter + 1;
+  },
 };
 
 const state = fnx.observable(initialState, { ...actions });
@@ -16,6 +20,7 @@ const state = fnx.observable(initialState, { ...actions });
 const Counter = ReactiveComponent.create(() =>
   <div onClick={ state.$increment }>
     { state.counter }
+    { state.countPlusOne }
   </div>,
 );
 

@@ -11,7 +11,7 @@
  *  |_______|      |____|_________|_______|_______|
  *
  *   FNX : Wickedly quick, stunningly simple,
- *         predictable state management.
+ *         reactive state management.
  *
  *
  * Code overview:
