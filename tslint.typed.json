@@ -1,0 +1,22 @@
+{
+  "extends": "./tslint.json",
+  "rules": {
+    // TypeScript Specific
+    "promise-function-async": true,
+    // Functionality
+    "await-promise": true,
+    "no-floating-promises": true,
+    "no-for-in-array": true,
+    "no-inferred-empty-object-type": true,
+    "no-unbound-method": true,
+    "no-unsafe-any": false,
+    "no-void-expression": true,
+    "restrict-plus-operands": true,
+    "strict-boolean-expressions": false,
+    "strict-type-predicates": false,
+    // Style
+    "completed-docs": [ true, "classes", "functions", "methods" ],
+    "no-boolean-literal-compare": false, // requires type info to run
+    "no-unnecessary-qualifier": false // requires type info to run
+  }
+}

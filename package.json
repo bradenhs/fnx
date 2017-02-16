@@ -1,0 +1,39 @@
+{
+  "name": "fnx",
+  "version": "0.0.1",
+  "description": "Wickedly quick, stunningly simple, reactive state management.",
+  "main": "lib/fnx.js",
+  "typings": "lib/fnx.d.ts",
+  "scripts": {
+    "lint": "tslint -c tslint.typed.json --type-check --project tsconfig.json --exclude node_modules --format stylish",
+    "clean": "rm -rf lib/*",
+    "prebuild": "yarn run clean && yarn run lint",
+    "build": "tsc --project ./tsconfig.json",
+    "playground": "webpack-dev-server --config playground/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bradenhs/fnx.git"
+  },
+  "author": "Braden Snell",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bradenhs/fnx/issues"
+  },
+  "homepage": "https://github.com/bradenhs/fnx#readme",
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.0.4-rc.2",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "tslint": "^4.4.2",
+    "typescript": "rc",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.3.0",
+    "lodash.isequal": "^4.5.0"
+  },
+  "dependencies": {
+    "@types/node": "^7.0.5",
+    "@types/react": "^15.0.9",
+    "@types/react-dom": "^0.14.23"
+  }
+}
