@@ -15,6 +15,11 @@
     "type": "git",
     "url": "git+https://github.com/fnxjs/fnx.git"
   },
+  "files": [
+    "lib",
+    "LICENSE",
+    "bower.json"
+  ],
   "author": "Braden Snell",
   "license": "MIT",
   "bugs": {
