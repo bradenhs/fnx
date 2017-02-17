@@ -7,7 +7,7 @@ export type Configuration = {
 };
 
 export type ObservableMap =
-  WeakMap<object, PropertyKeyMap<SymbolMap<symbol>>>;
+  WeakMap<KeyedObject, PropertyKeyMap<SymbolMap<symbol>>>;
 
 // Note: Right now symbols are not valid index signatures. This is going to
 // be fixed eventually. This issue to track this can be found here

@@ -2,7 +2,7 @@ import {
   isAlreadyAnObservable, isObservableDesignator,
   AttemptedObserveOnUnobservableObject, isSymbol,
   AttemptedMutationOutsideAction, AttemptedMutationOfAction,
-  ActionCollection, ObservableMap, isPrimitive,
+  ActionCollection, ObservableMap, isPrimitive, KeyedObject,
   AttemptedObserveOnSymbol, AttemptedObserveOnAccessorDescriptor,
 } from '../utils';
 import {
@@ -32,7 +32,7 @@ const observables: ObservableMap = new WeakMap();
  * root of the observable - everywhere else they will be omitted from the call.
  */
 export function createObservable<T, U>(
-  object: T & object, rootId: symbol, actions?: U & ActionCollection<T>,
+  object: T & KeyedObject, rootId: symbol, actions?: U & ActionCollection<T>,
 ): T & U | T {
   // Ensure only observable primitives are observed.
   if (NODE_ENV !== 'production' && isValidationOn() && isSymbol(object)) {
@@ -155,7 +155,7 @@ function createSetter<T>(
  * Ensures the object and key combination has an entry in the
  * the observables map.
  */
-function ensureObservableIsDefined(obj: object, key: PropertyKey) {
+function ensureObservableIsDefined(obj: KeyedObject, key: PropertyKey) {
   if (!observables.has(obj)) {
     observables.set(obj, { });
   }
@@ -187,7 +187,7 @@ export function getReactionsOfObservable(object: any, key: PropertyKey) {
  * Removes the reaction from the observable's collections of reactions.
  */
 export function removeReactionFromObservable(
-  object: object, key: PropertyKey, reactionId: symbol,
+  object: KeyedObject, key: PropertyKey, reactionId: symbol,
 ) {
   ensureObservableIsDefined(object, key);
   const {

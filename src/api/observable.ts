@@ -1,5 +1,7 @@
 import { isValidationOn, createObservable, wrapActions } from '../core';
-import { validateObservableArguments, ActionCollection } from '../utils';
+import {
+  validateObservableArguments, ActionCollection, KeyedObject,
+} from '../utils';
 
 /**
  * Check this to see if we're in production mode or not. If in production some
@@ -16,7 +18,7 @@ const NODE_ENV =
  * execution.
  */
 export function observable<T, U>(
-  object: T & object, actions: U & ActionCollection<T>,
+  object: T & KeyedObject, actions: U & ActionCollection<T>,
 ): T & U {
   if (NODE_ENV !== 'production' && isValidationOn()) {
     validateObservableArguments(arguments);
