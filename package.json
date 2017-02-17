@@ -1,9 +1,9 @@
 {
   "name": "fnx",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Wickedly quick, stunningly simple, reactive state management.",
-  "main": "lib/fnx.js",
-  "typings": "lib/fnx.d.ts",
+  "main": "./lib/fnx.js",
+  "types": "./lib/fnx.d.ts",
   "scripts": {
     "lint": "tslint -c tslint.typed.json --type-check --project tsconfig.json --exclude node_modules --format stylish",
     "clean": "rm -rf lib/*",
@@ -36,7 +36,6 @@
   },
   "dependencies": {},
   "peerDependencies": {
-    "@types/node": "^7.0.5",
     "@types/react": "^15.0.9",
     "react": "^15.4.2"
   }
