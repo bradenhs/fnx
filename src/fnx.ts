@@ -22,6 +22,3 @@ import * as api from './api';
 
 // Export the core api as the default
 export default api;
-
-// Export everything from extras
-export * from './extras';

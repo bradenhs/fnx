@@ -5,26 +5,26 @@ import {
   disposeReaction,
 } from '../core';
 
-
-function ReactiveC() {
-  if (new.target) {
-    console.log('new target');
-  } else {
-    console.log('nope');
-  }
+export interface ReactiveComponentLifecycle {
+  componentWillReact?(): void;
 }
-
-export const RC = ReactiveC as any as React.Component<{}, {}>;
 
 /**
  * Awesome
  */
-export class ReactiveComponent<P, S> extends React.Component<P, S> {
+export abstract class ReactiveComponent<P, S>
+  extends React.Component<P, S> implements ReactiveComponentLifecycle {
   public constructor() {
     super();
+
     const reactionId = registerReaction(
       this.render.bind(this),
-      () => this.forceUpdate(),
+      () => {
+        if (typeof (this as any).componentWillReact === 'function') {
+          (this as any).componentWillReact();
+        }
+        this.forceUpdate();
+      },
     );
     this.render = () => {
       const lastActiveReactionId = getActiveReactionId();

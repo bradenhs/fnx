@@ -1,10 +1,12 @@
 import {
-  isObservable, isObservableDesignator, isPrimitive,
+  isAlreadyAnObservable, isObservableDesignator,
+  AttemptedObserveOnUnobservableObject, isSymbol,
   AttemptedMutationOutsideAction, AttemptedMutationOfAction,
-  ActionCollection, ObservableMap,
+  ActionCollection, ObservableMap, isPrimitive,
+  AttemptedObserveOnSymbol, AttemptedObserveOnAccessorDescriptor,
 } from '../utils';
 import {
-  isReactionInProgress, getActiveReactionId,
+  isReactionInProgress, getActiveReactionId, isValidationOn,
   isActionInProgress, addObservablesReactionsToPendingReactions,
 } from '../core';
 
@@ -32,10 +34,22 @@ const observables: ObservableMap = new WeakMap();
 export function createObservable<T, U>(
   object: T & object, rootId: symbol, actions?: U & ActionCollection<T>,
 ): T & U | T {
+  // Ensure only observable primitives are observed.
+  if (NODE_ENV !== 'production' && isValidationOn() && isSymbol(object)) {
+    throw new AttemptedObserveOnSymbol();
+  }
+
   // If this is a primitive it can't be observed. If it's already an observable
   // it doesn't need to be observed again.
-  if (isPrimitive(object) || isObservable(object)) {
+  if (isPrimitive(object) || isAlreadyAnObservable(object)) {
     return object;
+  }
+
+  // Ensure only observable objects are observed.
+  if (NODE_ENV !== 'production' && isValidationOn() &&
+      object.constructor !== Object &&
+      object.constructor !== Array) {
+    throw new AttemptedObserveOnUnobservableObject();
   }
 
   // Increment the creating observable counter to indicate we've entered another
@@ -52,8 +66,15 @@ export function createObservable<T, U>(
   [ ...Object.getOwnPropertyNames(proxy),
     ...Object.getOwnPropertySymbols(proxy),
   ].forEach(key => {
+    // Make sure this is a data descriptor
+    if (!Reflect.has(Reflect.getOwnPropertyDescriptor(proxy, key), 'value')) {
+      throw new AttemptedObserveOnAccessorDescriptor();
+    }
+
     // Recursively create observables out of this object's properties
-    proxy[key] = createObservable(proxy[key], rootId);
+    if (Object.getOwnPropertyDescriptor(proxy, key).writable) {
+      proxy[key] = createObservable(proxy[key], rootId);
+    }
   });
 
   // Decrement the creatingObservableCounter to indicate we're leaving
@@ -76,7 +97,6 @@ function createGetter<T>(object: T, actions?: ActionCollection<T>) {
 
     // If this key matches an action return the action instead.
     if (actions !== undefined && actions[key] !== undefined) {
-      // Use Reflect.get to ensure 'this' of actions[key] === object.
       return actions[key];
     }
 

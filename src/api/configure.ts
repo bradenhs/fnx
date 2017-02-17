@@ -18,3 +18,5 @@ export function configure(configuration: Configuration) {
 
   updateConfiguration(configuration);
 }
+
+// TODO add interceptors

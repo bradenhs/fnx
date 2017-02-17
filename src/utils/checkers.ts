@@ -3,7 +3,7 @@ const OBSERVABLE_DESIGNATOR = Symbol('OBSERVABLE_DESIGNATOR');
 /**
  * Returns if the object is an fnx observable.
  */
-export function isObservable<T extends object>(value: T) {
+export function isAlreadyAnObservable<T extends object>(value: T) {
   return value[OBSERVABLE_DESIGNATOR] === true;
 }
 
@@ -19,7 +19,8 @@ export function isObservableDesignator(key: PropertyKey) {
  */
 export function isPrimitive(value: any) {
   return typeof value === 'number' || typeof value === 'boolean' ||
-    typeof value === 'string' || value == undefined;
+    typeof value === 'string' || typeof value === 'symbol' ||
+    value == undefined;
 }
 
 /**
@@ -34,4 +35,18 @@ export function isFunction(value: any) {
  */
 export function isString(value: any) {
   return typeof value === 'string';
+}
+
+/**
+ * Returns whether or not the value is of type object.
+ */
+export function isObject(value: any) {
+  return typeof value === 'object';
+}
+
+/**
+ * Returns whether or not the value is of type symbol.
+ */
+export function isSymbol(value: any) {
+  return typeof value === 'symbol';
 }
