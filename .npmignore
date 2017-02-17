@@ -1,0 +1,14 @@
+npm-debug.log*
+node_modules
+.npm
+playground
+docs
+tests
+book.json
+README.md
+SUMMARY.md
+tsconfig.json
+tslint.json
+tslint.typed.json
+src
+.vscode
