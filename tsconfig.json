@@ -8,7 +8,7 @@
     "noEmitOnError": false,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,
-    "noImplicitReturns": true,
+    "noImplicitReturns": false,
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -26,6 +26,6 @@
 		]
   },
   "exclude": [
-    "node_modules", "lib", "playground"
+    "node_modules", "lib", "playground", "react"
   ]
 }

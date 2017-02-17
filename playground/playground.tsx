@@ -1,34 +1,37 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import fnx from '../src/fnx';
-import ReactiveComponent from '../src/react';
+
+import ReactiveComponent from '../src/extras/react';
 
 export interface IState {
   num: number;
 }
 
 const initialState: IState = {
-  num: 0,
+  num: 0
 };
 
 const actions = {
   $increment(this: IState) {
     this.num++;
-  },
+  }
 };
 
 const state = fnx.observable(initialState, actions);
 
-// let str = stringify(state);
-// state = fnx.observable(parse(str), actions);
+console.log(state);
 
-// JSON.stringify(state);
-// JSON.parse()
+const Num = ReactiveComponent(() => {
+  return <div>
+    { state.num }
+  </div>;
+});
 
 class Counter extends ReactiveComponent<{}, {}> {
   public render() {
     return <div onClick={ state.$increment }>
-      { state.num }
+      <Num/>
     </div>;
   }
 
@@ -37,7 +40,7 @@ class Counter extends ReactiveComponent<{}, {}> {
   }
 };
 
-ReactDOM.render(<Counter/>, document.querySelector('#app'));
+ReactDOM.render(<Counter />, document.querySelector('#app'));
 
 // fnx-babel-react-webpack-starter
 // fnx-typescript-react-webpack-starter
@@ -66,3 +69,5 @@ ReactDOM.render(<Counter/>, document.querySelector('#app'));
 // if (object.constructor === Date) {
 //   return object.valueOf();
 // }
+
+// this is the type for an object that new Hello() creates
