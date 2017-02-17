@@ -29,7 +29,7 @@ export function observable<T, U>(
 
   // Make a copy of the actions so they're safe to mutate without causing
   // site effects for the user.
-  const actionsCopy = { ...(actions as object) };
+  const actionsCopy = { ...(actions as KeyedObject) };
 
   // Create our transparent proxy on the object.
   const proxy = createObservable(object, rootId, actionsCopy);

@@ -1,9 +1,11 @@
+import { KeyedObject } from '../utils';
+
 const OBSERVABLE_DESIGNATOR = Symbol('OBSERVABLE_DESIGNATOR');
 
 /**
  * Returns if the object is an fnx observable.
  */
-export function isAlreadyAnObservable<T extends object>(value: T) {
+export function isAlreadyAnObservable<T extends KeyedObject>(value: T) {
   return value[OBSERVABLE_DESIGNATOR] === true;
 }
 
