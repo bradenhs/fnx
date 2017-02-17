@@ -8,7 +8,7 @@
     "no-floating-promises": true,
     "no-for-in-array": true,
     "no-inferred-empty-object-type": true,
-    "no-unbound-method": true,
+    "no-unbound-method": false,
     "no-unsafe-any": false,
     "no-void-expression": true,
     "restrict-plus-operands": true,

@@ -19,6 +19,9 @@ export function validateReactionArguments(...args: any[]) {
   console.log('args', args);
 }
 
+/**
+ * TODO
+ */
 export function validateTransactionArguments(...args: any[]) {
   console.log('args', args);
 }

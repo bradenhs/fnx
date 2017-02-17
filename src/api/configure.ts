@@ -9,7 +9,7 @@ const NODE_ENV =
   typeof process !== 'undefined' ? process.env.NODE_ENV : 'development';
 
 /**
- * TODO
+ * Right now this method does nothing.
  */
 export function configure(configuration: Configuration) {
   if (NODE_ENV !== 'production' && isValidationOn()) {

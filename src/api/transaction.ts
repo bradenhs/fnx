@@ -9,7 +9,9 @@ const NODE_ENV =
   typeof process !== 'undefined' ? process.env.NODE_ENV : 'development';
 
 /**
- * TODO
+ * Transaction batches multiple actions. Instead of actions triggering
+ * reactions immediately after execution they wait until the transaction has
+ * finished execution.
  */
 export function transaction(fn: () => void) {
   if (NODE_ENV !== 'production' && isValidationOn()) {

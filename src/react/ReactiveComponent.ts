@@ -42,12 +42,22 @@ export abstract class ReactiveComponent<P, S>
     };
   }
 
+  /**
+   * Default should component update of ReactiveComponent. Does a deep
+   * comparison of both props and state.
+   */
   public shouldComponentUpdate(nextProps: P, nextState: S) {
     return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
   }
 
+  /**
+   * Creates a ReactiveComponent from a stateless component.
+   */
   public static create<T extends (...args: any[]) => JSX.Element>(render: T) {
     return class extends ReactiveComponent<{}, {}> {
+      /**
+       * TODO
+       */
       public render() {
         return render(this.props);
       }

@@ -11,7 +11,11 @@ const NODE_ENV =
   typeof process !== 'undefined' ? process.env.NODE_ENV : 'development';
 
 /**
- * Reaction
+ * Immediately invokes the provided function and registers it as a reaction.
+ * Reactions are automatically triggered anytime any observable encountered
+ * during their last last execution is modified. Reactions are used for
+ * initiated effects as opposed to generating new values. Logging, persistence,
+ * and updating the ui are all valid use cases for calling fnx.reaction(fn).
  */
 export function reaction(fn: () => void) {
   if (NODE_ENV !== 'production' && isValidationOn()) {

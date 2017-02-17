@@ -9,7 +9,11 @@ const NODE_ENV =
   typeof process !== 'undefined' ? process.env.NODE_ENV : 'development';
 
 /**
- * TODO
+ * Creates an FNX observable. The first parameter is the object to observe
+ * (many times this is the initial state of your application) the seconds is a
+ * collection of actions on the state. These objects are merged together.
+ * Actions automatically trigger necessary reactions when they have finished
+ * execution.
  */
 export function observable<T, U>(
   object: T & object, actions: U & ActionCollection<T>,
