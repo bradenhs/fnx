@@ -1,6 +1,6 @@
 {
   "name": "fnx",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Wickedly quick, stunningly simple, reactive state management.",
   "main": "lib/fnx.js",
   "typings": "lib/fnx.d.ts",
@@ -22,19 +22,19 @@
   },
   "homepage": "https://github.com/fnxjs/fnx#readme",
   "devDependencies": {
+    "@types/node": "^7.0.5",
+    "@types/react": "^15.0.9",
+    "@types/react-dom": "^0.14.23",
     "awesome-typescript-loader": "^3.0.4-rc.2",
+    "lodash.isequal": "^4.5.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "tslint": "^4.4.2",
     "typescript": "rc",
     "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.3.0",
-    "lodash.isequal": "^4.5.0",
-    "@types/node": "^7.0.5",
-    "@types/react": "^15.0.9",
-    "@types/react-dom": "^0.14.23"
+    "webpack-dev-server": "^2.3.0"
   },
-  "dependencies": { },
+  "dependencies": {},
   "peerDependencies": {
     "@types/node": "^7.0.5",
     "@types/react": "^15.0.9",
