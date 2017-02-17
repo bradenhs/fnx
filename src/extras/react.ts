@@ -3,7 +3,7 @@ import { extend } from '../utils';
 import * as isEqual from 'lodash.isequal';
 import {
   registerReaction, getActiveReactionId, invokeReaction, setActiveReactionId,
-  disposeReaction
+  disposeReaction,
 } from '../core';
 
 export interface ReactiveComponent<P, S> extends React.Component<P, S> {
@@ -34,7 +34,7 @@ const ReactiveComponent: ReactiveComponentType = (function(this: any) {
         this.componentWillReact();
       }
       this.forceUpdate();
-    }
+    },
   );
 
   this.render = () => {
