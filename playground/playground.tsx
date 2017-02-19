@@ -1,73 +1,98 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import fnx from '../src/fnx';
+// import * as React from 'react';
+// import * as ReactDOM from 'react-dom';
+// import fnx from '../src/fnx';
 
-import ReactiveComponent from '../src/extras/react';
+// import ReactiveComponent from '../src/extras/react';
 
-export interface IState {
-  num: number;
-}
-
-const initialState: IState = {
-  num: 0
-};
-
-const actions = {
-  $increment(this: IState) {
-    this.num++;
-  }
-};
-
-const state = fnx.observable(initialState, actions);
-
-console.log(state);
-
-const Num = ReactiveComponent(() => {
-  return <div>
-    { state.num }
-  </div>;
-});
-
-class Counter extends ReactiveComponent<{}, {}> {
-  public render() {
-    return <div onClick={ state.$increment }>
-      <Num/>
-    </div>;
-  }
-
-  public componentWillReact() {
-    console.log('component will react');
-  }
-};
-
-ReactDOM.render(<Counter />, document.querySelector('#app'));
-
-// fnx-babel-react-webpack-starter
-// fnx-typescript-react-webpack-starter
-// recommended-starter
-
-// interceptors: [ {
-//   condition: v => v instanceof Date,
-//   serialize: (v: Date) => v.valueOf(),
-//   deserialize: (v: number) => new Date(v),
-// } ]
-
-// set store unserialized for gets, serialize, compare, do reactions if needed
-
-// fnx.configure({
-//   interceptors: [
-//     {
-//       condition: v => typeof v === 'object' && v.constructor === Date,
-//       serialize: (obj: Date) => obj.valueOf(),
-//       deserialize: (value: number) => new Date(value),
-//     }
-//   ]
-// });
-
-// serialize()
-
-// if (object.constructor === Date) {
-//   return object.valueOf();
+// export interface IState {
+//   num: number;
 // }
 
-// this is the type for an object that new Hello() creates
+// const initialState: IState = {
+//   num: 0,
+// };
+
+
+// type.Action
+// type.Number
+// type.Boolean
+// type.String
+// type.Complex
+// type.Computed
+// type.Array
+// type.Object
+
+function num(): number {
+  return undefined;
+}
+
+function bool(): boolean {
+  return undefined;
+}
+
+function str(): string {
+  return undefined;
+}
+
+function complex<ComplexType, SimpleType extends (number | string | boolean)>(
+  handle: {
+    serialize(complex: ComplexType): SimpleType;
+    deserialize(simple: SimpleType): ComplexType;
+  },
+): ComplexType {
+  return undefined;
+};
+
+function computed<T>(fn: (root?) => T) {
+  return fn();
+}
+
+function obj<T>(obj: { new (): T }): T {
+  return undefined;
+}
+
+function arr<T>(type: T): T[] {
+  return undefined;
+}
+
+function map<T>(type: T) {
+  return {} as { [key: string]: T; [key: number]: T};
+}
+
+class CommentDefinition {
+  readonly id = str();
+  authorId = str();
+  readonly author? = computed((root: StateDefinition) =>
+    root.users[this.authorId]);
+}
+
+class UserDefinition {
+  readonly id = str();
+  firstName = str();
+  lastName = str();
+  name? = computed(() => this.firstName + ' ' + this.lastName);
+}
+
+class StateDefinition {
+  comments = map(obj(CommentDefinition));
+  users = map(obj(UserDefinition));
+  numUsers? = computed(() => this.users.length);
+}
+
+function createStore<T, U>(
+  params: { stateDefinition: T, initialState: T, actions: U },
+) {
+  console.log(params);
+  return { } as T & U;
+}
+
+let def: StateDefinition = {
+  comments: {},
+  users: {},
+};
+
+createStore({
+  stateDefinition: StateDefinition,
+  initialState: def,
+  actions: {},
+});

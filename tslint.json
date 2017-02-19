@@ -2,7 +2,7 @@
   "rules": {
     // TypeScript Specific
     "adjacent-overload-signatures": true,
-    "member-access": [ true, "check-accessor", "check-constructor"],
+    "member-access": [ false ],
     "member-ordering": [ true, "fields-first" ],
     "no-any": false,
     "no-empty-interface": true,
