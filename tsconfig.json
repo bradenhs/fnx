@@ -18,7 +18,7 @@
     "forceConsistentCasingInFileNames": true,
     "strictNullChecks": false,
     "stripInternal": true,
-    "suppressExcessPropertyErrors": true,
+    "suppressExcessPropertyErrors": false,
     "jsx": "react",
     "lib": [
 			"es6",
@@ -26,6 +26,6 @@
 		]
   },
   "exclude": [
-    "node_modules", "lib", "react"
+    "node_modules", "lib", "react", "ts"
   ]
 }

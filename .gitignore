@@ -4,3 +4,4 @@ node_modules
 lib
 playground/bundle.js
 .vscode
+.DS_Store
