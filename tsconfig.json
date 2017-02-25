@@ -26,6 +26,6 @@
 		]
   },
   "exclude": [
-    "node_modules", "lib", "react", "ts"
+    "node_modules", "lib", "react", "playground"
   ]
 }

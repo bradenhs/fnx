@@ -108,7 +108,7 @@
     "quotemark": [ true, "single", "jsx-single" ],
     "semicolon": [ false, "always" ],
     "space-before-function-paren": [ true, "never" ],
-    "variable-name": [ true, "ban-keywords", "check-format", "allow-pascal-case", "allow-leading-underscore" ],
+    "variable-name": [ true, "check-format", "allow-pascal-case", "allow-leading-underscore" ],
     "whitespace": [
       false, "check-branch", "check-operator", "check-typecast",
       "check-decl", "check-module", "check-separator", "check-type"

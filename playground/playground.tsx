@@ -4,14 +4,14 @@ const identifiers = {
   action: Symbol('action'),
 
   // Serializable Types
-  string: Symbol('string'),
-  boolean: Symbol('boolean'),
-  number: Symbol('number'),
-  complex: Symbol('complex'),
-  object: Symbol('object'),
-  arrayOf: Symbol('array of'),
-  mapOf: Symbol('map of'),
-  oneOf: Symbol('one of'),
+  // string: Symbol('string'),
+  // boolean: Symbol('boolean'),
+  // number: Symbol('number'),
+  // complex: Symbol('complex'),
+  // object: Symbol('object'),
+  // arrayOf: Symbol('array of'),
+  // mapOf: Symbol('map of'),
+  // oneOf: Symbol('one of'),
 };
 
 const modifiers = { readonly: false, optional: false };
@@ -28,7 +28,7 @@ function complex<ComplexType, SimpleType extends (number | string | boolean)>(
   return { type: identifiers.complex, modifiers, serializers: { serialize, deserialize } } as any as ComplexType;
 };
 
-function object<T>(object: new () => T) {
+function object<T>(object: new (initialState?: any) => T) {
   return { type: identifiers.object, modifiers, object: new object() } as any as T;
 }
 
@@ -59,7 +59,7 @@ function action<T>(action: T & ((...args: any[]) => void)) {
   return { type: identifiers.action, action } as any as T;
 }
 
-function computed<T>(getter: () => T) {
+function derivation<T>(getter: () => T) {
   return { type: identifiers.computed, getter } as any as T;
 }
 
@@ -71,43 +71,84 @@ function optional(target: any, propertyKey: string) {
   target[propertyKey].modifiers.optional = true;
 }
 
+abstract class Observable<StateTreeRoot> {
+  constructor(initialState: StateTreeRoot) {
+    console.log(initialState);
+  }
 
-class User {
-  @readonly
-  readonly id = string;
+  protected getRoot?(): StateTreeRoot {
+    return undefined;
+  }
+}
 
+class User extends Observable<State> {
+  @readonly readonly id = string;
   firstName = string;
-
-  @optional
-  lastName? = string;
-
+  @optional lastName? = string;
   dateOfBirth = complex((d: Date) => d.toUTCString(), v => new Date(v));
-
-  fullName = computed(() => this.firstName + ' ' + this.lastName);
-
-  changeName = action((firstName: string) => {
+  fullName? = derivation(() => this.firstName + ' ' + this.lastName);
+  changeName? = action((firstName: string) => {
     this.firstName = firstName;
   });
 }
 
-class Message {
-  @readonly
-  readonly id = string;
-
+class Message extends Observable<State> {
+  @readonly readonly id = string;
   authorId = string;
-  author? = computed(() => state.users[this.authorId])
+  author? = derivation(() => this.getRoot().users[this.authorId])
+}
+
+class State extends Observable<State> {
+  @readonly readonly users = mapOf(object(User));
+  @readonly readonly messages = mapOf(object(Message));
+  version = number;
+
+  @derivation
+  get
+
+  @action
+  goAway() {
+
+  }
 }
 
 class State {
-  oneOfExample = oneOf(string, number, boolean);
   users = mapOf(object(User));
   messages = mapOf(object(Message));
 }
 
-const initialState: State = {
-  oneOfExample: false,
-  users: {},
-  messages: {},
+const State = {
+  users: mapOf(object(User)),
+  messages: mapOf(object(Message)),
+  version: number,
+  fullName: derivation(() => this.firstName + ' ' + this.lastName),
 }
 
-const state = new State();
+const state = createState(State, )
+
+const state = new State({
+  users: {},
+  messages: {},
+  version: 0,
+});
+
+// replaceState(state, JSON.stringify(state));
+
+// Observable
+// string
+// boolean
+// number
+// mapOf
+// object
+// derivation
+// action
+// complex
+// oneOf
+// arrayOf
+// @readonly
+// @optional
+// replaceState
+// reaction
+// configure
+// ReactiveComponent
+// transaction

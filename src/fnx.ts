@@ -1,24 +1,40 @@
-/**
- * (c) Braden Snell 2017 - Present
- * MIT Licensed
- *
- *   ______________ ______________ _______ _______
- *  |              |         |    |       |       |
- *  |        ______|         |    |       |       |
- *  |              |              |___         ___|
- *  |        ______|              |               |
- *  |       |      |    |         |       |       |
- *  |_______|      |____|_________|_______|_______|
- *
- *   FNX : Wickedly quick, stunningly simple,
- *         reactive state management.
- *
- *
- * Code overview:
- * TODO
- */
+import { string, complex, computed, mapOf, object, createState } from './api';
 
-import * as api from './api';
+class UserDescription {
+  id = string;
+  firstName = string;
 
-// Export the core api as the default
-export default api;
+  /**
+   * This is their last name.
+   */
+  lastName = string;
+
+  dateOfBirth = complex((d: Date) => d.toUTCString(), v => new Date(v));
+
+  fullName? = computed(() => this.firstName + ' ' + this.lastName);
+
+  /**
+   * This sets the name and is better for intellisense
+   */
+  setName?(first: string) {
+    this.firstName = first;
+  }
+}
+
+class StateDescription {
+  users = mapOf(object(UserDescription));
+  messages = mapOf(object(MessageDescription));
+}
+
+const initialState: StateDescription = {
+  users: {},
+  messages: {},
+}
+
+const state = createState(StateDescription, initialState);
+
+class MessageDescription {
+  contents = string;
+  authorId = string;
+  author = computed(() => state.users[this.authorId]);
+}
