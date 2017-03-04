@@ -1,37 +1,64 @@
+// Base interface for all type descriptors
 export interface TypeDescriptor {
-  identifier: Symbol;
+  identifier: Symbol
 }
 
-export interface ArrayOfTypeDescriptor<T = TypeDescriptor> extends TypeDescriptor {
-  type: T;
+// Non-serializable descriptors
+
+export interface ActionTypeDescriptor<T extends (...args: any[]) => void> extends TypeDescriptor {
+  fn(): T
 }
 
-export interface BooleanTypeDescriptor extends TypeDescriptor { }
-
-export interface ComplexTypeDescriptor<ComplexType, SimpleType> extends TypeDescriptor {
-  serialize: (complexValue: ComplexType) => SimpleType;
-  deserialize: (simpleValue: SimpleType) => ComplexType;
+export interface ComputedTypeDescriptor<T> extends TypeDescriptor {
+  fn(): T
 }
 
-export interface ComputedTypeDescriptor<ComputedType> extends TypeDescriptor {
-  fn(): ComputedType;
-}
-
-export interface MapOfTypeDescriptor<T = TypeDescriptor> extends TypeDescriptor {
-  type: {
-    [key: string]: T;
-    [key: number]: T;
-  }
-}
-
-export interface NumberTypeDescriptor extends TypeDescriptor { }
+// Serializable descriptors
 
 export interface ObjectTypeDescriptor<T> extends TypeDescriptor {
-  type: new () => T;
+  type: { new(): T }
+  readonly: boolean
+  optional: boolean
 }
 
 export interface OneOfTypeDescriptor extends TypeDescriptor {
-  types: any[];
+  types: any[]
+  readonly: boolean
+  optional: boolean
 }
 
-export interface StringTypeDescriptor extends TypeDescriptor { }
+export interface ArrayOfTypeDescriptor<T> extends TypeDescriptor {
+  type: T
+  readonly: boolean
+  optional: boolean
+}
+
+export interface MapOfTypeDescriptor<T> extends TypeDescriptor {
+  type: T
+  readonly: boolean
+  optional: boolean
+}
+
+export interface ComplexTypeDescriptor<ComplexType, SimpleType> extends TypeDescriptor {
+  serialize: (complexValue: ComplexType) => SimpleType
+  deserialize: (simpleValue: SimpleType) => ComplexType
+  readonly: boolean
+  optional: boolean
+}
+
+// Primitive serializable type descriptors
+
+export interface BooleanTypeDescriptor extends TypeDescriptor {
+  readonly: boolean
+  optional: boolean
+}
+
+export interface NumberTypeDescriptor extends TypeDescriptor {
+  readonly: boolean
+  optional: boolean
+}
+
+export interface StringTypeDescriptor extends TypeDescriptor {
+  readonly: boolean
+  optional: boolean
+}

@@ -106,7 +106,7 @@
     "prefer-function-over-method": false,
     "prefer-method-signature": false,
     "quotemark": [ true, "single", "jsx-single" ],
-    "semicolon": [ false, "always" ],
+    "semicolon": [ true, "never" ],
     "space-before-function-paren": [ true, "never" ],
     "variable-name": [ true, "check-format", "allow-pascal-case", "allow-leading-underscore" ],
     "whitespace": [

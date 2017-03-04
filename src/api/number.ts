@@ -1,5 +1,8 @@
-import { identifiers, NumberTypeDescriptor } from '../core';
+import { identifiers, NumberTypeDescriptor } from '../core'
 
-export const number = {
+const descriptor: NumberTypeDescriptor = {
   identifier: identifiers.number,
-} as NumberTypeDescriptor as any as number;
+  readonly: false, optional: false,
+}
+
+export const number = descriptor as any as number

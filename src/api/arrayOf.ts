@@ -1,7 +1,9 @@
-import { identifiers, ArrayOfTypeDescriptor } from '../core';
+import { identifiers, ArrayOfTypeDescriptor } from '../core'
 
 export function arrayOf<T>(type: T) {
-  return {
+  const descriptor: ArrayOfTypeDescriptor<T> = {
     identifier: identifiers.arrayOf, type,
-  } as ArrayOfTypeDescriptor<T> as any as T[];
+    readonly: false, optional: false,
+  }
+  return descriptor as any as T[]
 }

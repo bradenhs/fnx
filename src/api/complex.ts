@@ -1,11 +1,12 @@
-import { identifiers, ComplexTypeDescriptor } from '../core';
+import { identifiers, ComplexTypeDescriptor } from '../core'
 
 export function complex<ComplexType, PrimitiveType extends (number | string | boolean)>(
   serialize: (complexValue: ComplexType) => PrimitiveType,
   deserialize: (primitiveValue: PrimitiveType) => ComplexType,
 ) {
-  return {
-    identifier: identifiers.complex,
-    serialize, deserialize,
-  } as ComplexTypeDescriptor<ComplexType, PrimitiveType> as any as ComplexType;
+  const descriptor: ComplexTypeDescriptor<ComplexType, PrimitiveType> = {
+    identifier: identifiers.complex, serialize, deserialize,
+    readonly: false, optional: false,
+  }
+  return descriptor as any as ComplexType
 };

@@ -1,7 +1,9 @@
-import { identifiers, ObjectTypeDescriptor } from '../core';
+import { identifiers, ObjectTypeDescriptor } from '../core'
 
-export function object<T>(type: new (initialState?: any) => T) {
-  return {
+export function object<T>(type: new() => T) {
+  const descriptor: ObjectTypeDescriptor<T> = {
     identifier: identifiers.object, type,
-  } as ObjectTypeDescriptor<T> as any as T;
+    readonly: false, optional: false,
+  }
+  return descriptor as any as T
 }

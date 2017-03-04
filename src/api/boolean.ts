@@ -1,5 +1,8 @@
-import { identifiers, BooleanTypeDescriptor } from '../core';
+import { identifiers, BooleanTypeDescriptor } from '../core'
 
-export const boolean = {
+const descriptor: BooleanTypeDescriptor = {
   identifier: identifiers.boolean,
-} as BooleanTypeDescriptor as any as boolean;
+  readonly: false, optional: false,
+}
+
+export const boolean = descriptor as any as boolean

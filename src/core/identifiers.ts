@@ -1,8 +1,8 @@
 export const identifiers = {
-  // Non-serializable types
+  action: Symbol('action'),
   computed: Symbol('computed'),
-
-  // Serializable Types
+  readonly: Symbol('readonly'),
+  optional: Symbol('optional'),
   string: Symbol('string'),
   boolean: Symbol('boolean'),
   number: Symbol('number'),
@@ -11,4 +11,4 @@ export const identifiers = {
   arrayOf: Symbol('arrayOf'),
   mapOf: Symbol('mapOf'),
   oneOf: Symbol('oneOf'),
-};
+}

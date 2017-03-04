@@ -1,5 +1,8 @@
-import { identifiers, StringTypeDescriptor } from '../core';
+import { identifiers, StringTypeDescriptor } from '../core'
 
-export const string = {
+const descriptor: StringTypeDescriptor = {
   identifier: identifiers.string,
-} as StringTypeDescriptor as any as string;
+  readonly: false, optional: false,
+}
+
+export const string = descriptor as any as string
