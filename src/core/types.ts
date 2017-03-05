@@ -15,6 +15,12 @@ export interface ComputedTypeDescriptor<T> extends TypeDescriptor {
 
 // Serializable descriptors
 
+export interface ParsedObjectTypeDescriptor<T> extends TypeDescriptor {
+  type: T
+  readonly: boolean
+  optional: boolean
+}
+
 export interface ObjectTypeDescriptor<T> extends TypeDescriptor {
   type: { new(): T }
   readonly: boolean

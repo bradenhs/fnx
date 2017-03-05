@@ -9,12 +9,11 @@ class User {
   firstName = string
   lastName = string
 
-  fullName? = computed((user: User) => user.firstName + ' ' + user.lastName)
+  fullName = computed(user => user.firstName + ' ' + user.lastName)
 
-  changeName? = action((user: User) => (firstName, lastName) => {
+  changeName = action(user => (firstName, lastName) => {
     user.firstName = firstName
     user.lastName = lastName
-    user.toString()
   })
 }
 
@@ -24,18 +23,15 @@ class Message {
 
   contents = string
 
-  author? = computed((message: Message, root: State) => root.users[message.authorId])
+  author = computed((message, root) => root.users[message.authorId])
 
-  /**
-   * Hello there
-   */
-  updateMessage? = action((message: Message) => (contents: string) => {
+  updateMessage = action(message => contents => {
     message.contents = contents
   })
 }
 
 class State {
-  users = mapOf(object(User))
+  @readonly users = mapOf(object(User))
   messages = mapOf(object(Message))
 }
 
