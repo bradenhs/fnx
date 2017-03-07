@@ -7,7 +7,8 @@
   "scripts": {
     "lint": "tslint -c tslint.typed.json --type-check --project tsconfig.json --exclude node_modules --format stylish",
     "clean": "rm -rf lib/*",
-    "test": "yarn run build",
+    "test": "jest",
+    "test-travis": "yarn run build && yarn run test",
     "prebuild": "yarn run clean && yarn run lint",
     "build": "tsc --project ./tsconfig.json"
   },
@@ -27,13 +28,33 @@
   },
   "homepage": "https://github.com/fnxjs/fnx#readme",
   "devDependencies": {
+    "@types/jest": "^18.1.1",
     "@types/node": "^7.0.5",
     "@types/react": "^15.0.9",
     "@types/react-dom": "^0.14.23",
     "awesome-typescript-loader": "^3.0.4-rc.2",
+    "coveralls": "^2.12.0",
+    "jest": "^19.0.2",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "ts-jest": "^19.0.0",
     "tslint": "^4.4.2",
     "typescript": "^2.2.1"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**"
+    ]
   }
 }
