@@ -1,8 +1,8 @@
-import { identifiers, MapOfTypeDescriptor } from '../core';
+import { types, MapOfDescriptor } from '../core'
 
-export function mapOf<T>(type: T) {
-  const descriptor: MapOfTypeDescriptor<T> = {
-    identifier: identifiers.mapOf, type,
+export function mapOf<T>(kind: T) {
+  const descriptor: MapOfDescriptor<T> = {
+    type: types.mapOf, kind,
     readonly: false, optional: false,
   }
   return descriptor as any as {

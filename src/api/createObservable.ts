@@ -3,7 +3,9 @@ import { parseDescription } from '../core'
 export function createObservable<T>(StateDescription: new() =>  T, initialState: T): T {
   const description = parseDescription(StateDescription)
 
-  console.log(description)
+  Object.keys(description.properties.users.kind.properties).forEach(key => {
+    console.log(key, description.properties.users.kind.properties[key])
+  })
 
-  return initialState || StateDescription as any as T
+  return (initialState || StateDescription || description) as any as T
 }

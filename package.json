@@ -7,9 +7,9 @@
   "scripts": {
     "lint": "tslint -c tslint.typed.json --type-check --project tsconfig.json --exclude node_modules --format stylish",
     "clean": "rm -rf lib/*",
+    "test": "yarn run build",
     "prebuild": "yarn run clean && yarn run lint",
-    "build": "tsc --project ./tsconfig.json",
-    "playground": "webpack-dev-server --config playground/webpack.config.js"
+    "build": "tsc --project ./tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -34,11 +34,6 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "tslint": "^4.4.2",
-    "typescript": "next",
-    "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.3.0"
-  },
-  "dependencies": {
-    "lodash.isequal": "^4.5.0"
+    "typescript": "^2.2.1"
   }
 }

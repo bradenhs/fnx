@@ -1,8 +1,8 @@
-import { identifiers } from '../core'
+import { types } from '../core'
 
 export function optional(target, key) {
-  if (target[identifiers.optional] == undefined) {
-    target[identifiers.optional] = {}
+  if (target[types.optional] == undefined) {
+    target[types.optional] = {}
   }
-  target[identifiers.optional][key] = key
+  target[types.optional][key] = key
 }

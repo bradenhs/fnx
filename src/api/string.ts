@@ -1,7 +1,7 @@
-import { identifiers, StringTypeDescriptor } from '../core'
+import { types, StringDescriptor } from '../core'
 
-const descriptor: StringTypeDescriptor = {
-  identifier: identifiers.string,
+const descriptor: StringDescriptor = {
+  type: types.string,
   readonly: false, optional: false,
 }
 

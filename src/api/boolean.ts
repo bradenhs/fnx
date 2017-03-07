@@ -1,7 +1,7 @@
-import { identifiers, BooleanTypeDescriptor } from '../core'
+import { types, BooleanDescriptor } from '../core'
 
-const descriptor: BooleanTypeDescriptor = {
-  identifier: identifiers.boolean,
+const descriptor: BooleanDescriptor = {
+  type: types.boolean,
   readonly: false, optional: false,
 }
 

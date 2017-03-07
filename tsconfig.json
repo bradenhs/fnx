@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "es2015",
+    "target": "es5",
+    "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "lib",
     "allowJs": false,
@@ -21,11 +21,11 @@
     "suppressExcessPropertyErrors": false,
     "jsx": "react",
     "lib": [
-			"es6",
-			"dom"
-		]
+      "dom",
+      "es2015"
+    ]
   },
   "exclude": [
-    "node_modules", "lib", "react"
+    "node_modules", "lib", "react", "srcOld"
   ]
 }

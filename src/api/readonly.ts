@@ -1,8 +1,8 @@
-import { identifiers } from '../core'
+import { types } from '../core'
 
 export function readonly(target, key) {
-  if (target[identifiers.readonly] == undefined) {
-    target[identifiers.readonly] = {}
+  if (target[types.readonly] == undefined) {
+    target[types.readonly] = {}
   }
-  target[identifiers.readonly][key] = key
+  target[types.readonly][key] = key
 }

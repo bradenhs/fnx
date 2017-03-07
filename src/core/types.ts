@@ -1,51 +1,51 @@
 // Base interface for all type descriptors
-export interface TypeDescriptor {
-  identifier: Symbol
+export interface Descriptor {
+  type: symbol
 }
 
 // Non-serializable descriptors
 
-export interface ActionTypeDescriptor<T extends (...args: any[]) => void> extends TypeDescriptor {
-  fn(): T
+export interface ActionDescriptor<T extends (...args: any[]) => void> extends Descriptor {
+  action(): T
 }
 
-export interface ComputedTypeDescriptor<T> extends TypeDescriptor {
-  fn(): T
+export interface ComputedDescriptor<T> extends Descriptor {
+  computation(): T
 }
 
 // Serializable descriptors
 
-export interface ParsedObjectTypeDescriptor<T> extends TypeDescriptor {
-  type: T
+export interface ParsedObjectDescriptor<T> extends Descriptor {
+  properties: T
   readonly: boolean
   optional: boolean
 }
 
-export interface ObjectTypeDescriptor<T> extends TypeDescriptor {
-  type: { new(): T }
+export interface ObjectDescriptor<T> extends Descriptor {
+  clazz: { new(): T }
   readonly: boolean
   optional: boolean
 }
 
-export interface OneOfTypeDescriptor extends TypeDescriptor {
-  types: any[]
+export interface OneOfDescriptor extends Descriptor {
+  kinds: any[]
   readonly: boolean
   optional: boolean
 }
 
-export interface ArrayOfTypeDescriptor<T> extends TypeDescriptor {
-  type: T
+export interface ArrayOfDescriptor<T> extends Descriptor {
+  kind: T
   readonly: boolean
   optional: boolean
 }
 
-export interface MapOfTypeDescriptor<T> extends TypeDescriptor {
-  type: T
+export interface MapOfDescriptor<T> extends Descriptor {
+  kind: T
   readonly: boolean
   optional: boolean
 }
 
-export interface ComplexTypeDescriptor<ComplexType, SimpleType> extends TypeDescriptor {
+export interface ComplexDescriptor<ComplexType, SimpleType> extends Descriptor {
   serialize: (complexValue: ComplexType) => SimpleType
   deserialize: (simpleValue: SimpleType) => ComplexType
   readonly: boolean
@@ -54,17 +54,17 @@ export interface ComplexTypeDescriptor<ComplexType, SimpleType> extends TypeDesc
 
 // Primitive serializable type descriptors
 
-export interface BooleanTypeDescriptor extends TypeDescriptor {
+export interface BooleanDescriptor extends Descriptor {
   readonly: boolean
   optional: boolean
 }
 
-export interface NumberTypeDescriptor extends TypeDescriptor {
+export interface NumberDescriptor extends Descriptor {
   readonly: boolean
   optional: boolean
 }
 
-export interface StringTypeDescriptor extends TypeDescriptor {
+export interface StringDescriptor extends Descriptor {
   readonly: boolean
   optional: boolean
 }

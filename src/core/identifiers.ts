@@ -1,4 +1,4 @@
-export const identifiers = {
+export const types = {
   action: Symbol('action'),
   computed: Symbol('computed'),
   readonly: Symbol('readonly'),

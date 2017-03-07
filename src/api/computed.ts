@@ -1,8 +1,8 @@
-import { identifiers, ComputedTypeDescriptor } from '../core'
+import { types, ComputedDescriptor } from '../core'
 
-export function computed<T>(fn: (self?, root?) => T): T {
-  const descriptor: ComputedTypeDescriptor<T> = {
-    identifier: identifiers.computed, fn,
+export function computed<T>(computation: (self?, root?) => T): T {
+  const descriptor: ComputedDescriptor<T> = {
+    type: types.computed, computation,
   }
   return descriptor as any as T
 }

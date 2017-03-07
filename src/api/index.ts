@@ -12,6 +12,5 @@ export * from './oneOf';
 export * from './optional';
 export * from './reaction';
 export * from './readonly';
-export * from './replaceObservable';
 export * from './string';
 export * from './transaction';
