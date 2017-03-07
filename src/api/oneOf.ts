@@ -1,3 +1,5 @@
+// tslint:disable
+
 import { types, OneOfDescriptor } from '../core'
 
 export function oneOf<A, B>(a: A, b: B): A | B

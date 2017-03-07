@@ -1,3 +1,6 @@
+/**
+ * TODO
+ */
 export class TypeofObjectNotFunction extends Error {
   constructor(actualTypeofDescription: string) {
     super()
@@ -5,6 +8,9 @@ export class TypeofObjectNotFunction extends Error {
   }
 }
 
+/**
+ * TODO
+ */
 export class UnexpectedPropertyFoundOnPrototype extends Error {
   constructor(unexpectedProperty: string) {
     super()
@@ -12,6 +18,9 @@ export class UnexpectedPropertyFoundOnPrototype extends Error {
   }
 }
 
+/**
+ * TODO
+ */
 export class UnexpectedSymbolFoundOnPrototype extends Error {
   constructor(unexpectedSymbol: symbol) {
     super()
@@ -19,6 +28,9 @@ export class UnexpectedSymbolFoundOnPrototype extends Error {
   }
 }
 
+/**
+ * TODO
+ */
 export class TypeofInstancePropertyNotObject extends Error {
   constructor(actualTypeofInstanceProperty: string) {
     super()
@@ -26,6 +38,9 @@ export class TypeofInstancePropertyNotObject extends Error {
   }
 }
 
+/**
+ * TODO
+ */
 export class InvalidInstancePropertyIdentifier extends Error {
   constructor(instance, key) {
     super()
@@ -33,19 +48,67 @@ export class InvalidInstancePropertyIdentifier extends Error {
   }
 }
 
+/**
+ * TODO
+ */
 export class InvalidArrayOfType extends Error { }
+
+/**
+ * TODO
+ */
 export class ActionIsInvalidArrayOfType extends Error { }
+
+/**
+ * TODO
+ */
 export class ComputedIsInvalidArrayOfType extends Error { }
 
+/**
+ * TODO
+ */
 export class InvalidMapOfType extends Error { }
+
+/**
+ * TODO
+ */
 export class ActionIsInvalidMapOfType extends Error { }
+
+/**
+ * TODO
+ */
 export class ComputedIsInvalidMapOfType extends Error { }
 
+/**
+ * TODO
+ */
 export class InvalidOneOfType extends Error { }
+
+/**
+ * TODO
+ */
 export class ActionIsInvalidOneOfType extends Error { }
+
+/**
+ * TODO
+ */
 export class ComputedIsInvalidOneOfType extends Error { }
 
+/**
+ * TODO
+ */
 export class ActionFactoryExpectedFunction extends Error { }
+
+/**
+ * TODO
+ */
 export class ComputedFactoryExpectedFunction extends Error { }
+
+/**
+ * TODO
+ */
 export class ComplexFactoryExpectedFunctionForSerializer extends Error { }
+
+/**
+ * TODO
+ */
 export class ComplexFactoryExpectedFunctionForDeserializer extends Error { }
