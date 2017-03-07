@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fnxjs/fnx.svg?branch=master)](https://travis-ci.org/fnxjs/fnx)
+
 ## FNX Documentation
 
 Docs coming soon!
