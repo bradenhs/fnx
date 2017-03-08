@@ -2,6 +2,8 @@
 
 <img src="https://rawgit.com/fnxjs/fnx/master/logo/logo.svg" alt="logo" height="90"/>
 
+Wickedly quick, stunningly simple, reactive state management.
+
 [![build status](https://img.shields.io/travis/fnxjs/fnx/master.svg?style=flat)](https://travis-ci.org/fnxjs/fnx)
 &nbsp;&nbsp;&nbsp;
 [![test coverage](https://img.shields.io/coveralls/fnxjs/fnx/master.svg?style=flat)](https://coveralls.io/github/fnxjs/fnx?branch=master)
