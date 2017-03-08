@@ -1,6 +1,6 @@
 <a href="https://github.com/fnxjs/fnx"><img align='right' src="https://img.shields.io/github/stars/fnxjs/fnx.svg?style=social&label=Stars"/></a>
 
-<img src="https://cdn.rawgit.com/fnxjs/fnx/master/logo/logo.svg" alt="logo" height="120"/>
+<img src="https://cdn.rawgit.com/fnxjs/fnx/master/logo/logo.svg" alt="logo" height="70"/>
 
 [![build status](https://img.shields.io/travis/fnxjs/fnx/master.svg?style=flat)](https://travis-ci.org/fnxjs/fnx)
 &nbsp;&nbsp;&nbsp;
