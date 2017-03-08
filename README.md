@@ -1,6 +1,4 @@
-<p align='right'>
-  [![GitHub stars](https://img.shields.io/github/stars/fnxjs/fnx.svg?style=social&label=Stars)](https://www.github.com/fnxjs/fnx)
-</p>
+<a href="https://github.com/fnxjs/fnx"><img align='right' src="https://img.shields.io/github/stars/fnxjs/fnx.svg?style=social&label=Stars"/></a>
 
 [![build status](https://img.shields.io/travis/fnxjs/fnx/master.svg?style=flat)](https://travis-ci.org/fnxjs/fnx)
 [![test coverage](https://img.shields.io/coveralls/fnxjs/fnx/master.svg?style=flat)](https://coveralls.io/github/fnxjs/fnx?branch=master)
