@@ -1,4 +1,4 @@
-import { types, ObjectDescriptor } from '../core'
+import { ObjectDescriptor, types } from '../core'
 
 /**
  * TODO

@@ -1,4 +1,4 @@
-import { types, StringDescriptor } from '../core'
+import { StringDescriptor, types } from '../core'
 
 const descriptor: StringDescriptor = {
   type: types.string,

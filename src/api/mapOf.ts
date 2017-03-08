@@ -1,4 +1,4 @@
-import { types, MapOfDescriptor } from '../core'
+import { MapOfDescriptor, types } from '../core'
 
 /**
  * TODO

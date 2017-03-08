@@ -1,4 +1,4 @@
-import { types, NumberDescriptor } from '../core'
+import { NumberDescriptor, types } from '../core'
 
 const descriptor: NumberDescriptor = {
   type: types.number,

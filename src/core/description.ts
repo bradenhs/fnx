@@ -232,11 +232,13 @@ function parseMapOfDescriptor(descriptor: MapOfDescriptor<any>) {
   return descriptor
 }
 
+type PrimitiveDescriptor = NumberDescriptor | BooleanDescriptor | StringDescriptor
+
 /**
  * Parses the primitive descriptor (since it's primitive though it actually doesn't do anything)
  * @param descriptor The primitive descriptor
  */
-function parsePrimitiveDescriptor(descriptor: NumberDescriptor | BooleanDescriptor | StringDescriptor) {
+function parsePrimitiveDescriptor(descriptor: PrimitiveDescriptor) {
   return { ...descriptor }
 }
 
