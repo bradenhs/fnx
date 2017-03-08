@@ -1,7 +1,7 @@
 {
   "name": "fnx",
   "version": "0.0.13",
-  "description": "Wickedly quick, stunningly simple, reactive state management.",
+  "description": "Work in Progress: Wickedly quick, stunningly simple, reactive state management.",
   "main": "./lib/fnx.js",
   "types": "./lib/fnx.d.ts",
   "scripts": {
