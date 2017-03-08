@@ -1,7 +1,6 @@
 
 
 <img src="https://rawgit.com/fnxjs/fnx/master/logo/logo.svg" alt="logo" height="90"/>
-
 <br/>
 
 [![build status](https://img.shields.io/travis/fnxjs/fnx/master.svg?style=flat)](https://travis-ci.org/fnxjs/fnx)
