@@ -1,6 +1,11 @@
-[![Build Status](https://travis-ci.org/fnxjs/fnx.svg?branch=master)](https://travis-ci.org/fnxjs/fnx)
-[![Coverage Status](https://coveralls.io/repos/github/fnxjs/fnx/badge.svg?branch=master)](https://coveralls.io/github/fnxjs/fnx?branch=master)
-[![npm version](https://badge.fury.io/js/fnx.svg)](https://badge.fury.io/js/fnx)
+<div style='float: right'>hi [![GitHub stars](https://img.shields.io/github/stars/fnxjs/fnx.svg?style=social&label=Star)]()</div>
+
+[![build status](https://img.shields.io/travis/fnxjs/fnx/master.svg)](https://travis-ci.org/fnxjs/fnx)
+[![test coverage](https://img.shields.io/coveralls/fnxjs/fnx/master.svg)](https://coveralls.io/github/fnxjs/fnx?branch=master)
+[![license](https://img.shields.io/github/license/fnxjs/fnx.svg)](https://en.wikipedia.org/wiki/MIT_License)
+
+[![npm version](https://img.shields.io/npm/v/fnx.svg)](https://www.npmjs.com/package/fnx)
+[![npm downloads](https://img.shields.io/npm/dm/fnx.svg)](https://www.npmjs.com/package/fnx)
 
 ## FNX Documentation
 
