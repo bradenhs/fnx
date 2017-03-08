@@ -1,6 +1,8 @@
 <a href="https://github.com/fnxjs/fnx"><img align='right' src="https://img.shields.io/github/stars/fnxjs/fnx.svg?style=social&label=Stars"/></a>
 
-<img src="https://cdn.rawgit.com/fnxjs/fnx/master/logo/logo.svg#1" alt="logo" height="70"/>
+<img src="https://rawgit.com/fnxjs/fnx/master/logo/logo.svg" alt="logo" height="90"/>
+
+---
 
 [![build status](https://img.shields.io/travis/fnxjs/fnx/master.svg?style=flat)](https://travis-ci.org/fnxjs/fnx)
 &nbsp;&nbsp;&nbsp;
@@ -12,6 +14,8 @@
 &nbsp;&nbsp;&nbsp;
 [![npm downloads/month](https://img.shields.io/npm/dm/fnx.svg?style=flat)](https://www.npmjs.com/package/fnx)
 &nbsp;
+
+---
 
 ## Getting Started
 
