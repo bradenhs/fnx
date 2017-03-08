@@ -6,11 +6,11 @@ export interface Descriptor {
 // Non-serializable descriptors
 
 export interface ActionDescriptor<T extends (...args: any[]) => void> extends Descriptor {
-  action(): T
+  fn(): T
 }
 
 export interface ComputedDescriptor<T> extends Descriptor {
-  computation(): T
+  fn(): T
 }
 
 // Serializable descriptors

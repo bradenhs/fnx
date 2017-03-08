@@ -1,6 +1,4 @@
-import * as Error from '../errors'
 import {
-  types,
   ActionDescriptor,
   ArrayOfDescriptor,
   BooleanDescriptor,
@@ -9,10 +7,12 @@ import {
   MapOfDescriptor,
   NumberDescriptor,
   ObjectDescriptor,
-  ParsedObjectDescriptor,
   OneOfDescriptor,
+  ParsedObjectDescriptor,
   StringDescriptor,
+  types,
 } from '../core'
+import * as Error from '../errors'
 
 // Create a map of identifiers and their corresponding parsers
 const identifierParserMap = {
@@ -163,7 +163,7 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
  * @param descriptor The action descriptor
  */
 function parseActionDescriptor(descriptor: ActionDescriptor<(...args: any[]) => void>) {
-  if (typeof descriptor.action !== 'function') {
+  if (typeof descriptor.fn !== 'function') {
     throw new Error.ActionFactoryExpectedFunction()
   }
   return descriptor
@@ -207,7 +207,7 @@ function parseComplexDescriptor(descriptor: ComplexDescriptor<any, any>) {
  * @param descriptor The computed type descriptor
  */
 function parseComputedDescriptor(descriptor: ComputedDescriptor<any>) {
-  if (typeof descriptor.computation !== 'function') {
+  if (typeof descriptor.fn !== 'function') {
     throw new Error.ComputedFactoryExpectedFunction()
   }
   return descriptor

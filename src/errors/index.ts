@@ -1,6 +1,26 @@
 /**
  * TODO
  */
+export class InvalidActionUsage extends Error { }
+
+/**
+ * TODO
+ */
+export class InvalidComputedUsage extends Error { }
+
+/**
+ * TODO
+ */
+export class InvalidArrayOfUsage extends Error { }
+
+/**
+ * TODO
+ */
+export class InvalidComplexUsage extends Error { }
+
+/**
+ * TODO
+ */
 export class TypeofObjectNotFunction extends Error {
   constructor(actualTypeofDescription: string) {
     super()

@@ -1,4 +1,4 @@
-import { types, BooleanDescriptor } from '../core'
+import { BooleanDescriptor, types } from '../core'
 
 const descriptor: BooleanDescriptor = {
   type: types.boolean,
