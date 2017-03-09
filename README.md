@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://fnx.js.org">
-    <img src="https://cdn.rawgit.com/fnxjs/fnx/57414f19/logo/logo.svg" alt="FNX - Wickedly quick, stunningly simple, reactive state management."/>
+    <img src="https://cdn.rawgit.com/fnxjs/fnx/51fdcc43/logo/logo.svg" alt="FNX - Wickedly quick, stunningly simple, reactive state management."/>
   </a>
 </p>
 
@@ -20,7 +20,9 @@
   <a href="https://en.wikipedia.org/wiki/MIT_License">
     <img src="https://img.shields.io/github/license/fnxjs/fnx.svg?style=flat" alt="license">
   </a>
-  &nbsp;&nbsp;&nbsp;
+</p>
+
+<p align="center">
   <a href="https://www.npmjs.com/package/fnx">
     <img src="https://img.shields.io/npm/v/fnx.svg?style=flat" alt="npm version">
   </a>
