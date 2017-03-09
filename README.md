@@ -12,6 +12,8 @@
   </a>
 </p>
 
+<br/>
+
 <p align="center">
   <a href="https://fnx.js.org">
     <img src="https://cdn.rawgit.com/fnxjs/fnx/51fdcc43/logo/logo.svg" alt="FNX - Wickedly quick, stunningly simple, reactive state management."/>
