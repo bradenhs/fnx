@@ -2,7 +2,7 @@
 
 <img src="logo/logo.png" alt="FNX - Wickedly quick, stunningly simple, reactive state management."/>
 
-> Wickedly quick, stunningly simple, reactive state management.
+Wickedly quick, stunningly simple, reactive state management.
 
 [![build status](https://img.shields.io/travis/fnxjs/fnx/master.svg?style=flat)](https://travis-ci.org/fnxjs/fnx)
 &nbsp;&nbsp;&nbsp;
