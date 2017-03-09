@@ -40,9 +40,13 @@ FNX is a work in progress. Stay tuned!
 
 ### Some Thoughts (not well formed - just notes to myself really)
 
-Think of it like react for data.
+This is a good article: https://danielearwicker.github.io/json_mobx_Like_React_but_for_Data_Part_2_.html
 
-It's not practical or necessary to eliminate mutable data.
+Some things here are based on it
+
+> Think of it like react for data.
+
+> It's not practical or necessary to eliminate mutable data.
 
 FNX actions do not appear to be pure functions and they aren't. The way they are called however and
 what they do can be thought of in a functional way however. Basically FNX gives you all the good parts
