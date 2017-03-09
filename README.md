@@ -38,7 +38,7 @@
 
 FNX is a work in progress. Stay tuned!
 
-# Some Thoughts (not well formed - just notes to myself really)
+### Some Thoughts (not well formed - just notes to myself really)
 
 Think of it like react for data.
 
