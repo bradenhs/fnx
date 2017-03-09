@@ -6,11 +6,9 @@
 
 <p align="center">
   <i>Wickedly quick, stunningly simple, reactive state management.</i>
-  &nbsp;&nbsp;&nbsp;
-  <a href="https://www.github.com/fnxjs/fnx">
-    <img src="https://img.shields.io/github/stars/fnxjs/fnx.svg?style=social&label=Star" alt="github stars">
-  </a>
 </p>
+
+<br/>
 
 <p align="center">
   <a href="https://travis-ci.org/fnxjs/fnx">
@@ -33,8 +31,6 @@
     <img src="https://img.shields.io/npm/dm/fnx.svg?style=flat" alt="npm downloads/month">
   </a>
 </p>
-
-<br/>
 
 ## Getting Started
 
