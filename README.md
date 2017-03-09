@@ -17,10 +17,6 @@
     <img src="https://img.shields.io/coveralls/fnxjs/fnx/master.svg?style=flat" alt="test coverage">
   </a>
   &nbsp;&nbsp;&nbsp;
-  <a href="https://en.wikipedia.org/wiki/MIT_License">
-    <img src="https://img.shields.io/github/license/fnxjs/fnx.svg?style=flat" alt="license">
-  </a>
-  &nbsp;&nbsp;&nbsp;
   <a href="https://www.npmjs.com/package/fnx">
     <img src="https://img.shields.io/npm/v/fnx.svg?style=flat" alt="npm version">
   </a>
