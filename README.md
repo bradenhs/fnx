@@ -4,9 +4,10 @@
   </a>
 </p>
 
-<div align="center">
+<div>
 
 <i>Wickedly quick, stunningly simple, reactive state management.</i>
+
 
 [![build status](https://img.shields.io/travis/fnxjs/fnx/master.svg?style=flat)](https://travis-ci.org/fnxjs/fnx)
 &nbsp;&nbsp;&nbsp;
