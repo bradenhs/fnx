@@ -2,14 +2,6 @@
   <a href="https://www.github.com/fnxjs/fnx">
     <img src="https://img.shields.io/github/stars/fnxjs/fnx.svg?style=social&label=Star" alt="github stars">
   </a>
-  &nbsp;&nbsp;&nbsp;
-  <a href="https://www.github.com/fnxjs/fnx">
-    <img src="https://img.shields.io/github/watchers/fnxjs/fnx.svg?style=social&label=Watch" alt="github watchers">
-  </a>
-  &nbsp;&nbsp;&nbsp;
-  <a href="https://www.github.com/fnxjs/fnx">
-    <img src="https://img.shields.io/github/forks/fnxjs/fnx.svg?style=social&label=Fork" alt="github forks">
-  </a>
 </p>
 
 <br/>
