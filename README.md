@@ -1,6 +1,6 @@
 
 
-<img src="https://raw.githubusercontent.com/fnxjs/fnx/master/logo/logo.svg" alt="logo" height="90"/>
+<img src="logo/logo.png" alt="logo" height="90"/>
 
 Wickedly quick, stunningly simple, reactive state management.
 
