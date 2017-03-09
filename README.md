@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <i>Wickedly quick, stunningly simple, reactive state management.</i>
+  Wickedly quick, stunningly simple, reactive state management.
 </p>
 
 <p align="center">
