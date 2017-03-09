@@ -1,4 +1,14 @@
 <p align="center">
+  <a href="https://fnx.js.org">
+    <img src="logo/logo.png" alt="FNX - Wickedly quick, stunningly simple, reactive state management."/>
+  </a>
+</p>
+
+<p align="center">
+  <i>Wickedly quick, stunningly simple, reactive state management.</i>
+</p>
+
+<p align="center">
   <a href="https://travis-ci.org/fnxjs/fnx">
     <img src="https://img.shields.io/travis/fnxjs/fnx/master.svg?style=flat" alt="build status">
   </a>
@@ -18,16 +28,6 @@
   <a href="https://www.npmjs.com/package/fnx">
     <img src="https://img.shields.io/npm/dm/fnx.svg?style=flat" alt="npm downloads/month">
   </a>
-</p>
-
-<p align="center">
-  <a href="https://fnx.js.org">
-    <img src="logo/logo.png" alt="FNX - Wickedly quick, stunningly simple, reactive state management."/>
-  </a>
-</p>
-
-<p align="center">
-  <i>Wickedly quick, stunningly simple, reactive state management.</i>
 </p>
 
 ## Getting Started
