@@ -1,6 +1,6 @@
 {
   "name": "fnx",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Work in Progress: Wickedly quick, stunningly simple, reactive state management.",
   "main": "./lib/fnx.js",
   "types": "./lib/fnx.d.ts",
@@ -26,7 +26,7 @@
   "bugs": {
     "url": "https://github.com/fnxjs/fnx/issues"
   },
-  "homepage": "https://github.com/fnxjs/fnx#readme",
+  "homepage": "https://fnx.js.org",
   "devDependencies": {
     "@types/jest": "^18.1.1",
     "@types/node": "^7.0.5",
