@@ -4,7 +4,7 @@
 
 <p align="center">Wickedly quick, stunningly simple, reactive state management.</p>
 
-<div align="center">
+<p align="center">
 
 [![build status](https://img.shields.io/travis/fnxjs/fnx/master.svg?style=flat)](https://travis-ci.org/fnxjs/fnx)
 &nbsp;&nbsp;&nbsp;
@@ -16,7 +16,7 @@
 &nbsp;&nbsp;&nbsp;
 [![npm downloads/month](https://img.shields.io/npm/dm/fnx.svg?style=flat)](https://www.npmjs.com/package/fnx)
 
-</div>
+</p>
 
 ## Getting Started
 
