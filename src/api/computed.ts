@@ -1,5 +1,4 @@
 import { ComputedDescriptor, types } from '../core'
-import * as Errors from '../errors'
 
 /**
  * TODO
@@ -7,13 +6,13 @@ import * as Errors from '../errors'
  */
 export function computed<T>(fn: (self?, root?) => T): T {
   if (arguments.length === 0) {
-    throw new Errors.InvalidComputedUsage()
+    throw new Error()
   }
   if (arguments.length > 1) {
-    throw new Errors.InvalidComputedUsage()
+    throw new Error()
   }
   if (typeof fn !== 'function') {
-    throw new Errors.InvalidComputedUsage()
+    throw new Error()
   }
 
   const descriptor: ComputedDescriptor<T> = {

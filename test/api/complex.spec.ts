@@ -1,7 +1,6 @@
-import { complex as typedComplex } from '../src/api/complex'
-import { types } from '../src/core'
-import * as Errors from '../src/errors'
-import { catchErrType } from './testHelpers'
+import { complex as typedComplex } from '../../src/api/complex'
+import { types } from '../../src/core'
+import { catchErrType } from '../testHelpers'
 
 const complex = typedComplex as any
 
@@ -14,37 +13,37 @@ describe('complex', () => {
     expect(actual).toBe(expected)
   })
 
-  it('should throw `InvalidComplexUsage` with zero parameters', () => {
+  it('should throw `Error` with zero parameters', () => {
     const actual = catchErrType(() => complex())
-    const expected = Errors.InvalidComplexUsage
+    const expected = Error
 
     expect(actual).toBe(expected)
   })
 
-  it('should throw `InvalidComplexUsage` with one parameter', () => {
+  it('should throw `Error` with one parameter', () => {
     const actual = catchErrType(() => complex(() => 0))
-    const expected = Errors.InvalidComplexUsage
+    const expected = Error
 
     expect(actual).toBe(expected)
   })
 
-  it('should throw `InvalidComplexUsage` with three or more parameters', () => {
+  it('should throw `Error` with three or more parameters', () => {
     const actual = catchErrType(() => complex(() => 0, () => 0, 'extra'))
-    const expected = Errors.InvalidComplexUsage
+    const expected = Error
 
     expect(actual).toBe(expected)
   })
 
-  it('should throw `InvalidComplexUsage` if first parameter is not function', () => {
+  it('should throw `Error` if first parameter is not function', () => {
     const actual = catchErrType(() => complex('', () => 0))
-    const expected = Errors.InvalidComplexUsage
+    const expected = Error
 
     expect(actual).toBe(expected)
   })
 
-  it('should throw `InvalidComplexUsage` if second parameter is not function', () => {
+  it('should throw `Error` if second parameter is not function', () => {
     const actual = catchErrType(() => complex(() => 0, ''))
-    const expected = Errors.InvalidComplexUsage
+    const expected = Error
 
     expect(actual).toBe(expected)
   })

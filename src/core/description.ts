@@ -12,7 +12,6 @@ import {
   StringDescriptor,
   types,
 } from '../core'
-import * as Error from '../errors'
 
 // Create a map of identifiers and their corresponding parsers
 const identifierParserMap = {
@@ -50,7 +49,7 @@ export function parseDescription(Description: new() => any) {
 function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
   // Ensure it's type is a class
   if (typeof descriptor.clazz !== 'function') {
-    throw new Error.TypeofObjectNotFunction(typeof descriptor.clazz)
+    throw new Error()
   }
 
   // Initialize arrays for keeping track of properties that need to be marked
@@ -61,12 +60,15 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
   // Ready a reassignable prototype variable
   let prototype = descriptor.clazz.prototype
 
+  if (prototype == undefined) {
+    throw new Error()
+  }
+
   // Walk up the prototype chain
   do {
     // 'constructor' should be the only property name defined
-    if (Object.getOwnPropertyNames(prototype).length > 1) {
-      throw new Error.UnexpectedPropertyFoundOnPrototype(
-        Object.getOwnPropertyNames(prototype)[1])
+    if (Object.getOwnPropertyNames(prototype).length !== 1) {
+      throw new Error()
     }
 
     // Get the symbols
@@ -94,7 +96,7 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
 
     // If any symbols are left they're extraneous so throw an error
     if (symbols.length > 0) {
-      throw new Error.UnexpectedSymbolFoundOnPrototype(symbols[0])
+      throw new Error()
     }
 
     // Get the parent prototype and keep walking up the chain until we reach
@@ -107,12 +109,12 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
 
   // Mark readonly properties
   readonlyProperties.forEach(key => {
-    instance[key].readonly = true
+    instance[key] = { ...instance[key], ...{ readonly: true } }
   })
 
   // Mark optional properties
   optionalProperties.forEach(key => {
-    instance[key].optional = true
+    instance[key] = { ...instance[key], ...{ optional: true } }
   })
 
   // Initialize ParsedObjectTypeDescriptor to build and then return it as the description
@@ -124,7 +126,7 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
   Object.keys(instance).forEach(key => {
     // Ensure all properties are objects
     if (typeof instance[key] !== 'object') {
-      throw new Error.TypeofInstancePropertyNotObject(typeof instance[key])
+      throw new Error()
     }
 
     // If this is an object descriptor run this instead
@@ -139,12 +141,12 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
       return
     }
 
-    // Find the appropiate parser for this object
+    // Find the appropiate parser for this property
     const parser = identifierParserMap[instance[key].type] as any
 
-    // If one wasn't found throw and error
+    // If one wasn't found throw an error
     if (parser == undefined) {
-      throw new Error.InvalidInstancePropertyIdentifier(instance, key)
+      throw new Error()
     }
 
     // Set the description.type[key] to the parsed value of the instance[key]
@@ -164,7 +166,7 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
  */
 function parseActionDescriptor(descriptor: ActionDescriptor<(...args: any[]) => void>) {
   if (typeof descriptor.fn !== 'function') {
-    throw new Error.ActionFactoryExpectedFunction()
+    throw new Error()
   }
   return descriptor
 }
@@ -174,17 +176,30 @@ function parseActionDescriptor(descriptor: ActionDescriptor<(...args: any[]) => 
  * @param descriptor The descriptor of the array
  */
 function parseArrayOfDescriptor(descriptor: ArrayOfDescriptor<any>) {
-  if (descriptor.kind === types.action) {
-    throw new Error.ActionIsInvalidArrayOfType()
+  if (descriptor.type !== types.arrayOf) {
+    throw new Error()
   }
-  if (descriptor.kind === types.computed) {
-    throw new Error.ComputedIsInvalidArrayOfType()
+
+  if (typeof descriptor.kind !== 'object') {
+    throw new Error()
   }
-  if (descriptor.kind != undefined && descriptor.kind.identifier === types.object) {
+
+  if (descriptor.kind.type === types.action) {
+    throw new Error()
+  }
+
+  if (descriptor.kind.type === types.computed) {
+    throw new Error()
+  }
+
+  if (identifierParserMap[descriptor.kind.type] == undefined) {
+    throw new Error()
+  }
+
+  if (descriptor.kind.type === types.object) {
     descriptor.kind = parseObjectDescriptor(descriptor.kind)
-  } else if (identifierParserMap[descriptor.kind] == undefined) {
-    throw new Error.InvalidArrayOfType()
   }
+
   return descriptor
 }
 
@@ -194,10 +209,10 @@ function parseArrayOfDescriptor(descriptor: ArrayOfDescriptor<any>) {
  */
 function parseComplexDescriptor(descriptor: ComplexDescriptor<any, any>) {
   if (typeof descriptor.serialize !== 'function') {
-    throw new Error.ComplexFactoryExpectedFunctionForSerializer()
+    throw new Error()
   }
   if (typeof descriptor.deserialize !== 'function') {
-    throw new Error.ComplexFactoryExpectedFunctionForDeserializer()
+    throw new Error()
   }
   return descriptor
 }
@@ -208,7 +223,7 @@ function parseComplexDescriptor(descriptor: ComplexDescriptor<any, any>) {
  */
 function parseComputedDescriptor(descriptor: ComputedDescriptor<any>) {
   if (typeof descriptor.fn !== 'function') {
-    throw new Error.ComputedFactoryExpectedFunction()
+    throw new Error()
   }
   return descriptor
 }
@@ -218,17 +233,30 @@ function parseComputedDescriptor(descriptor: ComputedDescriptor<any>) {
  * @param descriptor The mapOf descriptor
  */
 function parseMapOfDescriptor(descriptor: MapOfDescriptor<any>) {
-  if (descriptor.kind === types.action) {
-    throw new Error.ActionIsInvalidMapOfType()
+    if (descriptor.type !== types.mapOf) {
+    throw new Error()
   }
-  if (descriptor.kind === types.computed) {
-    throw new Error.ComputedIsInvalidMapOfType()
+
+  if (typeof descriptor.kind !== 'object') {
+    throw new Error()
   }
-  if (descriptor.kind != undefined && descriptor.kind.type === types.object) {
+
+  if (descriptor.kind.type === types.action) {
+    throw new Error()
+  }
+
+  if (descriptor.kind.type === types.computed) {
+    throw new Error()
+  }
+
+  if (identifierParserMap[descriptor.kind.type] == undefined) {
+    throw new Error()
+  }
+
+  if (descriptor.kind.type === types.object) {
     descriptor.kind = parseObjectDescriptor(descriptor.kind)
-  } else if (identifierParserMap[descriptor.kind] == undefined) {
-    throw new Error.InvalidMapOfType()
   }
+
   return descriptor
 }
 
@@ -247,19 +275,25 @@ function parsePrimitiveDescriptor(descriptor: PrimitiveDescriptor) {
  * @param descriptor The oneOf descriptor
  */
 function parseOneOfDescriptor(descriptor: OneOfDescriptor) {
+  if (descriptor.type !== types.oneOf) {
+    throw new Error()
+  }
+  if (!(descriptor.kinds instanceof Array)) {
+    throw new Error()
+  }
   descriptor.kinds.forEach((kind, index) => {
-    if (kind != undefined && kind.identifier === types.object) {
+    if (kind.type === types.object) {
       descriptor.kinds[index] = parseObjectDescriptor(kind)
       return
     }
-    if (identifierParserMap[kind] == undefined) {
-      throw new Error.InvalidOneOfType()
+    if (kind.type === types.action) {
+      throw new Error()
     }
-    if (kind === types.action) {
-      throw new Error.ActionIsInvalidOneOfType()
+    if (kind.type === types.computed) {
+      throw new Error()
     }
-    if (kind === types.computed) {
-      throw new Error.ComputedIsInvalidOneOfType()
+    if (identifierParserMap[kind.type] == undefined) {
+      throw new Error()
     }
   })
   return descriptor

@@ -1,5 +1,4 @@
 import { ComplexDescriptor, types } from '../core'
-import * as Errors from '../errors'
 
 /**
  * TODO
@@ -11,15 +10,15 @@ export function complex<ComplexType, PrimitiveType extends (number | string | bo
   deserialize: (primitiveValue: PrimitiveType) => ComplexType,
 ) {
   if (arguments.length < 2) {
-    throw new Errors.InvalidComplexUsage()
+    throw new Error()
   }
 
   if (arguments.length > 2) {
-    throw new Errors.InvalidComplexUsage()
+    throw new Error()
   }
 
   if (typeof serialize !== 'function' || typeof deserialize !== 'function') {
-    throw new Errors.InvalidComplexUsage()
+    throw new Error()
   }
 
   const descriptor: ComplexDescriptor<ComplexType, PrimitiveType> = {

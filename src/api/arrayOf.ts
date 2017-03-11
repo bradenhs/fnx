@@ -1,5 +1,4 @@
 import { ArrayOfDescriptor, types } from '../core'
-import * as Errors from '../errors'
 
 /**
  * TODO
@@ -7,15 +6,15 @@ import * as Errors from '../errors'
  */
 export function arrayOf<T>(kind: T) {
   if (arguments.length === 0) {
-    throw new Errors.InvalidArrayOfUsage()
+    throw new Error()
   }
 
   if (arguments.length > 1) {
-    throw new Errors.InvalidArrayOfUsage()
+    throw new Error()
   }
 
   if (typeof kind !== 'object') {
-    throw new Errors.InvalidArrayOfUsage()
+    throw new Error()
   }
 
   switch ((kind as any).type) {
@@ -29,7 +28,7 @@ export function arrayOf<T>(kind: T) {
     case types.string:
       break
     default:
-      throw new Errors.InvalidArrayOfUsage()
+      throw new Error()
   }
 
   const descriptor: ArrayOfDescriptor<T> = {

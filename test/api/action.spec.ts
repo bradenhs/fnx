@@ -1,9 +1,8 @@
-import { action as strictAction } from '../src/api/action'
-import { types } from '../src/core'
-import * as Errors from '../src/errors'
-import { catchErrType } from './testHelpers'
+import { action as typedAction } from '../../src/api/action'
+import { types } from '../../src/core'
+import { catchErrType } from '../testHelpers'
 
-const action = strictAction as any
+const action = typedAction as any
 
 describe('action', () => {
 
@@ -16,42 +15,42 @@ describe('action', () => {
 
   it('should throw `InvalidActionUage` with zero parameters', () => {
     const actual = catchErrType(() => action())
-    const expected = Errors.InvalidActionUsage
+    const expected = Error
 
     expect(actual).toBe(expected)
   })
 
   it('should throw `InvalidActionUage` with two or more parameters', () => {
     const actual = catchErrType(() => action(() => 0, 'second'))
-    const expected = Errors.InvalidActionUsage
+    const expected = Error
 
     expect(actual).toBe(expected)
   })
 
   it('should throw `InvalidActionUage` with parameter of type "string"', () => {
     const actual = catchErrType(() => action('string'))
-    const expected = Errors.InvalidActionUsage
+    const expected = Error
 
     expect(actual).toBe(expected)
   })
 
-  it('should throw `InvalidActionUage` with parameter of type "number"', () => {
+  it('should throw `Error` with parameter of type "number"', () => {
     const actual = catchErrType(() => action(0))
-    const expected = Errors.InvalidActionUsage
+    const expected = Error
 
     expect(actual).toBe(expected)
   })
 
-  it('should throw `InvalidActionUage` with parameter of type "boolean"', () => {
+  it('should throw `Error` with parameter of type "boolean"', () => {
     const actual = catchErrType(() => action(true))
-    const expected = Errors.InvalidActionUsage
+    const expected = Error
 
     expect(actual).toBe(expected)
   })
 
-  it('should throw `InvalidActionUage` with parameter of type "object"', () => {
+  it('should throw `Error` with parameter of type "object"', () => {
     const actual = catchErrType(() => action({}))
-    const expected = Errors.InvalidActionUsage
+    const expected = Error
 
     expect(actual).toBe(expected)
   })

@@ -1,5 +1,5 @@
-import { boolean } from '../src/api/boolean'
-import { types } from '../src/core'
+import { boolean } from '../../src/api/boolean'
+import { types } from '../../src/core'
 
 describe('boolean', () => {
 

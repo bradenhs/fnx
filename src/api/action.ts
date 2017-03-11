@@ -1,5 +1,4 @@
 import { ActionDescriptor, types } from '../core'
-import * as Errors from '../errors'
 
 /**
  * TODO
@@ -7,13 +6,13 @@ import * as Errors from '../errors'
  */
 export function action<T extends (...args: any[]) => void>(fn: (self?, root?) => T): T {
   if (arguments.length === 0) {
-    throw new Errors.InvalidActionUsage()
+    throw new Error()
   }
   if (arguments.length > 1) {
-    throw new Errors.InvalidActionUsage()
+    throw new Error()
   }
   if (typeof fn !== 'function') {
-    throw new Errors.InvalidActionUsage()
+    throw new Error()
   }
   const descriptor: ActionDescriptor<T> = {
     type: types.action, fn

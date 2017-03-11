@@ -5,6 +5,18 @@ import { ObjectDescriptor, types } from '../core'
  * @param clazz TODO
  */
 export function object<T>(clazz: new() => T) {
+  if (arguments.length === 0) {
+    throw new Error()
+  }
+
+  if (arguments.length > 1) {
+    throw new Error()
+  }
+
+  if (typeof clazz !== 'function') {
+    throw new Error()
+  }
+
   const descriptor: ObjectDescriptor<T> = {
     type: types.object, clazz,
     readonly: false, optional: false,
