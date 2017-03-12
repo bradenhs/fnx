@@ -131,6 +131,8 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
 
     // If this is an object descriptor run this instead
     if (instance[key].identifier === types.object) {
+      // TODO parse objects lazily to allow for cicular references
+
       // If we haven't stored this in our map of existing parsed object descriptors...
       if (parsedObjectCache.get(instance[key]) == undefined) {
         // Cache the result of this parse operation in our map
