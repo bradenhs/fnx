@@ -1,16 +1,7 @@
 import {
-  ActionDescriptor,
-  ArrayOfDescriptor,
-  BooleanDescriptor,
-  ComplexDescriptor,
-  ComputedDescriptor,
-  MapOfDescriptor,
-  NumberDescriptor,
-  ObjectDescriptor,
-  OneOfDescriptor,
-  ParsedObjectDescriptor,
-  StringDescriptor,
-  types,
+  ActionDescriptor, ArrayOfDescriptor, BooleanDescriptor, ComplexDescriptor, ComputedDescriptor,
+  MapOfDescriptor, NumberDescriptor, ObjectDescriptor, OneOfDescriptor, ParsedObjectDescriptor,
+  StringDescriptor, types,
 } from '../core'
 
 // Create a map of identifiers and their corresponding parsers

@@ -5,12 +5,12 @@
   "main": "./lib/fnx.js",
   "types": "./lib/fnx.d.ts",
   "scripts": {
-    "lint": "tslint -c tslint.typed.json --type-check --project tsconfig.json --exclude node_modules --format stylish",
+    "lint": "tslint -c tslint.typed.json --type-check --project tsconfig.build.json --format stylish",
     "clean": "rm -rf lib/*",
     "test": "jest",
     "test-travis": "yarn run build && yarn run test",
     "prebuild": "yarn run clean && yarn run lint",
-    "build": "tsc --project ./tsconfig.json",
+    "build": "tsc --project ./tsconfig.build.json",
     "p": "jest --config=\"test/playground.json\"",
     "playground": "yarn run p"
   },
