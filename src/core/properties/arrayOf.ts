@@ -1,13 +1,22 @@
 import * as core from '../../core'
 
+/**
+ *  Creates an observable array
+ * @param array The plain array
+ * @param description The description of this array
+ * @param root The root of the state tree
+ */
 export function prepareArrayOf(
-  array, description: core.ArrayOfDescriptor<any>, root?
+  array, description: core.ArrayOfDescriptor<any>, root
 ) {
   if (core.isObservable(array)) {
     return array
   }
 
   const proxy = new Proxy(array, {
+    /**
+     * TODO
+     */
     get(target, key, receiver) {
       if (core.isObservableDesignatorKey(key)) {
         return true
@@ -23,15 +32,18 @@ export function prepareArrayOf(
 
       return Reflect.get(target, key, receiver)
     },
+    /**
+     * TODO
+     */
     set(target, key, value) {
-      if (!core.isActionInProgress(root || proxy)) {
+      if (!core.isActionInProgress(root)) {
         throw new Error('You cannot mutate state outside of an action')
       }
       if (key === 'length') {
         return Reflect.set(target, key, value)
       } else {
         return core.setProperty(
-          target, key, value, description.kind, root || proxy
+          target, key, value, description.kind, root
         )
       }
     }
@@ -45,7 +57,7 @@ export function prepareArrayOf(
 
   Object.getOwnPropertyNames(array).forEach(key => {
     if (key !== 'length') {
-      core.setProperty(array, key, array[key], description.kind, root || proxy)
+      core.setProperty(array, key, array[key], description.kind, root)
     }
   })
 

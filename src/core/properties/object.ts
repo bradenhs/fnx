@@ -1,5 +1,11 @@
 import * as core from '../../core'
 
+/**
+ * Creates a new observable object
+ * @param object The plain object to create an observable from
+ * @param description The description of this object
+ * @param root The root of the state tree
+ */
 export function prepareObject(
   object, description: core.ParsedObjectDescriptor<any>, root?
 ) {
@@ -8,6 +14,9 @@ export function prepareObject(
   }
 
   const proxy = new Proxy(object, {
+    /**
+     * TODO
+     */
     get(target, key, receiver) {
       if (core.isObservableDesignatorKey(key)) {
         return true
@@ -39,6 +48,9 @@ export function prepareObject(
 
       return Reflect.get(target, key, receiver)
     },
+    /**
+     * TODO
+     */
     set(target, key, value) {
       if (!core.isActionInProgress(root || proxy)) {
         throw new Error('You cannot mutate state outside of an action')
