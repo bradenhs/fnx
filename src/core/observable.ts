@@ -29,21 +29,53 @@ export function isObservableDesignatorKey(key) {
 export function setProperty(
   target, key, value, description: core.Descriptor, root
 ) {
-  const prepareMap = {
-    [core.types.action]: core.prepareAction,
-    [core.types.arrayOf]: core.prepareArrayOf,
-    [core.types.boolean]: core.prepareBoolean,
-    [core.types.complex]: core.prepareComplex,
-    [core.types.computed]: core.prepareComputed,
-    [core.types.mapOf]: core.prepareMapOf,
-    [core.types.number]: core.prepareNumber,
-    [core.types.object]: core.prepareObject,
-    [core.types.oneOf]: core.prepareOneOf,
-    [core.types.string]: core.prepareString,
+  const setMap = {
+    [core.types.action]: core.actionProperty.set,
+    [core.types.arrayOf]: core.arrayOfProperty.set,
+    [core.types.boolean]: core.booleanProperty.set,
+    [core.types.complex]: core.complexProperty.set,
+    [core.types.computed]: core.computedProperty.set,
+    [core.types.mapOf]: core.mapOfProperty.set,
+    [core.types.number]: core.numberProperty.set,
+    [core.types.object]: core.objectProperty.set,
+    [core.types.oneOf]: core.oneOfProperty.set,
+    [core.types.string]: core.stringProperty.set,
   }
-  const prepare: (...args: any[]) => any = prepareMap[description.type]
-  if (prepare == undefined) {
+  const set = setMap[description.type]
+  if (set == undefined) {
     throw new Error(`Unrecognized property type: ${description.type.toString()}`)
   }
-  return Reflect.set(target, key, prepare(value, description, root))
+  return set(target, key, value, description, root)
+}
+
+/**
+ * Get property
+ */
+export function getProperty(target, key, description: core.Descriptor, root, proxy) {
+  const getMap = {
+    [core.types.action]: core.actionProperty.get,
+    [core.types.arrayOf]: core.arrayOfProperty.get,
+    [core.types.boolean]: core.booleanProperty.get,
+    [core.types.complex]: core.complexProperty.get,
+    [core.types.computed]: core.computedProperty.get,
+    [core.types.mapOf]: core.mapOfProperty.get,
+    [core.types.number]: core.numberProperty.get,
+    [core.types.object]: core.objectProperty.get,
+    [core.types.oneOf]: core.oneOfProperty.get,
+    [core.types.string]: core.stringProperty.get,
+  }
+
+  // If there is no description then this key doesn't exist on the
+  // description - try to return it anyhow.
+  if (description == undefined) {
+    return Reflect.get(target, key)
+  }
+
+  const get = getMap[description.type]
+
+  if (get == undefined) {
+    throw new Error(`Unrecognized property type: ${description.type.toString()}`)
+  }
+
+  return get(target, key, description, root, proxy)
 }

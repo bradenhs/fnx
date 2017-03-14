@@ -1,65 +1,45 @@
 import * as core from '../../core'
 
-/**
- *  Creates an observable array
- * @param array The plain array
- * @param description The description of this array
- * @param root The root of the state tree
- */
-export function prepareArrayOf(
-  array, description: core.ArrayOfDescriptor<any>, root
-) {
-  if (core.isObservable(array)) {
-    return array
-  }
-
-  const proxy = new Proxy(array, {
-    /**
-     * TODO
-     */
-    get(target, key, receiver) {
-      if (core.isObservableDesignatorKey(key)) {
-        return true
-      }
-
-      if (description.kind === core.types.computed) {
-        throw new Error('TODO make it so computed values work properly with staleness')
-      }
-
-      if (description.kind === core.types.complex) {
-        throw new Error('TODO make it so complex values work properly')
-      }
-
-      return Reflect.get(target, key, receiver)
-    },
-    /**
-     * TODO
-     */
-    set(target, key, value) {
-      if (!core.isActionInProgress(root)) {
-        throw new Error('You cannot mutate state outside of an action')
-      }
-      if (key === 'length') {
-        return Reflect.set(target, key, value)
-      } else {
-        return core.setProperty(
-          target, key, value, description.kind, root
-        )
-      }
+export const arrayOfProperty: core.Property = {
+  set(target, key, value, description: core.ArrayOfDescriptor<any>, root) {
+    if (core.isObservable(value)) {
+      return value
     }
-  })
 
-  if (Object.getOwnPropertySymbols(proxy).length > 0) {
-    throw new Error(
-      'Symbols are not serializable and therefore you can\'t use them as a key on your state'
-    )
-  }
+    const proxy = new Proxy(value, {
+      get(t, k) {
+        if (core.isObservableDesignatorKey(k)) {
+          return true
+        }
 
-  Object.getOwnPropertyNames(array).forEach(key => {
-    if (key !== 'length') {
-      core.setProperty(array, key, array[key], description.kind, root)
+        return core.getProperty(t, k, description.kind, root, proxy)
+      },
+      set(t, k, v) {
+        if (!core.isActionInProgress(root)) {
+          throw new Error('You cannot mutate state outside of an action')
+        }
+        if (k === 'length') {
+          return Reflect.set(t, k, v)
+        } else {
+          return core.setProperty(t, k, v, description.kind, root)
+        }
+      }
+    })
+    if (Object.getOwnPropertySymbols(value).length > 0) {
+      throw new Error(
+        'Symbols are not serializable and therefore you can\'t use them as a key on your state'
+      )
     }
-  })
 
-  return proxy
+    Object.getOwnPropertyNames(value).forEach(k => {
+      if (k !== 'length') {
+        core.setProperty(value, k, value[k], description.kind, root)
+      }
+    })
+
+    return Reflect.set(target, key, proxy)
+  },
+  get(target, key) {
+    return target[key]
+  }
 }

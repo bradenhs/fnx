@@ -9,5 +9,7 @@ export function createObservable<T>(
   StateDescription: new() =>  T, initialState: T
 ): T {
   const description = core.parseDescription(StateDescription)
-  return core.prepareObject(initialState, description)
+  const object = { state: undefined }
+  core.objectProperty.set(object, 'state', initialState, description)
+  return object.state
 }
