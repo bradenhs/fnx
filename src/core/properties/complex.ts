@@ -18,100 +18,114 @@ function complexProxy(
   rootTarget: any, rootKey: any, rootValue: any, target: any,
   description: core.ComplexDescriptor<any, any>, root: any
 ) {
-  if (typeof rootValue === 'string' ||
-      typeof rootValue === 'number' ||
-      typeof rootValue === 'boolean') {
-    return rootValue
+  if (typeof target === 'string' ||
+      typeof target === 'number' ||
+      typeof target === 'boolean') {
+    return target
   }
 
-  const dummyObject = {}
+  let dummyObject: Object | Function
+  if (typeof target === 'function') {
+    dummyObject = function() {}
+  } else {
+    dummyObject = {}
+  }
   return new Proxy(dummyObject, {
-    apply(_, thisArg, argumentsList) {
-      const returnValue = Reflect.apply(
-        target, thisArg === dummyObject ? target : thisArg, argumentsList
-      )
-      enforceReadonly(rootTarget, rootKey, rootValue, description, root)
-      return returnValue // complexProxy(rootTarget, rootKey, rootValue, returnValue, description, root)
+    apply(_0, _1, argumentsList) {
+      const returnValue = target(...argumentsList)
+      checkForMutation(rootTarget, rootKey, rootValue, description, root)
+      if (typeof returnValue === 'function') {
+        return complexProxy(
+          rootTarget, rootKey, rootValue, returnValue.bind(target), description, root
+        )
+      } else {
+        return complexProxy(rootTarget, rootKey, rootValue, returnValue, description, root)
+      }
     },
     construct(_, argumentsList, newTarget) {
       const returnValue = Reflect.construct(target, argumentsList, newTarget)
-      enforceReadonly(rootTarget, rootKey, rootValue, description, root)
-      return returnValue // complexProxy(rootTarget, rootKey, rootValue, returnValue, description, root)
+      checkForMutation(rootTarget, rootKey, rootValue, description, root)
+      return complexProxy(rootTarget, rootKey, rootValue, returnValue, description, root)
     },
     defineProperty(_, key, attributes) {
       const returnValue = Reflect.defineProperty(target, key, attributes)
-      enforceReadonly(rootTarget, rootKey, rootValue, description, root)
+      checkForMutation(rootTarget, rootKey, rootValue, description, root)
       return returnValue
     },
     deleteProperty(_, key) {
       const returnValue = delete target[key]
-      enforceReadonly(rootTarget, rootKey, rootValue, description, root)
+      checkForMutation(rootTarget, rootKey, rootValue, description, root)
       return returnValue
     },
     get(_, key) {
       const returnValue = target[key]
-      enforceReadonly(rootTarget, rootKey, rootValue, description, root)
-      return returnValue // complexProxy(rootTarget, rootKey, rootValue, returnValue, description, root)
+      checkForMutation(rootTarget, rootKey, rootValue, description, root)
+      if (typeof returnValue === 'function') {
+        return complexProxy(
+          rootTarget, rootKey, rootValue, returnValue.bind(target), description, root
+        )
+      } else {
+        return complexProxy(rootTarget, rootKey, rootValue, returnValue, description, root)
+      }
     },
     getOwnPropertyDescriptor(_, key) {
       const returnValue = Reflect.getOwnPropertyDescriptor(target, key)
-      enforceReadonly(rootTarget, rootKey, rootValue, description, root)
+      checkForMutation(rootTarget, rootKey, rootValue, description, root)
       return returnValue
     },
     getPrototypeOf() {
       const returnValue = Reflect.getPrototypeOf(target)
-      enforceReadonly(rootTarget, rootKey, rootValue, description, root)
-      return returnValue // complexProxy(rootTarget, rootKey, rootValue, returnValue, description, root)
+      checkForMutation(rootTarget, rootKey, rootValue, description, root)
+      return returnValue
     },
     has(_, key) {
       const returnValue = Reflect.has(target, key)
-      enforceReadonly(rootTarget, rootKey, rootValue, description, root)
+      checkForMutation(rootTarget, rootKey, rootValue, description, root)
       return returnValue
     },
     isExtensible() {
       const returnValue = Reflect.isExtensible(target)
-      enforceReadonly(rootTarget, rootKey, rootValue, description, root)
+      checkForMutation(rootTarget, rootKey, rootValue, description, root)
       return returnValue
     },
     ownKeys() {
       const returnValue = Reflect.ownKeys(target)
-      enforceReadonly(rootTarget, rootKey, rootValue, description, root)
-      return returnValue // complexProxy(rootTarget, rootKey, rootValue, returnValue, description, root)
+      checkForMutation(rootTarget, rootKey, rootValue, description, root)
+      return returnValue
     },
     preventExtensions() {
       const returnValue = Reflect.preventExtensions(target)
-      enforceReadonly(rootTarget, rootKey, rootValue, description, root)
+      checkForMutation(rootTarget, rootKey, rootValue, description, root)
       return returnValue
     },
     set(_, key, value, receiver) {
       const returnValue = Reflect.set(value, key, value, receiver)
-      enforceReadonly(rootTarget, rootKey, rootValue, description, root)
+      checkForMutation(rootTarget, rootKey, rootValue, description, root)
       return returnValue
     },
     setPrototypeOf(_, proto) {
       const returnValue = Reflect.setPrototypeOf(target, proto)
-      enforceReadonly(rootTarget, rootKey, rootValue, description, root)
+      checkForMutation(rootTarget, rootKey, rootValue, description, root)
       return returnValue
     }
   })
 }
 
-function enforceReadonly(
+function checkForMutation(
   rootTarget, rootKey, rootValue, description: core.ComplexDescriptor<any, any>, root
 ) {
-  if ((!core.isActionInProgress(root) || description.readonly) &&
-      didChange(rootTarget, rootKey, rootValue, description)) {
-    throw new Error()
-  }
-}
-
-function didChange(
-  rootTarget, rootKey, rootValue, description: core.ComplexDescriptor<any, any>
-) {
   const newSerializedValue = JSON.stringify(description.serialize(rootValue))
-  if (complexValues.get(rootTarget, rootKey) !== newSerializedValue) {
-    complexValues.set(rootTarget, rootKey, newSerializedValue)
-    return true
+  const changed = complexValues.get(rootTarget, rootKey) !== newSerializedValue
+  if (changed) {
+    complexValues.set(rootTarget,rootKey, newSerializedValue)
+    if (!core.isActionInProgress(root)) {
+      throw new Error('Attempted to mutate complex type of an action')
+    }
+    if (description.readonly) {
+      throw new Error('Attemped to mutated readonly complex type')
+    }
   }
-  return false
+  if ((!core.isActionInProgress(root) || description.readonly) && changed) {
+    throw new Error('Attempted to mutate complex type out of action')
+  }
 }
