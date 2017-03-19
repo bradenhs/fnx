@@ -1,5 +1,5 @@
 export class ObjectKeyWeakMap<K extends object, V> {
-  weakMap: WeakMap<K, { [key: string]: V }> = new WeakMap()
+  private weakMap: WeakMap<K, { [key: string]: V }> = new WeakMap()
 
   get(object: K, key: PropertyKey): V {
     const container = this.weakMap.get(object)

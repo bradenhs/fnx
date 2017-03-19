@@ -1,6 +1,6 @@
 import {
   action, arrayOf, complex, createObservable, mapOf, number, object, oneOf, optional,
-  readonly, string,
+  readonly, string, computed
 } from '../../src/api'
 import * as core from '../../src/core'
 import { catchErrType } from '../testHelpers'
@@ -440,6 +440,247 @@ describe('createObservable', () => {
 
     const actual = catchErrType(() => state.setBool(false))
     const expected = Error
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should allow computed properties', () => {
+    class State {
+      firstName = string
+      lastName = string
+
+      fullName? = computed((state: State) => state.firstName + ' ' + state.lastName)
+    }
+
+    const state = createObservable(State, { firstName: 'Foo', lastName: 'Bar' })
+
+    const actual = state.fullName
+    const expected = 'Foo Bar'
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should only recompute when stale', () => {
+    let runs = 0
+
+    class State {
+      firstName = string
+      lastName = string
+
+      fullName? = computed((state: State) => {
+        runs++
+        return state.firstName + ' ' + state.lastName
+      })
+    }
+
+    const state = createObservable(State, { firstName: 'Foo', lastName: 'Bar' })
+
+    state.fullName
+    state.fullName
+
+    const actual = runs
+    const expected = 1
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should mark as stale without rerunning', () => {
+    let runs = 0
+
+    class State {
+      firstName = string
+      lastName = string
+
+      fullName? = computed((state: State) => {
+        runs++
+        return state.firstName + ' ' + state.lastName
+      })
+
+      changeName? = action((state: State) => (firstName: string, lastName: string) => {
+        state.firstName = firstName
+        state.lastName = lastName
+      })
+    }
+
+    const state = createObservable(State, { firstName: 'Foo', lastName: 'Bar' })
+
+    state.fullName
+    state.changeName('Foo2', 'Bar2')
+
+    const actual = runs
+    const expected = 1
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should recompute when marked as stale', () => {
+    let runs = 0
+
+    class State {
+      firstName = string
+      lastName = string
+
+      fullName? = computed((state: State) => {
+        runs++
+        return state.firstName + ' ' + state.lastName
+      })
+
+      changeName? = action((state: State) => (firstName: string, lastName: string) => {
+        state.firstName = firstName
+        state.lastName = lastName
+      })
+    }
+
+    const state = createObservable(State, { firstName: 'Foo', lastName: 'Bar' })
+
+    state.fullName
+    state.changeName('Foo2', 'Bar2')
+    state.fullName
+
+    const actual = runs
+    const expected = 2
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should allowed nested computed props 1', () => {
+    class Person {
+      @readonly id = number
+      firstName = string
+      lastName = string
+
+      fullName? = computed((person: Person) => {
+        return person.firstName + ' ' + person.lastName
+      })
+
+      changeName? = action((person: Person) => (firstName: string, lastName: string) => {
+        person.firstName = firstName
+        person.lastName = lastName
+      })
+    }
+
+    class State {
+      people = mapOf(object(Person))
+      sortedPeople? = computed((state: State) => {
+        return Object.keys(state.people).map(k => state.people[k]).sort((a: Person, b: Person) => {
+          return a.fullName.localeCompare(b.fullName)
+        })
+      })
+
+      addPerson? = action((state: State) => (person: Person) => {
+        state.people[person.id] = person
+      })
+    }
+
+    const state = createObservable(State, { people: {} })
+
+    state.addPerson({
+      id: 1,
+      firstName: 'B',
+      lastName: 'B'
+    })
+
+    state.addPerson({
+      id: 2,
+      firstName: 'C',
+      lastName: 'C'
+    })
+
+    const actual = state.sortedPeople
+    const expected = [
+      { id: 1, firstName: 'B', lastName: 'B' },
+      { id: 2, firstName: 'C', lastName: 'C' }
+    ]
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should allowed nested computed props 2', () => {
+    class Person {
+      @readonly id = number
+      firstName = string
+      lastName = string
+
+      fullName? = computed((person: Person) => {
+        return person.firstName + ' ' + person.lastName
+      })
+
+      changeName? = action((person: Person) => (firstName: string, lastName: string) => {
+        person.firstName = firstName
+        person.lastName = lastName
+      })
+    }
+
+    class State {
+      people = mapOf(object(Person))
+      sortedPeople? = computed((state: State) => {
+        return Object.keys(state.people).map(k => state.people[k]).sort((a: Person, b: Person) => {
+          return a.fullName.localeCompare(b.fullName)
+        })
+      })
+
+      addPerson? = action((state: State) => (person: Person) => {
+        state.people[person.id] = person
+      })
+    }
+
+    const state = createObservable(State, { people: {} })
+
+    state.addPerson({
+      id: 1,
+      firstName: 'B',
+      lastName: 'B'
+    })
+
+    state.addPerson({
+      id: 2,
+      firstName: 'C',
+      lastName: 'C'
+    })
+
+    state.people[2].changeName('A', 'A')
+
+    const actual = state.sortedPeople
+    const expected = [
+      { id: 2, firstName: 'A', lastName: 'A' },
+      { id: 1, firstName: 'B', lastName: 'B' }
+    ]
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should stop tracking values not passed over in last computation', () => {
+    let runs = 0
+
+    class State {
+      @optional num? = number
+      letter = string
+      comp? = computed((state: State) => {
+        runs++
+        if (state.num != undefined) {
+          return state.num
+        } else {
+          return state.letter
+        }
+      })
+      setNum? = action((state: State) => () => {
+        state.num = 1
+      })
+      setLetter? = action((state: State) => () => {
+        state.letter = 'B'
+      })
+    }
+
+    const state = createObservable(State, { letter: 'A' })
+
+    state.comp
+    state.setNum()
+    state.comp
+    state.setLetter()
+    state.comp
+
+    const actual = runs
+    const expected = 2
 
     expect(actual).toBe(expected)
   })

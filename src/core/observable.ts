@@ -1,8 +1,5 @@
 import * as core from '../core'
-import { KeyedObject, ObjectKeyWeakMap, PropertyKeyMap, SymbolMap } from '../utils'
-
-export type ObservableMap =
-  WeakMap<KeyedObject, PropertyKeyMap<SymbolMap<symbol>>>
+import { ObjectKeyWeakMap } from '../utils'
 
 export type Property = {
   set: (target?: object, key?: PropertyKey, value?: any,
@@ -14,9 +11,14 @@ export type Property = {
 // Map of all of the observables in the app. Uses both the object and it's key
 // to designate a particular observable. Is held in memory as a weak map so it
 // can be garbage collected.
-const observables = new ObjectKeyWeakMap<any, Map<symbol, {
+const observablesReactions = new ObjectKeyWeakMap<any, Map<symbol, {
   reactionId: symbol
   roundAdded: number
+}>>()
+
+const observablesDerivations = new ObjectKeyWeakMap<any, Map<symbol, {
+  derivation: core.Derivation
+  roundSet: number
 }>>()
 
 const OBSERVABLE_DESIGNATOR = Symbol('OBSERVABLE_DESIGNATOR')
@@ -48,6 +50,10 @@ export function isObservableDesignatorKey(key) {
 export function setProperty(
   target, key, value, description: core.Descriptor, root
 ) {
+  if (core.isDerivationInProgress()) {
+    throw new Error('You cannot mutate stuff inside of a computed property')
+  }
+
   const setMap = {
     [core.descriptionTypes.action]: core.actionProperty.set,
     [core.descriptionTypes.arrayOf]: core.arrayOfProperty.set,
@@ -67,10 +73,28 @@ export function setProperty(
   const setResult = set(target, key, value, description, root)
 
   if (setResult.didChange) {
+    markObservablesDerivationsAsStale(target, key)
     core.addObservablesReactionsToPendingReactions(target, key)
   }
 
   return setResult.result
+}
+
+/**
+ * Mark this derivation and all of it's parent derivations as stale and setup the reactions to
+ * trigger
+ */
+export function markObservablesDerivationsAsStale(target, key) {
+  getDerivationsOfObservable(target, key).forEach(({ derivation, roundSet }) => {
+    if (derivation.round !== roundSet) {
+      removeDerivationFromObservable(target, key, derivation.id)
+    } else if (derivation.stale === false) {
+      derivation.stale = true
+      // Include some way to throw away observables that are not part of it's calculation anymore
+      core.addObservablesReactionsToPendingReactions(derivation.object, derivation.key)
+      markObservablesDerivationsAsStale(derivation.object, derivation.key)
+    }
+  })
 }
 
 /**
@@ -110,17 +134,15 @@ export function getProperty(target, key, description: core.Descriptor, root, pro
     addReactionToObservable(target, key, reaction.id, reaction.round)
   }
 
-  return get(target, key, description, root, proxy)
-}
-
-/**
- * Ensures the object and key combination has an entry in the
- * the observables map.
- */
-function ensureObservableIsDefined(obj: KeyedObject, key: PropertyKey) {
-  if (!observables.has(obj, key)) {
-    observables.set(obj, key, new Map())
+  if (core.isDerivationInProgress()) {
+    if (description.type === core.descriptionTypes.action) {
+      throw new Error('Actions should not be accessed in derivations')
+    }
+    const derivation = core.getActiveDerivation()
+    addDerivationToObservable(target, key, derivation)
   }
+
+  return get(target, key, description, root, proxy)
 }
 
 /**
@@ -130,24 +152,58 @@ function ensureObservableIsDefined(obj: KeyedObject, key: PropertyKey) {
 function addReactionToObservable(
   object: any, key: PropertyKey, reactionId: symbol, roundAdded: number
 ) {
-  ensureObservableIsDefined(object, key)
-  observables.get(object, key).set(reactionId, { reactionId, roundAdded })
+  if (observablesReactions.has(object, key)) {
+    observablesReactions.get(object, key).set(reactionId, { reactionId, roundAdded })
+  } else {
+    observablesReactions.set(object, key, new Map([[reactionId, { reactionId, roundAdded }]]))
+  }
+}
+
+export function addDerivationToObservable(object, key: PropertyKey, derivation: core.Derivation) {
+  if (observablesDerivations.has(object, key)) {
+    observablesDerivations.get(object, key)
+      .set(derivation.id, { derivation, roundSet: derivation.round })
+  } else {
+    observablesDerivations.set(object, key, new Map(
+      [[derivation.id, { derivation, roundSet: derivation.round }]]
+    ))
+  }
 }
 
 /**
  * Returns all reactions attached to specified observable.
  */
 export function getReactionsOfObservable(object: any, key: PropertyKey) {
-  ensureObservableIsDefined(object, key)
-  return observables.get(object, key)
+  if (!observablesReactions.has(object, key)) {
+    observablesReactions.set(object, key, new Map())
+  }
+  return observablesReactions.get(object, key)
+}
+
+export function getDerivationsOfObservable(
+  object: object, key: PropertyKey
+): Map<symbol, { derivation: core.Derivation, roundSet: number }> {
+  if (!observablesDerivations.has(object, key)) {
+    observablesDerivations.set(object, key, new Map())
+  }
+  return observablesDerivations.get(object, key)
 }
 
 /**
  * Removes the reaction from the observable's collections of reactions.
  */
 export function removeReactionFromObservable(
-  object: KeyedObject, key: PropertyKey, reactionId: symbol,
+  object: object, key: PropertyKey, reactionId: symbol,
 ) {
-  ensureObservableIsDefined(object, key)
-  observables.get(object, key).delete(reactionId)
+  if (observablesReactions.has(object, key)) {
+    observablesReactions.get(object, key).delete(reactionId)
+  }
+}
+
+export function removeDerivationFromObservable(
+  object: object, key: PropertyKey, derivationId: symbol
+) {
+  if (observablesDerivations.has(object, key)) {
+    observablesDerivations.get(object, key).delete(derivationId)
+  }
 }

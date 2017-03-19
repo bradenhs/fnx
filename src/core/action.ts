@@ -67,6 +67,9 @@ export function wrapAction(description: core.ActionDescriptor<any>, root, proxy)
   }
 
   return (...args: any[]) => {
+    if (core.isReactionInProgress()) {
+      throw new Error('Actions should not be called in reactions')
+    }
     incrementActionsInProgress(root)
     if (action(...args) != undefined) {
       throw new Error('Actions must not return stuff')

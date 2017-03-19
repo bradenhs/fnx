@@ -25,6 +25,7 @@ export const arrayOfProperty: core.Property = {
         }
       }
     })
+
     if (Object.getOwnPropertySymbols(value).length > 0) {
       throw new Error(
         'Symbols are not serializable and therefore you can\'t use them as a key on your state'
