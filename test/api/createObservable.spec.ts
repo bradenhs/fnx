@@ -1,6 +1,6 @@
 import {
-  action, arrayOf, complex, createObservable, mapOf, number, object, oneOf, optional,
-  readonly, string, computed
+  action, arrayOf, complex, computed, createObservable, mapOf, number, object, oneOf,
+  optional, readonly, string
 } from '../../src/api'
 import * as core from '../../src/core'
 import { catchErrType } from '../testHelpers'
