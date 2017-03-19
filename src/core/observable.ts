@@ -1,5 +1,5 @@
 import * as core from '../core'
-import { KeyedObject, PropertyKeyMap, SymbolMap } from '../utils'
+import { KeyedObject, ObjectKeyWeakMap, PropertyKeyMap, SymbolMap } from '../utils'
 
 export type ObservableMap =
   WeakMap<KeyedObject, PropertyKeyMap<SymbolMap<symbol>>>
@@ -14,7 +14,10 @@ export type Property = {
 // Map of all of the observables in the app. Uses both the object and it's key
 // to designate a particular observable. Is held in memory as a weak map so it
 // can be garbage collected.
-const observables: ObservableMap = new WeakMap()
+const observables = new ObjectKeyWeakMap<any, Map<symbol, {
+  reactionId: symbol
+  roundAdded: number
+}>>()
 
 const OBSERVABLE_DESIGNATOR = Symbol('OBSERVABLE_DESIGNATOR')
 
@@ -63,7 +66,7 @@ export function setProperty(
   }
   const setResult = set(target, key, value, description, root)
 
-  if (!setResult.didChange) {
+  if (setResult.didChange) {
     core.addObservablesReactionsToPendingReactions(target, key)
   }
 
@@ -103,7 +106,8 @@ export function getProperty(target, key, description: core.Descriptor, root, pro
     if (description.type === core.descriptionTypes.action) {
       throw new Error('Actions should not be accessed in reactions')
     }
-    addReactionToObservable(target, key, core.getActiveReactionId())
+    const reaction = core.getActiveReaction()
+    addReactionToObservable(target, key, reaction.id, reaction.round)
   }
 
   return get(target, key, description, root, proxy)
@@ -114,11 +118,8 @@ export function getProperty(target, key, description: core.Descriptor, root, pro
  * the observables map.
  */
 function ensureObservableIsDefined(obj: KeyedObject, key: PropertyKey) {
-  if (!observables.has(obj)) {
-    observables.set(obj, { })
-  }
-  if (observables.get(obj)[key] == undefined) {
-    observables.get(obj)[key] = { }
+  if (!observables.has(obj, key)) {
+    observables.set(obj, key, new Map())
   }
 }
 
@@ -127,10 +128,10 @@ function ensureObservableIsDefined(obj: KeyedObject, key: PropertyKey) {
  * can know to trigger this reaction.
  */
 function addReactionToObservable(
-  object: any, key: PropertyKey, reactionId: symbol,
+  object: any, key: PropertyKey, reactionId: symbol, roundAdded: number
 ) {
   ensureObservableIsDefined(object, key)
-  observables.get(object)[key][reactionId] = reactionId
+  observables.get(object, key).set(reactionId, { reactionId, roundAdded })
 }
 
 /**
@@ -138,7 +139,7 @@ function addReactionToObservable(
  */
 export function getReactionsOfObservable(object: any, key: PropertyKey) {
   ensureObservableIsDefined(object, key)
-  return observables.get(object)[key]
+  return observables.get(object, key)
 }
 
 /**
@@ -148,9 +149,5 @@ export function removeReactionFromObservable(
   object: KeyedObject, key: PropertyKey, reactionId: symbol,
 ) {
   ensureObservableIsDefined(object, key)
-  const {
-    [reactionId]: _,
-    ...remainingReactions,
-  } = observables.get(object)[key]
-  observables.get(object)[key] = remainingReactions
+  observables.get(object, key).delete(reactionId)
 }

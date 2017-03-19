@@ -1,5 +1,4 @@
 import * as core from '../core'
-import { SymbolMap } from '../utils'
 
 const actionsInProgress = new WeakMap<any, number>()
 
@@ -7,7 +6,7 @@ const actionsInProgress = new WeakMap<any, number>()
  * An object that keeps track of reactions which need to be triggered after
  * we've finished executing actions.
  */
-let pendingReactions: SymbolMap<symbol> = { }
+const pendingReactions = new Map<symbol, symbol>()
 
 /**
  * Increments the actions in progress for a particular state tree
@@ -40,20 +39,21 @@ export function isActionInProgress(root) {
 export function addObservablesReactionsToPendingReactions(
   target: any, key: PropertyKey,
 ) {
-  const reactionIds = core.getReactionsOfObservable(target, key)
+  const reactions = core.getReactionsOfObservable(target, key)
 
-  Object
-    .getOwnPropertySymbols(reactionIds)
-    .forEach(reactionId => {
-      // Make sure this reaction is still in the reaction collection and that
-      // it hasn't been disposed. If it was disposed make sure this observable
-      // no longer triggers this reaction.
-      if (core.isInReactionCollection(reactionId)) {
-        pendingReactions[reactionId] = reactionId
-      } else {
-        core.removeReactionFromObservable(target, key, reactionId)
-      }
-    })
+  reactions.forEach(({ reactionId, roundAdded }) => {
+    // Make sure this reaction is still in the reaction collection and that
+    // it hasn't been disposed. If it was disposed make sure this observable
+    // no longer triggers this reaction. Also make sure this observable's reaction
+    // was added on the most recent round for running that reaction. If not get rid of
+    // it as well
+    const reaction = core.getReaction(reactionId)
+    if (core.isInReactionCollection(reactionId) && reaction.round === roundAdded) {
+      pendingReactions.set(reactionId, reactionId)
+    } else {
+      core.removeReactionFromObservable(target, key, reactionId)
+    }
+  })
 }
 
 /**
@@ -82,10 +82,10 @@ export function wrapAction(description: core.ActionDescriptor<any>, root, proxy)
  * Trigger all pending reactions and clear the pending reactions.
  */
 function triggerReactions() {
-  Object.getOwnPropertySymbols(pendingReactions)
-      .map(id => core.getReaction(id))
-      .forEach(r => r.invoke())
+  pendingReactions.forEach(id => {
+    core.getReaction(id).invoke()
+  })
 
   // Reset pending reactions
-  pendingReactions = { }
+  pendingReactions.clear()
 }

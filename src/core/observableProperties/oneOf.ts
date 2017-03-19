@@ -1,6 +1,5 @@
 import * as core from '../../core'
 
-
 export const oneOfProperty: core.Property = {
   set: (target, key, value, description: core.OneOfDescriptor, root) => {
     let setValue

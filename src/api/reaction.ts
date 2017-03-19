@@ -4,12 +4,12 @@ import * as core from '../core'
  * TODO
  */
 export function reaction(fn: () => void) {
-  const reactionId = core.registerReaction(fn)
-  core.invokeReaction(reactionId)
+  const reaction = core.registerReaction(fn)
+  core.invokeReaction(reaction)
 
   return {
     dispose() {
-      core.disposeReaction(reactionId)
+      core.disposeReaction(reaction.id)
     }
   }
 }

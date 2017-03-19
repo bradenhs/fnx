@@ -1,12 +1,11 @@
-import { SymbolMap } from '../utils'
-
 export type Reaction = {
-  readonly id: symbol;
-  readonly fn: () => any;
-  readonly invoke: () => any;
+  readonly id: symbol
+  readonly fn: () => any
+  readonly invoke: () => any
+  round: number
 }
 
-let reactionCollection: SymbolMap<Reaction> = { }
+const reactionCollection = new Map<symbol, Reaction>()
 
 let activeReaction: symbol
 
@@ -15,20 +14,21 @@ let activeReaction: symbol
  */
 export function registerReaction(
   fn: () => any, customInvoker?: () => any,
-): symbol {
+) {
   const id = Symbol()
   const reaction: Reaction = {
-    id, fn, invoke: customInvoker || (() => invokeReaction(id)),
+    id, fn, invoke: customInvoker || (() => invokeReaction(reaction)),
+    round: 0
   }
-  reactionCollection[reaction.id] = reaction
-  return reaction.id
+  reactionCollection.set(reaction.id, reaction)
+  return reaction
 }
 
 /**
  * TODO
  */
-export function invokeReaction(reactionId: symbol) {
-  const reaction = reactionCollection[reactionId]
+export function invokeReaction(reaction: Reaction) {
+  reaction.round++
   activeReaction = reaction.id
   const result = reaction.fn()
   activeReaction = undefined
@@ -40,19 +40,14 @@ export function invokeReaction(reactionId: symbol) {
  * are set to trigger it in the future.
  */
 export function disposeReaction(reactionId: symbol) {
-  const {
-    [reactionId]: removedReaction,
-    ...remainingReactions,
-  } = reactionCollection
-
-  reactionCollection = remainingReactions
+  reactionCollection.delete(reactionId)
 }
 
 /**
  * TODO
  */
 export function getReaction(reactionId: symbol) {
-  return reactionCollection[reactionId]
+  return reactionCollection.get(reactionId)
 }
 
 /**
@@ -65,8 +60,8 @@ export function isReactionInProgress() {
 /**
  * TODO
  */
-export function getActiveReactionId() {
-  return activeReaction
+export function getActiveReaction() {
+  return reactionCollection.get(activeReaction)
 }
 
 /**
@@ -80,5 +75,5 @@ export function setActiveReactionId(reactionId: symbol) {
  * TODO
  */
 export function isInReactionCollection(reactionId: symbol) {
-  return reactionCollection[reactionId] != undefined
+  return reactionCollection.has(reactionId)
 }

@@ -19,6 +19,12 @@ export const mapOfProperty: core.Property = {
         if (!core.isActionInProgress(root)) {
           throw new Error('You cannot mutate state outside of an action')
         }
+
+        // This is a new property meaning we should trigger a change for the parent
+        if (!Reflect.has(t, k)) {
+          core.addObservablesReactionsToPendingReactions(target, key)
+        }
+
         return core.setProperty(t, k, v, description.kind, root)
       }
     })
