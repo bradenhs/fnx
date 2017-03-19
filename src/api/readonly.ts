@@ -1,4 +1,4 @@
-import { types } from '../core'
+import { descriptionTypes } from '../core'
 
 /**
  * TODO
@@ -6,8 +6,8 @@ import { types } from '../core'
  * @param key TODO
  */
 export function readonly(target, key) {
-  if (target[types.readonly] == undefined) {
-    target[types.readonly] = {}
+  if (target[descriptionTypes.readonly] == undefined) {
+    target[descriptionTypes.readonly] = {}
   }
-  target[types.readonly][key] = key
+  target[descriptionTypes.readonly][key] = key
 }

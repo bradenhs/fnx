@@ -1,4 +1,4 @@
-import { MapOfDescriptor, types } from '../core'
+import { descriptionTypes, MapOfDescriptor } from '../core'
 
 /**
  * TODO
@@ -18,21 +18,21 @@ export function mapOf<T>(kind: T) {
   }
 
   switch ((kind as any).type) {
-    case types.arrayOf:
-    case types.boolean:
-    case types.complex:
-    case types.mapOf:
-    case types.number:
-    case types.object:
-    case types.oneOf:
-    case types.string:
+    case descriptionTypes.arrayOf:
+    case descriptionTypes.boolean:
+    case descriptionTypes.complex:
+    case descriptionTypes.mapOf:
+    case descriptionTypes.number:
+    case descriptionTypes.object:
+    case descriptionTypes.oneOf:
+    case descriptionTypes.string:
       break
     default:
       throw new Error()
   }
 
   const descriptor: MapOfDescriptor<T> = {
-    type: types.mapOf, kind,
+    type: descriptionTypes.mapOf, kind,
     readonly: false, optional: false,
   }
 

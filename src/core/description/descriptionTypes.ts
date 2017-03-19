@@ -1,4 +1,4 @@
-export const types = {
+export const descriptionTypes = {
   action: Symbol('action'),
   computed: Symbol('computed'),
   readonly: Symbol('readonly'),

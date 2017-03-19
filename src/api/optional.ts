@@ -1,4 +1,4 @@
-import { types } from '../core'
+import { descriptionTypes } from '../core'
 
 /**
  * TODO
@@ -6,8 +6,8 @@ import { types } from '../core'
  * @param key TODO
  */
 export function optional(target, key) {
-  if (target[types.optional] == undefined) {
-    target[types.optional] = {}
+  if (target[descriptionTypes.optional] == undefined) {
+    target[descriptionTypes.optional] = {}
   }
-  target[types.optional][key] = key
+  target[descriptionTypes.optional][key] = key
 }

@@ -1,4 +1,4 @@
-import { ObjectDescriptor, types } from '../core'
+import { descriptionTypes, ObjectDescriptor } from '../core'
 
 /**
  * TODO
@@ -18,7 +18,7 @@ export function object<T>(clazz: new() => T) {
   }
 
   const descriptor: ObjectDescriptor<T> = {
-    type: types.object, clazz,
+    type: descriptionTypes.object, clazz,
     readonly: false, optional: false,
   }
   return descriptor as any as T

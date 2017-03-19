@@ -1,5 +1,5 @@
 import { complex as typedComplex } from '../../src/api/complex'
-import { types } from '../../src/core'
+import { descriptionTypes } from '../../src/core'
 import { catchErrType } from '../testHelpers'
 
 const complex = typedComplex as any
@@ -54,7 +54,7 @@ describe('complex', () => {
 
     const actual = complex(serialize, deserialize)
     const expected = {
-      type: types.complex, serialize, deserialize,
+      type: descriptionTypes.complex, serialize, deserialize,
       readonly: false, optional: false,
     }
 

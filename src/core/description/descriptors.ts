@@ -1,11 +1,6 @@
-import * as core from '../core'
-
-// Base interface for all type descriptors
 export interface Descriptor {
   type: symbol
 }
-
-// Non-serializable descriptors
 
 export interface ActionDescriptor<T extends (...args: any[]) => void> extends Descriptor {
   fn(self: any, root?: any): T
@@ -14,8 +9,6 @@ export interface ActionDescriptor<T extends (...args: any[]) => void> extends De
 export interface ComputedDescriptor<T> extends Descriptor {
   fn(self: any, root?: any): T
 }
-
-// Serializable descriptors
 
 export interface ParsedObjectDescriptor<T> extends Descriptor {
   properties: T & {
@@ -72,16 +65,4 @@ export interface NumberDescriptor extends Descriptor {
 export interface StringDescriptor extends Descriptor {
   readonly: boolean
   optional: boolean
-}
-
-export type KeyedObject = {
-  [key: string]: any
-  [key: number]: any
-}
-
-export type Property = {
-  set: (target?: object, key?: PropertyKey, value?: any,
-        description?: core.Descriptor, root?: object) => boolean
-  get: (target?: object, key?: PropertyKey, description?: core.Descriptor,
-        root?: object, proxy?: object) => any
 }

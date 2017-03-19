@@ -10,14 +10,14 @@ import {
   action, arrayOf, boolean, complex, computed, mapOf, number,
   object, oneOf, optional, readonly, string
 } from '../../src/api'
-import { parseDescription, types } from '../../src/core'
+import { descriptionTypes, parseDescription } from '../../src/core'
 import { catchErrType } from '../testHelpers'
 
 const baseExpectedDescription = {
   readonly: true,
   optional: false,
   properties: { },
-  type: types.object,
+  type: descriptionTypes.object,
 }
 
 describe('parseDescription', () => {
@@ -42,7 +42,7 @@ describe('parseDescription', () => {
       readonlyString: {
         readonly: true,
         optional: false,
-        type: types.string
+        type: descriptionTypes.string
       }
     }
 
@@ -62,12 +62,12 @@ describe('parseDescription', () => {
       readonlyString: {
         readonly: true,
         optional: false,
-        type: types.string,
+        type: descriptionTypes.string,
       },
       nonReadonlyString: {
         readonly: false,
         optional: false,
-        type: types.string,
+        type: descriptionTypes.string,
       }
     }
 
@@ -86,7 +86,7 @@ describe('parseDescription', () => {
       optionalString: {
         readonly: false,
         optional: true,
-        type: types.string
+        type: descriptionTypes.string
       }
     }
 
@@ -106,12 +106,12 @@ describe('parseDescription', () => {
       optionalString: {
         readonly: false,
         optional: true,
-        type: types.string,
+        type: descriptionTypes.string,
       },
       nonOptionalString: {
         readonly: false,
         optional: false,
-        type: types.string,
+        type: descriptionTypes.string,
       }
     }
 
@@ -167,10 +167,10 @@ describe('parseDescription', () => {
       firstName: {
         readonly: false,
         optional: false,
-        type: types.string,
+        type: descriptionTypes.string,
       },
       changeFirstName: {
-        type: types.action, fn
+        type: descriptionTypes.action, fn
       }
     }
 
@@ -187,13 +187,13 @@ describe('parseDescription', () => {
 
     expected.properties = {
       nums: {
-        type: types.arrayOf,
+        type: descriptionTypes.arrayOf,
         readonly: false,
         optional: false,
         kind: {
           readonly: false,
           optional: false,
-          type: types.number,
+          type: descriptionTypes.number,
         }
       }
     }
@@ -214,18 +214,18 @@ describe('parseDescription', () => {
 
     expected.properties = {
       people: {
-        type: types.arrayOf,
+        type: descriptionTypes.arrayOf,
         readonly: false,
         optional: false,
         kind: {
           readonly: false,
           optional: false,
-          type: types.object,
+          type: descriptionTypes.object,
           properties: {
             firstName: {
               readonly: false,
               optional: false,
-              type: types.string
+              type: descriptionTypes.string
             }
           }
         }
@@ -247,7 +247,7 @@ describe('parseDescription', () => {
       bool: {
         readonly: false,
         optional: false,
-        type: types.boolean
+        type: descriptionTypes.boolean
       }
     }
 
@@ -268,7 +268,7 @@ describe('parseDescription', () => {
       date: {
         readonly: false,
         optional: false,
-        type: types.complex,
+        type: descriptionTypes.complex,
         serialize,
         deserialize
       }
@@ -288,7 +288,7 @@ describe('parseDescription', () => {
 
     expected.properties = {
       zero: {
-        type: types.computed,
+        type: descriptionTypes.computed,
         fn
       }
     }
@@ -306,13 +306,13 @@ describe('parseDescription', () => {
 
     expected.properties = {
       nums: {
-        type: types.mapOf,
+        type: descriptionTypes.mapOf,
         readonly: false,
         optional: false,
         kind: {
           readonly: false,
           optional: false,
-          type: types.number,
+          type: descriptionTypes.number,
         }
       }
     }
@@ -333,18 +333,18 @@ describe('parseDescription', () => {
 
     expected.properties = {
       people: {
-        type: types.mapOf,
+        type: descriptionTypes.mapOf,
         readonly: false,
         optional: false,
         kind: {
           readonly: false,
           optional: false,
-          type: types.object,
+          type: descriptionTypes.object,
           properties: {
             firstName: {
               readonly: false,
               optional: false,
-              type: types.string
+              type: descriptionTypes.string
             }
           }
         }
@@ -366,7 +366,7 @@ describe('parseDescription', () => {
       num: {
         readonly: false,
         optional: false,
-        type: types.number
+        type: descriptionTypes.number
       }
     }
 
@@ -388,12 +388,12 @@ describe('parseDescription', () => {
       person: {
         readonly: false,
         optional: false,
-        type: types.object,
+        type: descriptionTypes.object,
         properties: {
           firstName: {
             readonly: false,
             optional: false,
-            type: types.string
+            type: descriptionTypes.string
           }
         }
       }
@@ -417,27 +417,27 @@ describe('parseDescription', () => {
       one: {
         readonly: false,
         optional: false,
-        type: types.oneOf,
+        type: descriptionTypes.oneOf,
         kinds: [
           {
-            type: types.object,
+            type: descriptionTypes.object,
             readonly: false,
             optional: false,
             properties: {
               firstName: {
-                type: types.string,
+                type: descriptionTypes.string,
                 readonly: false,
                 optional: false,
               }
             }
           },
           {
-            type: types.number,
+            type: descriptionTypes.number,
             readonly: false,
             optional: false,
           },
           {
-            type: types.string,
+            type: descriptionTypes.string,
             readonly: false,
             optional: false,
           }
@@ -460,7 +460,7 @@ describe('parseDescription', () => {
       str: {
         readonly: false,
         optional: false,
-        type: types.string
+        type: descriptionTypes.string
       }
     }
 
@@ -507,50 +507,50 @@ describe('parseDescription', () => {
 
     expected.properties = {
       messages: {
-        type: types.mapOf,
+        type: descriptionTypes.mapOf,
         readonly: false,
         optional: false,
         kind: {
-          type: types.object,
+          type: descriptionTypes.object,
           readonly: false,
           optional: false,
           properties: {
             author: {
-              type: types.computed,
+              type: descriptionTypes.computed,
               fn: author,
             },
             likes: {
               readonly: false,
               optional: false,
-              type: types.number,
+              type: descriptionTypes.number,
             },
             id: {
               readonly: true,
               optional: false,
-              type: types.string
+              type: descriptionTypes.string
             },
             authorId: {
               readonly: false,
               optional: false,
-              type: types.string
+              type: descriptionTypes.string
             },
             contents: {
               readonly: false,
               optional: false,
-              type: types.string,
+              type: descriptionTypes.string,
             },
             awesome: {
               readonly: true,
               optional: true,
-              type: types.oneOf,
+              type: descriptionTypes.oneOf,
               kinds: [
                 {
-                  type: types.string,
+                  type: descriptionTypes.string,
                   readonly: false,
                   optional: false,
                 },
                 {
-                  type: types.boolean,
+                  type: descriptionTypes.boolean,
                   readonly: false,
                   optional: false,
                 }
@@ -561,53 +561,53 @@ describe('parseDescription', () => {
         }
       },
       users: {
-        type: types.mapOf,
+        type: descriptionTypes.mapOf,
         readonly: false,
         optional: false,
         kind: {
-          type: types.object,
+          type: descriptionTypes.object,
           readonly: false,
           optional: false,
           properties: {
             id: {
               readonly: true,
               optional: false,
-              type: types.string,
+              type: descriptionTypes.string,
             },
             firstName: {
               readonly: false,
               optional: false,
-              type: types.string,
+              type: descriptionTypes.string,
             },
             lastName: {
               readonly: false,
               optional: true,
-              type: types.string,
+              type: descriptionTypes.string,
             },
             favoriteColors: {
               readonly: false,
               optional: false,
-              type: types.arrayOf,
+              type: descriptionTypes.arrayOf,
               kind: {
                 readonly: false,
                 optional: false,
-                type: types.string,
+                type: descriptionTypes.string,
               },
             },
             cool: {
               readonly: false,
               optional: false,
-              type: types.boolean,
+              type: descriptionTypes.boolean,
             },
             dateOfBirth: {
               readonly: false,
               optional: false,
-              type: types.complex,
+              type: descriptionTypes.complex,
               serialize,
               deserialize
             },
             changeName: {
-              type: types.action,
+              type: descriptionTypes.action,
               fn: changeName
             }
           }

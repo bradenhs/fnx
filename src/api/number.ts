@@ -1,7 +1,7 @@
-import { NumberDescriptor, types } from '../core'
+import { descriptionTypes, NumberDescriptor } from '../core'
 
 const descriptor: NumberDescriptor = {
-  type: types.number,
+  type: descriptionTypes.number,
   readonly: false, optional: false,
 }
 

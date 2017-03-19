@@ -1,5 +1,5 @@
 import { action, boolean, computed, number, oneOf as typedOneOf, string } from '../../src/api'
-import { types } from '../../src/core'
+import { descriptionTypes } from '../../src/core'
 import { catchErrType } from '../testHelpers'
 
 const oneOf = typedOneOf as any
@@ -57,7 +57,7 @@ describe('oneOf', () => {
   it('should return a valid "oneOf" descriptor with two parameters', () => {
     const actual = oneOf(number, string)
     const expected = {
-      type: types.oneOf, kinds: [ number, string ],
+      type: descriptionTypes.oneOf, kinds: [ number, string ],
       readonly: false, optional: false,
     }
 
@@ -67,7 +67,7 @@ describe('oneOf', () => {
   it('should return a valid "oneOf" descriptor with three parameters', () => {
     const actual = oneOf(number, string, boolean)
     const expected = {
-      type: types.oneOf, kinds: [ number, string, boolean ],
+      type: descriptionTypes.oneOf, kinds: [ number, string, boolean ],
       readonly: false, optional: false,
     }
 

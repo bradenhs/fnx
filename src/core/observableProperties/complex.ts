@@ -6,11 +6,15 @@ const complexValues = new ObjectKeyWeakMap<any, string>()
 export const complexProperty: core.Property = {
   set(target, key, value, description: core.ComplexDescriptor<any, any>, root) {
     const proxy = complexProxy(target, key, value, value, description, root)
-    complexValues.set(target, key, JSON.stringify(description.serialize(value)))
-    return Reflect.set(target, key, proxy)
+    const newValue = JSON.stringify(description.serialize(value))
+    const didChange = newValue !== complexValues.get(target, key)
+    complexValues.set(target, key, newValue)
+    return {
+      didChange, result: Reflect.set(target, key, proxy),
+    }
   },
   get(target, key) {
-    return Reflect.get(target, key)
+    return target[key]
   }
 }
 
@@ -124,8 +128,5 @@ function checkForMutation(
     if (description.readonly) {
       throw new Error('Attemped to mutated readonly complex type')
     }
-  }
-  if ((!core.isActionInProgress(root) || description.readonly) && changed) {
-    throw new Error('Attempted to mutate complex type out of action')
   }
 }

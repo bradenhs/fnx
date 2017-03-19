@@ -1,10 +1,11 @@
 import {
-  action, arrayOf, createObservable, number, object, optional, readonly, string
+  action, arrayOf, complex, createObservable, mapOf, number, object, oneOf, optional,
+  readonly, string,
 } from '../../src/api'
 import * as core from '../../src/core'
 import { catchErrType } from '../testHelpers'
 
-describe('playground', () => {
+describe('createObservable', () => {
   it('creates an observable with a number as a property', () => {
     class State {
       num = number
@@ -285,4 +286,161 @@ describe('playground', () => {
     expect(actual).toBe(expected)
   })
 
+  it('should allow mapOf type', () => {
+    class State {
+      foo = mapOf(number)
+    }
+
+    const state = createObservable(State, { foo: { bar: 5 } })
+
+    const actual = state
+    const expected = { foo: { bar: 5 } }
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should throw on mutating mapOf type', () => {
+    class State {
+      foo = mapOf(number)
+    }
+
+    const state = createObservable(State, { foo: { } })
+
+    const actual = catchErrType(() => state.foo.asdf = 5 )
+    const expected = Error
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should allow mutation of mapOf through an action', () => {
+    class State {
+      foo = mapOf(number)
+      addFoo? = action((state: State) => (key, num: number) => {
+        state.foo[key] = num
+      })
+    }
+
+    const state = createObservable(State, { foo: { } })
+
+    state.addFoo('hello', 5)
+
+    const actual = state
+    const expected = { foo: { hello: 5} }
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should allow throw when trying to assign wrong type in mapOf', () => {
+    class State {
+      foo = mapOf(number)
+      addFoo? = action((state: State) => (key, num: string) => {
+        state.foo[key] = num as any
+      })
+    }
+
+    const state = createObservable(State, { foo: { } })
+
+    const actual = catchErrType(() => state.addFoo('hello', 'no'))
+    const expected = Error
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should allow complex types', () => {
+    class State {
+      date = complex((d: Date) => d.toUTCString(), v => new Date(v))
+    }
+
+    const state = createObservable(State, { date: new Date(1000) })
+
+    const actual = state.date.toString()
+    const expected = new Date(1000).toString()
+
+    expect(actual).toEqual(expected)
+  })
+
+  it('should throw error when mutating complex type outside of an action', () => {
+    class State {
+      date = complex((d: Date) => d.toUTCString(), v => new Date(v))
+    }
+
+    const state = createObservable(State, { date: new Date(0) })
+
+    const actual = catchErrType(() => state.date.setMonth(4))
+    const expected = Error
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should allow mutating complex types in actions', () => {
+    class State {
+      date = complex((d: Date) => d.toUTCString(), v => new Date(v))
+      setYear? = action((s: State) => (year: number) => {
+        s.date.setFullYear(year)
+      })
+    }
+
+    const s = createObservable(State, { date: new Date(1000) })
+
+    s.setYear(2000)
+
+    const actual = s.date.getFullYear()
+    const expected = 2000
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should throw when mutating readonly complex type in action', () => {
+    class State {
+      @readonly date = complex((d: Date) => d.toUTCString(), v => new Date(v))
+      setYear? = action((s: State) => (year: number) => {
+        s.date.setFullYear(year)
+      })
+    }
+
+    const s = createObservable(State, { date: new Date(1000) })
+
+    const actual = catchErrType(() => s.setYear(2000))
+    const expected = Error
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should allow oneOf', () => {
+    class State {
+      numOrString = oneOf(number, string)
+      setNum? = action((state: State) => (num: number) => {
+        state.numOrString = num
+      })
+      setString? = action((state: State) => (str: string) => {
+        state.numOrString = str
+      })
+    }
+
+    const state = createObservable(State, { numOrString: '' })
+
+    state.setNum(4)
+    state.setString('hi')
+
+    const actual = state.numOrString
+    const expected = 'hi'
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should throw when misassigning oneOf', () => {
+    class State {
+      numOrString = oneOf(number, string)
+      setBool? = action((state: State) => (bool: boolean) => {
+        state.numOrString = bool as any
+      })
+    }
+
+    const state = createObservable(State, { numOrString: '' })
+
+    const actual = catchErrType(() => state.setBool(false))
+    const expected = Error
+
+    expect(actual).toBe(expected)
+  })
 })

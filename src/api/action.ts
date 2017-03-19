@@ -1,4 +1,4 @@
-import { ActionDescriptor, types } from '../core'
+import { ActionDescriptor, descriptionTypes } from '../core'
 
 /**
  * TODO
@@ -15,7 +15,7 @@ export function action<T extends (...args: any[]) => void>(fn: (self?, root?) =>
     throw new Error()
   }
   const descriptor: ActionDescriptor<T> = {
-    type: types.action, fn
+    type: descriptionTypes.action, fn
   }
   return descriptor as any as T
 }

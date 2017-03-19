@@ -37,7 +37,10 @@ export const arrayOfProperty: core.Property = {
       }
     })
 
-    return Reflect.set(target, key, proxy)
+    return {
+      didChange: true,
+      result: Reflect.set(target, key, proxy)
+    }
   },
   get(target, key) {
     return target[key]

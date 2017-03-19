@@ -1,5 +1,5 @@
 import { object as typedObject } from '../../src/api'
-import { types } from '../../src/core'
+import { descriptionTypes } from '../../src/core'
 import { catchErrType } from '../testHelpers'
 
 const object = typedObject as any
@@ -58,7 +58,7 @@ describe('object', () => {
     const clazz = class { }
     const actual = object(clazz)
     const expected = {
-      type: types.object, clazz,
+      type: descriptionTypes.object, clazz,
       readonly: false, optional: false,
     }
 

@@ -1,21 +1,21 @@
 import {
   ActionDescriptor, ArrayOfDescriptor, BooleanDescriptor, ComplexDescriptor, ComputedDescriptor,
-  MapOfDescriptor, NumberDescriptor, ObjectDescriptor, OneOfDescriptor, ParsedObjectDescriptor,
-  StringDescriptor, types,
-} from '../core'
+  descriptionTypes, MapOfDescriptor, NumberDescriptor, ObjectDescriptor, OneOfDescriptor,
+  ParsedObjectDescriptor, StringDescriptor,
+} from './'
 
 // Create a map of identifiers and their corresponding parsers
 const identifierParserMap = {
-  [types.action]: parseActionDescriptor,
-  [types.arrayOf]: parseArrayOfDescriptor,
-  [types.boolean]: parsePrimitiveDescriptor,
-  [types.complex]: parseComplexDescriptor,
-  [types.computed]: parseComputedDescriptor,
-  [types.mapOf]: parseMapOfDescriptor,
-  [types.number]: parsePrimitiveDescriptor,
-  [types.object]: parseObjectDescriptor,
-  [types.oneOf]: parseOneOfDescriptor,
-  [types.string]: parsePrimitiveDescriptor,
+  [descriptionTypes.action]: parseActionDescriptor,
+  [descriptionTypes.arrayOf]: parseArrayOfDescriptor,
+  [descriptionTypes.boolean]: parsePrimitiveDescriptor,
+  [descriptionTypes.complex]: parseComplexDescriptor,
+  [descriptionTypes.computed]: parseComputedDescriptor,
+  [descriptionTypes.mapOf]: parseMapOfDescriptor,
+  [descriptionTypes.number]: parsePrimitiveDescriptor,
+  [descriptionTypes.object]: parseObjectDescriptor,
+  [descriptionTypes.oneOf]: parseOneOfDescriptor,
+  [descriptionTypes.string]: parsePrimitiveDescriptor,
 }
 
 // Keeps a cache of parsed classes so we don't have to keep parsing them
@@ -27,7 +27,7 @@ const parsedObjectCache = new WeakMap<new () => any, ParsedObjectDescriptor<any>
  */
 export function parseDescription(Description: new() => any) {
   return parseObjectDescriptor({
-    type: types.object,
+    type: descriptionTypes.object,
     readonly: true, optional: false,
     clazz: Description,
   })
@@ -66,23 +66,23 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
     const symbols = Object.getOwnPropertySymbols(prototype)
 
     // If it has the readonly symbol add it's contents to the readonly array
-    if (prototype[types.readonly] != undefined) {
+    if (prototype[descriptionTypes.readonly] != undefined) {
       readonlyProperties = [
         ...readonlyProperties,
-        ...Object.keys(prototype[types.readonly])
+        ...Object.keys(prototype[descriptionTypes.readonly])
       ]
       // Remove this from the symbol list
-      symbols.splice(symbols.indexOf(types.readonly), 1)
+      symbols.splice(symbols.indexOf(descriptionTypes.readonly), 1)
     }
 
     // If it has the optional symbol add it's contents to the optional array
-    if (prototype[types.optional] != undefined) {
+    if (prototype[descriptionTypes.optional] != undefined) {
       optionalProperties = [
         ...optionalProperties,
-        ...Object.keys(prototype[types.optional])
+        ...Object.keys(prototype[descriptionTypes.optional])
       ]
       // Remove this from the symbol list
-      symbols.splice(symbols.indexOf(types.optional), 1)
+      symbols.splice(symbols.indexOf(descriptionTypes.optional), 1)
     }
 
     // If any symbols are left they're extraneous so throw an error
@@ -121,7 +121,7 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
     }
 
     // If this is an object descriptor run this instead
-    if (instance[key].identifier === types.object) {
+    if (instance[key].identifier === descriptionTypes.object) {
       // TODO parse objects lazily to allow for cicular references
 
       // If we haven't stored this in our map of existing parsed object descriptors...
@@ -169,7 +169,7 @@ function parseActionDescriptor(descriptor: ActionDescriptor<(...args: any[]) => 
  * @param descriptor The descriptor of the array
  */
 function parseArrayOfDescriptor(descriptor: ArrayOfDescriptor<any>) {
-  if (descriptor.type !== types.arrayOf) {
+  if (descriptor.type !== descriptionTypes.arrayOf) {
     throw new Error()
   }
 
@@ -177,11 +177,11 @@ function parseArrayOfDescriptor(descriptor: ArrayOfDescriptor<any>) {
     throw new Error()
   }
 
-  if (descriptor.kind.type === types.action) {
+  if (descriptor.kind.type === descriptionTypes.action) {
     throw new Error()
   }
 
-  if (descriptor.kind.type === types.computed) {
+  if (descriptor.kind.type === descriptionTypes.computed) {
     throw new Error()
   }
 
@@ -189,7 +189,7 @@ function parseArrayOfDescriptor(descriptor: ArrayOfDescriptor<any>) {
     throw new Error()
   }
 
-  if (descriptor.kind.type === types.object) {
+  if (descriptor.kind.type === descriptionTypes.object) {
     descriptor.kind = parseObjectDescriptor(descriptor.kind)
   }
 
@@ -226,7 +226,7 @@ function parseComputedDescriptor(descriptor: ComputedDescriptor<any>) {
  * @param descriptor The mapOf descriptor
  */
 function parseMapOfDescriptor(descriptor: MapOfDescriptor<any>) {
-    if (descriptor.type !== types.mapOf) {
+    if (descriptor.type !== descriptionTypes.mapOf) {
     throw new Error()
   }
 
@@ -234,11 +234,11 @@ function parseMapOfDescriptor(descriptor: MapOfDescriptor<any>) {
     throw new Error()
   }
 
-  if (descriptor.kind.type === types.action) {
+  if (descriptor.kind.type === descriptionTypes.action) {
     throw new Error()
   }
 
-  if (descriptor.kind.type === types.computed) {
+  if (descriptor.kind.type === descriptionTypes.computed) {
     throw new Error()
   }
 
@@ -246,7 +246,7 @@ function parseMapOfDescriptor(descriptor: MapOfDescriptor<any>) {
     throw new Error()
   }
 
-  if (descriptor.kind.type === types.object) {
+  if (descriptor.kind.type === descriptionTypes.object) {
     descriptor.kind = parseObjectDescriptor(descriptor.kind)
   }
 
@@ -268,21 +268,21 @@ function parsePrimitiveDescriptor(descriptor: PrimitiveDescriptor) {
  * @param descriptor The oneOf descriptor
  */
 function parseOneOfDescriptor(descriptor: OneOfDescriptor) {
-  if (descriptor.type !== types.oneOf) {
+  if (descriptor.type !== descriptionTypes.oneOf) {
     throw new Error()
   }
   if (!(descriptor.kinds instanceof Array)) {
     throw new Error()
   }
   descriptor.kinds.forEach((kind, index) => {
-    if (kind.type === types.object) {
+    if (kind.type === descriptionTypes.object) {
       descriptor.kinds[index] = parseObjectDescriptor(kind)
       return
     }
-    if (kind.type === types.action) {
+    if (kind.type === descriptionTypes.action) {
       throw new Error()
     }
-    if (kind.type === types.computed) {
+    if (kind.type === descriptionTypes.computed) {
       throw new Error()
     }
     if (identifierParserMap[kind.type] == undefined) {

@@ -2,6 +2,10 @@ import * as core from '../../core'
 
 export const objectProperty: core.Property = {
   set(target, key, value, description: core.ParsedObjectDescriptor<any>, root) {
+    if (typeof value !== 'object') {
+      throw new Error('tried to set object to non-object value')
+    }
+
     if (core.isObservable(value)) {
       return value
     }
@@ -45,14 +49,16 @@ export const objectProperty: core.Property = {
         core.setProperty(value, k, value[k], description.properties[k], root || proxy)
       } else if (
         description.properties[k].optional !== true &&
-        description.properties[k].type !== core.types.action &&
-        description.properties[k].type !== core.types.computed
+        description.properties[k].type !== core.descriptionTypes.action &&
+        description.properties[k].type !== core.descriptionTypes.computed
       ) {
         throw new Error('required property not on object')
       }
     })
 
-    return Reflect.set(target, key, proxy)
+    return {
+      didChange: true, result: Reflect.set(target, key, proxy)
+    }
   },
 
   get(target, key) {
