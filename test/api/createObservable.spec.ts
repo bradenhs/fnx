@@ -460,6 +460,22 @@ describe('createObservable', () => {
     expect(actual).toBe(expected)
   })
 
+  it('should throw when trying to mutate computed', () => {
+    class State {
+      comp? = computed(() => 0)
+      mutateComputed? = action((state: State) => () => {
+        state.comp = 5
+      })
+    }
+
+    const state = createObservable(State, {})
+
+    const actual = catchErrType(() => state.mutateComputed())
+    const expected = Error
+
+    expect(actual).toBe(expected)
+  })
+
   it('should only recompute when stale', () => {
     let runs = 0
 
