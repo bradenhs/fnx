@@ -1,5 +1,5 @@
 import { computed as typedComputed } from '../../src/api/computed'
-import { types } from '../../src/core'
+import { descriptionTypes } from '../../src/core'
 import { catchErrType } from '../testHelpers'
 
 const computed = typedComputed as any
@@ -58,7 +58,7 @@ describe('computed', () => {
   it('should return a computed descriptor', () => {
     const fn = () => 0
     const actual = computed(fn)
-    const expected = { type: types.computed, fn }
+    const expected = { type: descriptionTypes.computed, fn }
 
     expect(actual).toEqual(expected)
   })

@@ -1,5 +1,5 @@
 import { action as typedAction } from '../../src/api/action'
-import { types } from '../../src/core'
+import { descriptionTypes } from '../../src/core'
 import { catchErrType } from '../testHelpers'
 
 const action = typedAction as any
@@ -58,7 +58,7 @@ describe('action', () => {
   it('should return an action descriptor', () => {
     const fn = () => () => 0
     const actual = action(fn)
-    const expected = { type: types.action, fn }
+    const expected = { type: descriptionTypes.action, fn }
 
     expect(actual).toEqual(expected)
   })

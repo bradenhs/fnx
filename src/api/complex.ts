@@ -1,4 +1,4 @@
-import { ComplexDescriptor, types } from '../core'
+import { ComplexDescriptor, descriptionTypes } from '../core'
 
 /**
  * TODO
@@ -22,7 +22,7 @@ export function complex<ComplexType, PrimitiveType extends (number | string | bo
   }
 
   const descriptor: ComplexDescriptor<ComplexType, PrimitiveType> = {
-    type: types.complex, serialize, deserialize,
+    type: descriptionTypes.complex, serialize, deserialize,
     readonly: false, optional: false,
   }
   return descriptor as any as ComplexType

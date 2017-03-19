@@ -1,4 +1,4 @@
-import { ComputedDescriptor, types } from '../core'
+import { ComputedDescriptor, descriptionTypes } from '../core'
 
 /**
  * TODO
@@ -16,7 +16,7 @@ export function computed<T>(fn: (self?, root?) => T): T {
   }
 
   const descriptor: ComputedDescriptor<T> = {
-    type: types.computed, fn,
+    type: descriptionTypes.computed, fn,
   }
   return descriptor as any as T
 }

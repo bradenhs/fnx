@@ -1,5 +1,5 @@
 // tslint:disable
-import { OneOfDescriptor, types } from '../core'
+import { OneOfDescriptor, descriptionTypes } from '../core'
 
 export function oneOf<A, B>(a: A, b: B): A | B
 export function oneOf<A, B, C>(a: A, b: B, c: C): A | B | C
@@ -19,14 +19,14 @@ export function oneOf(...kinds: any[]) {
     }
 
     switch ((kind as any).type) {
-      case types.arrayOf:
-      case types.boolean:
-      case types.complex:
-      case types.mapOf:
-      case types.number:
-      case types.object:
-      case types.oneOf:
-      case types.string:
+      case descriptionTypes.arrayOf:
+      case descriptionTypes.boolean:
+      case descriptionTypes.complex:
+      case descriptionTypes.mapOf:
+      case descriptionTypes.number:
+      case descriptionTypes.object:
+      case descriptionTypes.oneOf:
+      case descriptionTypes.string:
         break
       default:
         throw new Error()
@@ -34,7 +34,7 @@ export function oneOf(...kinds: any[]) {
   })
 
   const descriptor: OneOfDescriptor = {
-    type: types.oneOf, kinds,
+    type: descriptionTypes.oneOf, kinds,
     readonly: false, optional: false,
   }
   return descriptor

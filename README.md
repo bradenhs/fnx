@@ -1,11 +1,3 @@
-<p align="right">
-  <a href="https://www.github.com/fnxjs/fnx">
-    <img src="https://img.shields.io/github/stars/fnxjs/fnx.svg?style=social&label=Star" alt="github stars">
-  </a>
-</p>
-
-<br/>
-
 <p align="center">
   <a href="https://fnx.js.org">
     <img src="https://cdn.rawgit.com/fnxjs/fnx/51fdcc43/logo/logo.svg" alt="FNX - Wickedly quick, stunningly simple, reactive state management."/>

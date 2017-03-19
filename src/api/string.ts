@@ -1,7 +1,7 @@
-import { StringDescriptor, types } from '../core'
+import { descriptionTypes, StringDescriptor } from '../core'
 
 const descriptor: StringDescriptor = {
-  type: types.string,
+  type: descriptionTypes.string,
   readonly: false, optional: false,
 }
 

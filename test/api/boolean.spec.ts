@@ -1,12 +1,12 @@
 import { boolean } from '../../src/api/boolean'
-import { types } from '../../src/core'
+import { descriptionTypes } from '../../src/core'
 
 describe('boolean', () => {
 
   it('should be a boolean descriptor', () => {
     const actual = boolean
     const expected = {
-      type: types.boolean,
+      type: descriptionTypes.boolean,
       readonly: false, optional: false,
     }
 

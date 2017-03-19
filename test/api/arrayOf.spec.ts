@@ -1,5 +1,5 @@
 import { action, arrayOf as typedArrayOf, computed, number  } from '../../src/api'
-import { types } from '../../src/core'
+import { descriptionTypes } from '../../src/core'
 import { catchErrType } from '../testHelpers'
 
 const arrayOf = typedArrayOf as any
@@ -71,11 +71,11 @@ describe('arrayOf', () => {
 
   it('should return an arrayOf descriptor', () => {
     const kind = {
-      type: types.boolean, readonly: false, optional: false,
+      type: descriptionTypes.boolean, readonly: false, optional: false,
     }
     const actual = arrayOf(kind)
     const expected = {
-      type: types.arrayOf, kind,
+      type: descriptionTypes.arrayOf, kind,
       readonly: false, optional: false
     }
 

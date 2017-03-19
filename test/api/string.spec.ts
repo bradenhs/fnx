@@ -1,12 +1,12 @@
 import { string } from '../../src/api'
-import { types } from '../../src/core'
+import { descriptionTypes } from '../../src/core'
 
 describe('string', () => {
 
   it('should be a string descriptor', () => {
     const actual = string
     const expected = {
-      type: types.string,
+      type: descriptionTypes.string,
       readonly: false, optional: false,
     }
 

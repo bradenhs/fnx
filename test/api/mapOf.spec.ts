@@ -1,5 +1,5 @@
 import { action, computed, mapOf as typedMapOf, number } from '../../src/api'
-import { types } from '../../src/core'
+import { descriptionTypes } from '../../src/core'
 import { catchErrType } from '../testHelpers'
 
 const mapOf = typedMapOf as any
@@ -71,11 +71,11 @@ describe('mapOf', () => {
 
   it('should return an mapOf descriptor', () => {
     const kind = {
-      type: types.boolean, readonly: false, optional: false,
+      type: descriptionTypes.boolean, readonly: false, optional: false,
     }
     const actual = mapOf(kind)
     const expected = {
-      type: types.mapOf, kind,
+      type: descriptionTypes.mapOf, kind,
       readonly: false, optional: false
     }
 
