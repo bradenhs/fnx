@@ -22,6 +22,6 @@
     "jsx": "react"
   },
   "exclude": [
-    "node_modules", "lib", "react", "srcOld"
+    "node_modules", "lib", "react", ".localbuild"
   ]
 }

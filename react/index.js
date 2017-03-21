@@ -1,2 +1,2 @@
-import ReactiveComponent from '../lib/extras/react';
-export default ReactiveComponent;
+var ReactiveComponent = require('../lib/extras/react')
+module.exports = ReactiveComponent

@@ -36,7 +36,7 @@ const ReactiveComponent: ReactiveComponentType = (function(this: any) {
   this.render = () => {
     const lastActiveReaction = core.getActiveReaction()
     const result = core.invokeReaction(reaction)
-    core.setActiveReactionId(lastActiveReaction.id)
+    core.setActiveReactionId(lastActiveReaction && lastActiveReaction.id)
     return result
   }
 
