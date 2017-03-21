@@ -6,3 +6,4 @@ playground/bundle.js
 .vscode
 .DS_Store
 coverage
+.localbuild

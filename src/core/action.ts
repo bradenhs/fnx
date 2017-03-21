@@ -70,6 +70,9 @@ export function wrapAction(description: core.ActionDescriptor<any>, root, proxy)
     if (core.isReactionInProgress()) {
       throw new Error('Actions should not be called in reactions')
     }
+    if (core.isDerivationInProgress()) {
+      throw new Error('Actions should not be called in derivations')
+    }
     incrementActionsInProgress(root)
     if (action(...args) != undefined) {
       throw new Error('Actions must not return stuff')

@@ -126,18 +126,12 @@ export function getProperty(target, key, description: core.Descriptor, root, pro
     throw new Error(`Unrecognized property type: ${description.type.toString()}`)
   }
 
-  if (core.isReactionInProgress()) {
-    if (description.type === core.descriptionTypes.action) {
-      throw new Error('Actions should not be accessed in reactions')
-    }
+  if (core.isReactionInProgress() && description.type !== core.descriptionTypes.action) {
     const reaction = core.getActiveReaction()
     addReactionToObservable(target, key, reaction.id, reaction.round)
   }
 
-  if (core.isDerivationInProgress()) {
-    if (description.type === core.descriptionTypes.action) {
-      throw new Error('Actions should not be accessed in derivations')
-    }
+  if (core.isDerivationInProgress() && description.type !== core.descriptionTypes.action) {
     const derivation = core.getActiveDerivation()
     addDerivationToObservable(target, key, derivation)
   }

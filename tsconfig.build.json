@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig",
   "exclude": [
-    "node_modules", "lib", "react", "srcOld", "test"
+    "node_modules", "lib", "react", "test", "playground", ".localbuild"
   ]
 }

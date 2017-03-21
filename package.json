@@ -11,8 +11,9 @@
     "test-travis": "yarn run build && yarn run test",
     "prebuild": "yarn run clean && yarn run lint",
     "build": "tsc --project ./tsconfig.build.json",
-    "p": "jest --config=\"test/playground.json\"",
-    "playground": "yarn run p"
+    "test-dev": "jest --config=\"test/dev.json\"",
+    "playground": "yarn run local-install && webpack-dev-server --config playground/webpack.config.js",
+    "local-install": "yarn run build && node scripts/localInstall.js"
   },
   "repository": {
     "type": "git",
@@ -32,17 +33,21 @@
   "devDependencies": {
     "@types/jest": "^18.1.1",
     "@types/node": "^7.0.5",
-    "@types/react": "^15.0.9",
+    "@types/react": "^15.0.17",
     "@types/react-dom": "^0.14.23",
-    "awesome-typescript-loader": "^3.0.4-rc.2",
+    "@types/shelljs": "^0.7.0",
+    "awesome-typescript-loader": "^3.1.2",
     "coveralls": "^2.12.0",
     "jest": "^19.0.2",
     "lodash": "^4.17.4",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "shelljs": "^0.7.7",
     "ts-jest": "^19.0.0",
     "tslint": "^4.4.2",
-    "typescript": "^2.2.1"
+    "typescript": "^2.2.1",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.2"
   },
   "jest": {
     "testEnvironment": "node",
