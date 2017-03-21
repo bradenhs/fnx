@@ -16,6 +16,12 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-test-renderer@^15.4.2":
+  version "15.4.2"
+  resolved "https://registry.yarnpkg.com/@types/react-test-renderer/-/react-test-renderer-15.4.2.tgz#4cc8232db85f13a63411b2487fbe1d3251e11f3f"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^15.0.17":
   version "15.0.17"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.17.tgz#e0d451e353155997be9b54620ba1ca3a8c33f480"
@@ -3066,6 +3072,13 @@ react-dom@^15.4.2:
   dependencies:
     fbjs "^0.8.1"
     loose-envify "^1.1.0"
+    object-assign "^4.1.0"
+
+react-test-renderer@^15.4.2:
+  version "15.4.2"
+  resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-15.4.2.tgz#27e1dff5d26d0e830f99614c487622bc831416f3"
+  dependencies:
+    fbjs "^0.8.4"
     object-assign "^4.1.0"
 
 react@^15.4.2:

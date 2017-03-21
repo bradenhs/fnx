@@ -22,6 +22,7 @@ export const mapOfProperty: core.Property = {
 
         // This is a new property meaning we should trigger a change for the parent
         if (!Reflect.has(t, k)) {
+          core.markObservablesDerivationsAsStale(target, key)
           core.addObservablesReactionsToPendingReactions(target, key)
         }
 
