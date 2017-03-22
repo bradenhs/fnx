@@ -38,8 +38,8 @@ nav > ul.summary > li.divider {
   font-family: monospace;
 }
 
-.book-summary ul.summary .chapter li.active.chapter:before {
-  content: '» '
+.book-summary ul.summary .chapter li.active.chapter > a {
+  border-left: 3px solid #f06;
 }
 
 .book-summary ul.summary .chapter li.active.chapter > a:before {
