@@ -4,11 +4,11 @@
   "plugins": ["edit-link", "github"],
   "pluginsConfig": {
     "github": {
-      "url": "https://github.com/fnxjs/fnx",
-      "label": "Edit"
+      "url": "https://github.com/fnxjs/fnx"
     },
     "edit-link": {
-      "base": "https://github.com/fnxjs/fnx/tree/master"
+      "base": "https://github.com/fnxjs/fnx/tree/master",
+      "label": ""
     },
     "theme-default": {
       "styles": {
