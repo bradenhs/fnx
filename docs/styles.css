@@ -30,10 +30,7 @@ nav > ul.summary > li.divider {
   color: #f06;
   text-decoration: none !important;
   border-bottom: 1px solid #f06;
-}
-
-.markdown-section a:hover {
-  border-bottom: 2px solid #f06;
+  padding-bottom: 1px;
 }
 
 .book-summary .chapter .chapter a {
