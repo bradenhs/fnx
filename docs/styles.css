@@ -82,3 +82,8 @@ pre[class*="language-"] {
 .token.operator {
   background: none;
 }
+
+p[align="center"] a {
+  border: none !important;
+  text-decoration: none !important;
+}

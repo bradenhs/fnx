@@ -1,6 +1,6 @@
 {
   "gitbook": ">=3.2.2",
-  "title": "FNX Documentation",
+  "title": "FNX",
   "plugins": [
     "edit-link", "github", "prism", "-highlight", "hide-published-with", "-sharing"
   ],
