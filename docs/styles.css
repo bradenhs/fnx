@@ -26,6 +26,13 @@ nav > ul.summary > li.divider {
   text-decoration: none;
 }
 
+.book-summary .chapter .chapter a {
+  padding: 3px;
+  background: yellow;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
 .book-summary ul.summary li.active > a:before {
   content: '» '
 }
