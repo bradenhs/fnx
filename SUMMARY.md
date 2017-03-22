@@ -26,7 +26,7 @@
   * [`toString`](/docs/serialization/toString.md)
   * [`serialize`](/docs/serialization/serialize.md)
   * [`deserialize`](/docs/serialization/deserialize.md)
---
+---
 * [Reacting to State Changes](/docs/reacting/ReactingToStateChanges.md)
   * [`reaction`](/docs/reacting/reaction.md)
   * [`ReactiveComponent`](/docs/reacting/ReactiveComponent.md)

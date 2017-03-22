@@ -1,8 +1,8 @@
-.book-summary ul.summary li:first-child {
+.book-summary ul.summary:first-child li:first-child {
   display: none
 }
 
-.book-summary ul.summary > li.divider:first-child {
+.book-summary ul.summary > li.divider {
   display: none;
 }
 
