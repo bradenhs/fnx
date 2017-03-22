@@ -31,6 +31,10 @@
   * [serialize](/docs/api/serialize.md)
   * [toString](/docs/api/toString.md)
 
+### Patterns
+
+* [Asynchronous Actions](/docs/patterns/AsynchronousActions.md)
+
 ### Links
 
 * [GitHub Repository](https://github.com/fnxjs/fnx)
