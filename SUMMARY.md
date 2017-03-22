@@ -6,6 +6,7 @@
 * [React to State Mutations]()
 * [Serialize/Deserialize]()
 * [Configuration]()
+
 ## Describe the State
 * [createObservable](/docs/describing-state/createObservable.md)
 * [action](/docs/describing-state/action.md)
@@ -23,14 +24,19 @@
 * [Modifiers](/docs/describing-state/modifiers/Modifiers.md)
   * [readonly](/docs/describing-state/modifiers/readonly.md)
   * [optional](/docs/describing-state/modifiers/optional.md)
+
 ## React to State Mutation
 * [reaction](/docs/reacting/reaction.md)
 * [ReactiveComponent](/docs/reacting/ReactiveComponent.md)
+
 ## Serialize/Deserialize
 * [toString](/docs/serialization/toString.md)
 * [serialize](/docs/serialization/serialize.md)
 * [deserialize](/docs/serialization/deserialize.md)
+
 ## Configuration
 * [configure](/docs/configuration/configure.md)
+
 ---
+
 * [GitHub Repository](https://github.com/fnxjs/fnx)
