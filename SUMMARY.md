@@ -13,7 +13,7 @@
   * [`boolean`](/docs/describing-state/types/boolean.md)
   * [`complex`](/docs/describing-state/types/complex.md)
   * [`complex.date`](/docs/describing-state/types/complex.date.md)
-  * [`complex.regex`](/docs/describing-state/types/compldex.regex.md)
+  * [`complex.regex`](/docs/describing-state/types/complex.regex.md)
   * [`mapOf`](/docs/describing-state/types/mapOf.md)
   * [`number`](/docs/describing-state/types/number.md)
   * [`oneOf`](/docs/describing-state/types/oneOf.md)
