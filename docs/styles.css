@@ -1,7 +1,7 @@
-nav > .book-summary ul.summary:first-child li:first-child {
+nav > ul.summary:first-child > li:first-child {
   display: none
 }
-nav > .book-summary ul.summary:first-child li:nth-child(2) {
+nav > ul.summary:first-child > li:nth-child(2) {
   display: none
 }
 
