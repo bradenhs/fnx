@@ -4,7 +4,6 @@
 * [GitHub Repository](https://github.com/fnxjs/fnx)
 ---
 * [Describing State](/docs/describing-state/DescribingState.md)
-  * `createObservable`
   * [createObservable](/docs/describing-state/createObservable.md)
   * [action](/docs/describing-state/action.md)
   * [computed](/docs/describing-state/computed.md)
@@ -31,5 +30,5 @@
   * [reaction](/docs/reacting/reaction.md)
   * [ReactiveComponent](/docs/reacting/ReactiveComponent.md)
 ---
-* [Configuring FNX](/docs/configuration/ConfiguringFNX.md)
+* [Configuration](/docs/configuration/ConfiguringFNX.md)
   * [configure](/docs/configuration/configure.md)
