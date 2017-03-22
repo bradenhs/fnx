@@ -2,8 +2,7 @@
   "gitbook": ">=3.2.2",
   "title": "FNX Documentation",
   "plugins": [
-    "edit-link", "github", "prism", "-highlight", "hide-published-with", "-fontsettings", "-sharing",
-    "-lunr", "-search", "search-pro"
+    "edit-link", "github", "prism", "-highlight", "hide-published-with", "-fontsettings", "-sharing"
   ],
   "pluginsConfig": {
     "github": {
