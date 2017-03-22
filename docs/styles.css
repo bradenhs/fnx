@@ -21,8 +21,13 @@ nav > ul.summary > li.divider {
   opacity: 0.4;
 }
 
+.book-summary ul.summary li a:active {
+  color: #f06;
+  text-decoration: none;
+}
+
 .book-summary ul.summary li a:hover {
-  color: #008cff;
+  color: #f06;
   text-decoration: none;
 }
 
@@ -36,7 +41,7 @@ pre[class*="language-"] {
 }
 
 .color-theme-2 .token.keyword {
-  color: #3ac;
+  color: #f06;
 }
 
 .token.operator {
