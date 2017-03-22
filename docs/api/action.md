@@ -1,4 +1,4 @@
-## `action(fn)`
+## `action(f => g => { ... })`
 
 Actions provide a controlled way to mutate the state of your application. They should be simple and synchronous.
 
