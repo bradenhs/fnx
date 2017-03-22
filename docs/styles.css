@@ -41,6 +41,7 @@ nav > ul.summary > li.divider {
 .book-summary ul.summary .chapter li.active.chapter > a {
   border-left: 3px solid #f06;
   padding-left: 8px;
+  background: white;
 }
 
 .book-summary ul.summary .chapter li.active.chapter > a:before {
