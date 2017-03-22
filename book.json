@@ -16,10 +16,6 @@
       "styles": {
         "website": "docs/styles.css"
       }
-    },
-    "fontSettings": {
-      "theme": "night",
-      "size": 3
     }
   }
 }

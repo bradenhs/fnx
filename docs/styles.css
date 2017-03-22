@@ -5,6 +5,10 @@ nav > ul.summary > li.divider {
   display: none
 }
 
+.font-settings {
+  display: none
+}
+
 .book-summary li.header {
   font-size: 12px;
   font-weight: bold;
