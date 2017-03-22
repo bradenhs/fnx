@@ -8,7 +8,7 @@
   * [action](/docs/describing-state/action.md)
   * [computed](/docs/describing-state/computed.md)
   * [Types](/docs/describing-state/types/Types.md)
-  * [arrayOf](/docs/describing-state/types/arrayOf.md)
+  * [<b>arrayOff</b>](/docs/describing-state/types/arrayOf.md)
   * [boolean](/docs/describing-state/types/boolean.md)
   * [complex](/docs/describing-state/types/complex.md)
   * [complex.date](/docs/describing-state/types/complex.date.md)
