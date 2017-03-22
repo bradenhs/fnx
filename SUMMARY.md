@@ -1,11 +1,11 @@
-## Overview
+### Overview
 * [Introduction](/README.md)
 * [Describing Application State]()
 * [Reacting to State Mutations]()
 * [Serialization]()
 * [Configuration]()
 ---
-## API Reference
+### API Reference
 * [createObservable](/docs/describing-state/createObservable.md)
 ---
 * [action](/docs/describing-state/action.md)
@@ -33,6 +33,6 @@
 ---
 * [configure](/docs/configuration/configure.md)
 ---
-## Links
+### Links
 * [GitHub Repository](https://github.com/fnxjs/fnx)
 * [NPM Package](https://www.npmjs.com/package/fnx)
