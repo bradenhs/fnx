@@ -29,11 +29,11 @@ nav > ul.summary > li.divider {
 .markdown-section a {
   color: #f06;
   text-decoration: none !important;
-  border-bottom: 1px solid rgba(205, 0, 102, .5);
+  border-bottom: 2px dotted #f06;
 }
 
 .markdown-section a:hover {
-  border-bottom: 1px solid rgba(205, 0, 102, 1);
+  border-bottom: 2px solid #f06;
 }
 
 .book-summary .chapter .chapter a {
