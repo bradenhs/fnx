@@ -42,7 +42,7 @@ nav > ul.summary > li.divider {
   border-left: 3px solid #f06;
 }
 
-.book-summary ul.summary li.active > a:before {
+.book-summary ul.summary li.active > a {
   border-left: 3px solid #f06;
   padding-left: 3px;
 }
