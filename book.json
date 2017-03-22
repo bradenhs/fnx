@@ -16,6 +16,9 @@
       "styles": {
         "website": "docs/styles.css"
       }
+    },
+    "fontSettings": {
+      "size": 2
     }
   }
 }
