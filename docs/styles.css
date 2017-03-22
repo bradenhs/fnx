@@ -43,10 +43,14 @@ nav > ul.summary > li.divider {
   padding-left: 8px;
 }
 
+.book-summary ul.summary .chapter li.active.chapter > a:before {
+  display: none;
+}
+
 .book-summary ul.summary li.active > a:before {
   content: '';
   border-left: 3px solid #f06;
-  margin-right: 9px;
+  margin-right: 5px;
 }
 
 .book-summary ul.summary li a:hover {
