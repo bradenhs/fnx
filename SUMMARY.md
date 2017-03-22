@@ -1,11 +1,10 @@
 # Table of Contents
 
-`code`
-
 * [Introduction](/README.md)
 * [GitHub Repository](https://github.com/fnxjs/fnx)
 ---
 * [Describing State](/docs/describing-state/DescribingState.md)
+  * `createObservable`
   * [createObservable](/docs/describing-state/createObservable.md)
   * [action](/docs/describing-state/action.md)
   * [computed](/docs/describing-state/computed.md)
