@@ -41,4 +41,4 @@
 
 ## Links
 * [GitHub Repository](https://github.com/fnxjs/fnx)
-* [NPM Package](https://npm.com/package/fnx)
+* [NPM Package](https://www.npmjs.com/package/fnx)
