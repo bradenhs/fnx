@@ -2,7 +2,7 @@
   display: none
 }
 
-.book-summary ui.book-summary > .divider {
+.book-summary ul.summary > li.divider:first-child {
   display: none;
 }
 

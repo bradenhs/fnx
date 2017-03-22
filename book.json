@@ -7,8 +7,7 @@
       "url": "https://github.com/fnxjs/fnx"
     },
     "edit-link": {
-      "base": "https://github.com/fnxjs/fnx/tree/master",
-      "label": "Edit Page"
+      "base": "https://github.com/fnxjs/fnx/tree/master"
     },
     "theme-default": {
       "styles": {

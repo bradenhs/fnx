@@ -2,6 +2,8 @@
 
 * [Overview](/README.md)
 * [GitHub Repository](https://github.com/fnxjs/fnx)
+* [Roadmap](/docs/Roadmap.md)
+---
 * [Describing State](/docs/describing-state/DescribingState.md)
   * [`createObservable`](/docs/describing-state/createObservable.md)
   * [`action`](/docs/describing-state/action.md)
@@ -19,13 +21,15 @@
   * [Modifiers](/docs/describing-state/modifiers/Modifiers.md)
   * [`readonly`](/docs/describing-state/modifiers/readonly.md)
   * [`optional`](/docs/describing-state/modifiers/optional.md)
+---
 * [Serialization/Derserialization](/docs/serialization/SerializationDeserialization.md)
   * [`toString`](/docs/serialization/toString.md)
   * [`serialize`](/docs/serialization/serialize.md)
   * [`deserialize`](/docs/serialization/deserialize.md)
+--
 * [Reacting to State Changes](/docs/reacting/ReactingToStateChanges.md)
   * [`reaction`](/docs/reacting/reaction.md)
   * [`ReactiveComponent`](/docs/reacting/ReactiveComponent.md)
+---
 * [Configuring FNX](/docs/configuration/ConfiguringFNX.md)
   * [`configure`](/docs/configuration/configure.md)
-* [Roadmap](/docs/Roadmap.md)
