@@ -1,11 +1,11 @@
 {
   "gitbook": ">=3.2.2",
   "title": "FNX Documentation",
-  "plugins": ["edit-link", "github", "hide-published-with"],
+  "plugins": ["edit-link", "github"],
   "pluginsConfig": {
     "github": {
       "url": "https://github.com/fnxjs/fnx",
-      "label": " "
+      "label": "Edit"
     },
     "edit-link": {
       "base": "https://github.com/fnxjs/fnx/tree/master"

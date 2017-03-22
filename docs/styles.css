@@ -1,9 +1,8 @@
 .book-summary ul.summary:first-child li:first-child {
   display: none
 }
-
-.book-summary ul.summary li.divider {
-  display: none;
+.book-summary ul.summary:first-child li:nth-child(2) {
+  display: none
 }
 
 .book-summary ul.summary li span {
