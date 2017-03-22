@@ -1,8 +1,8 @@
 ### Overview
 
 * [Introduction](/README.md)
-* [Describing Application State]()
-* [Reacting to State Mutations]()
+* [Describing State]()
+* [Reacting to Changes]()
 * [Serialization]()
 * [Configuration]()
 

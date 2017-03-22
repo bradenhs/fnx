@@ -5,6 +5,12 @@ nav > ul.summary:first-child > li:nth-child(2) {
   display: none
 }
 
+li.header {
+  font-size: 12px;
+  font-weight: bold;
+  color: #555;
+}
+
 .book-summary ul.summary li span {
   cursor: default;
   opacity: 0.4;
