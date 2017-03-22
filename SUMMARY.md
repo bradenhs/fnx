@@ -5,6 +5,7 @@
 * [Reacting to Changes](/docs/overview/ReactingToChanges.md)
 * [Serialization](/docs/overview/Serialization.md)
 * [Configuration](/docs/overview/Configuration.md)
+* [Design Patterns](/docs/overview/DesignPatterns.md)
 
 ### API Reference
 
