@@ -5,7 +5,7 @@ nav > ul.summary:first-child > li:nth-child(2) {
   display: none
 }
 
-li.header {
+.book-summary li.header {
   font-size: 12px;
   font-weight: bold;
   color: #555;
