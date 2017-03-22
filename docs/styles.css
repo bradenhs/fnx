@@ -24,6 +24,7 @@ nav > ul.summary > li.divider {
 .book-summary ul.summary li.active > a {
   color: #f06;
   text-decoration: none;
+  border-color: #f06;
 }
 
 .book-summary .chapter .chapter a {
@@ -36,6 +37,10 @@ nav > ul.summary > li.divider {
   display: inline-block;
   border-radius: 3px;
   font-family: monospace;
+}
+
+.book-summary ul.summary .chapter li.active.chapter > a:before {
+  content: ''
 }
 
 .book-summary ul.summary li.active > a:before {
