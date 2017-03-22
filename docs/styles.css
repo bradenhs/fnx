@@ -27,8 +27,8 @@ nav > ul.summary > li.divider {
 }
 
 .book-summary .chapter .chapter a {
-  padding: 3px;
-  margin: 3px 6px;
+  padding: 6px 3px;
+  margin: 3px;
   border: 1px solid rgba(0,0,0,.07);
   background: white;
   font-size: 13px;
