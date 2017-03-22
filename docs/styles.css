@@ -21,6 +21,10 @@ nav > ul.summary:first-child > li:nth-child(2) {
   text-decoration: none;
 }
 
+.book-summary ul.summary {
+  padding-bottom: 80px;
+}
+
 code[class*="language-"],
 pre[class*="language-"] {
   text-shadow: none;

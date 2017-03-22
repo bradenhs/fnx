@@ -1,7 +1,7 @@
 {
   "gitbook": ">=3.2.2",
   "title": "FNX Documentation",
-  "plugins": ["edit-link", "github", "prism", "-highlight"],
+  "plugins": ["edit-link", "github", "prism", "-highlight", "hide-published-with"],
   "pluginsConfig": {
     "github": {
       "url": "https://github.com/fnxjs/fnx"
