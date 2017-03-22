@@ -42,12 +42,9 @@ nav > ul.summary > li.divider {
   border-left: 3px solid #f06;
 }
 
-.book-summary ul.summary .chapter li.active.chapter > a:before {
-  content: ''
-}
-
 .book-summary ul.summary li.active > a:before {
-  content: '» '
+  border-left: 3px solid #f06;
+  padding-left: 3px;
 }
 
 .book-summary ul.summary li a:hover {
