@@ -1,11 +1,20 @@
 // Place your settings in this file to overwrite default and user settings.
 {
+  "typescript.tsdk": "./node_modules/typescript/lib",
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
     "**/.hg": true,
     "**/.DS_Store": true,
-    "node_modules": true,
-    "lib": true
-  }
+    "node_modules": false,
+    "lib": true,
+    "coverage": true,
+    ".fusebox": true,
+    "yarn.lock": true,
+    ".localbuild": true
+  },
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "tslint.autoFixOnSave": true,
+  "editor.rulers": [ 100 ]
 }

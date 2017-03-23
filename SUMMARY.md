@@ -28,9 +28,8 @@
   * [reaction](/docs/api/reaction.md)
   * [ReactiveComponent](/docs/api/ReactiveComponent.md)
 * Serialization
-  * [deserialize](/docs/api/deserialize.md)
-  * [serialize](/docs/api/serialize.md)
-  * [toString](/docs/api/toString.md)
+  * [\[observable\].toString](/docs/api/toString.md)
+  * [parseInto](/docs/api/parseInto.md)
 
 ### Patterns
 

@@ -5,12 +5,22 @@ const complexValues = new ObjectKeyWeakMap<any, string>()
 
 export const complexProperty: core.Property = {
   set(target, key, value, description: core.ComplexDescriptor<any, any>, root) {
-    const proxy = complexProxy(target, key, value, value, description, root)
-    const newValue = JSON.stringify(description.serialize(value))
-    const didChange = newValue !== complexValues.get(target, key)
-    complexValues.set(target, key, newValue)
-    return {
-      didChange, result: Reflect.set(target, key, proxy),
+    if (core.isDeserializing()) {
+      const didChange = value !== complexValues.get(target, key)
+      let result = true
+      if (didChange) {
+        result = Reflect.set(target, key, description.deserialize(value))
+        complexValues.set(target, key, JSON.stringify(value))
+      }
+      return { didChange, result }
+    } else {
+      const proxy = complexProxy(target, key, value, value, description, root)
+      const newValue = JSON.stringify(description.serialize(value))
+      const didChange = newValue !== complexValues.get(target, key)
+      complexValues.set(target, key, newValue)
+      return {
+        didChange, result: Reflect.set(target, key, proxy),
+      }
     }
   },
   get(target, key) {

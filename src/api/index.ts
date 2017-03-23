@@ -2,6 +2,7 @@
 export * from './configure';
 export * from './createObservable';
 export * from './reaction';
+export * from './parseInto';
 
 // Modifiers
 export * from './optional';
