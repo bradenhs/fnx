@@ -14,7 +14,7 @@
     },
     "theme-default": {
       "styles": {
-        "website": "docs/styles.css"
+        "website": "assets/styles.css"
       }
     }
   }
