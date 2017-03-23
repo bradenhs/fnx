@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://fnx.js.org">
-    <img width="580" src="https://cdn.rawgit.com/fnxjs/fnx/9ac04dfd/assets/logo.svg" alt="FNX - Wickedly quick, stunningly simple, reactive state management."/>
+    <img width="580" src="https://cdn.rawgit.com/fnxjs/fnx/13b83156/assets/logo.svg" alt="FNX - Wickedly quick, stunningly simple, reactive state management."/>
   </a>
 </p>
 
@@ -34,7 +34,7 @@
 
 <br/>
 
-> FNX aspires to be rock-solid, production-ready state management solution. Currently, however,
+> FNX aspires to be a rock-solid, production-ready state management solution. Currently, however,
 > FNX is in it's early stages. Until `v1.0.0` don't use it for anything critical. You can
 > help FNX reach `v1.0.0` by asking questions, finding bugs, or sugesting improvements.
 
