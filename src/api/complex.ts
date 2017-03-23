@@ -5,7 +5,7 @@ import { ComplexDescriptor, descriptionTypes } from '../core'
  * @param serialize TODO
  * @param deserialize TODO
  */
-export function complex<ComplexType, PrimitiveType extends (number | string | boolean)>(
+export function complex<ComplexType, PrimitiveType extends (number | string | boolean | object)>(
   serialize: (complexValue: ComplexType) => PrimitiveType,
   deserialize: (primitiveValue: PrimitiveType) => ComplexType,
 ) {

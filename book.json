@@ -1,14 +1,16 @@
 {
   "gitbook": ">=3.2.2",
-  "title": "FNX Documentation",
-  "plugins": ["edit-link", "github", "hide-published-with"],
+  "title": "FNX",
+  "plugins": [
+    "edit-link", "github", "prism", "-highlight", "hide-published-with", "-sharing"
+  ],
   "pluginsConfig": {
     "github": {
-      "url": "https://github.com/fnxjs/fnx",
-      "label": " "
+      "url": "https://github.com/fnxjs/fnx"
     },
     "edit-link": {
-      "base": "https://github.com/fnxjs/fnx/tree/master"
+      "base": "https://github.com/fnxjs/fnx/tree/master",
+      "label": ""
     },
     "theme-default": {
       "styles": {

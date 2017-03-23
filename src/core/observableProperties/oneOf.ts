@@ -17,6 +17,7 @@ export const oneOfProperty: core.Property = {
     if (setValue == undefined) {
       throw new Error('For oneOf given value didn\'t match any oneOf kind')
     }
+    // Did change as false because the above setProperty would already have triggered that
     return {
       didChange: false, result: setValue
     }

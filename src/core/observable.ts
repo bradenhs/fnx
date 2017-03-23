@@ -22,6 +22,7 @@ const observablesDerivations = new ObjectKeyWeakMap<any, Map<symbol, {
 }>>()
 
 const OBSERVABLE_DESIGNATOR = Symbol('OBSERVABLE_DESIGNATOR')
+const DESCRIPTION_DESIGNATOR = Symbol('DESCRIPTION_DESIGNATOR')
 
 /**
  * Test an object to see if it's an observable
@@ -29,6 +30,21 @@ const OBSERVABLE_DESIGNATOR = Symbol('OBSERVABLE_DESIGNATOR')
  */
 export function isObservable(object) {
   return object[OBSERVABLE_DESIGNATOR]
+}
+
+/**
+ * Test a key to see if it's a designator of the object's description
+ */
+export function isDescriptionDesignator(key) {
+  return key === DESCRIPTION_DESIGNATOR
+}
+
+/**
+ * Returns the description
+ */
+export function getDescription(target):
+  core.ParsedObjectDescriptor<any> | core.MapOfDescriptor<any> | core.ArrayOfDescriptor<any> {
+  return target[DESCRIPTION_DESIGNATOR]
 }
 
 /**

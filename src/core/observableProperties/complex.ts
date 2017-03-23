@@ -14,6 +14,9 @@ export const complexProperty: core.Property = {
     }
   },
   get(target, key) {
+    if (core.isSerializing()) {
+      return JSON.parse(complexValues.get(target, key))
+    }
     return target[key]
   }
 }

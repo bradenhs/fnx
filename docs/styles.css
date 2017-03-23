@@ -1,19 +1,73 @@
-.book-summary ul.summary:first-child li:first-child {
+nav > ul.summary > li:first-child {
+  display: none
+}
+nav > ul.summary > li.divider {
   display: none
 }
 
-.book-summary ul.summary li.divider {
-  display: none;
+.font-settings {
+  display: none !important
+}
+
+.book-summary li.header {
+  font-size: 12px;
+  font-weight: bold;
+  color: #555;
+  padding-top: 20px;
 }
 
 .book-summary ul.summary li span {
-  cursor: not-allowed;
-  opacity: 0.3;
+  cursor: default;
+  opacity: 0.4;
+}
+
+.book-summary ul.summary li.active > a {
+  color: #f06;
+  text-decoration: none;
+}
+
+.markdown-section a {
+  color: #f06;
+  text-decoration: none !important;
+  border-bottom: 1px solid #f06;
+  padding-bottom: 1px;
+}
+
+.book-summary .chapter .chapter a {
+  padding: 3px 6px;
+  margin: 3px;
+  border: 1px solid rgba(0,0,0,.07);
+  background: white;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-block;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+.book-summary ul.summary .chapter li.active.chapter > a {
+  border-left: 3px solid #f06;
+  padding-left: 8px;
+  background: white;
+}
+
+.book-summary ul.summary .chapter li.active.chapter > a:before {
+  display: none;
+}
+
+.book-summary ul.summary li.active > a:before {
+  content: '';
+  border-left: 3px solid #f06;
+  margin-right: 5px;
 }
 
 .book-summary ul.summary li a:hover {
-  color: #008cff;
+  color: #f06;
   text-decoration: none;
+}
+
+.book-summary ul.summary {
+  padding-bottom: 40px;
 }
 
 code[class*="language-"],
@@ -22,9 +76,14 @@ pre[class*="language-"] {
 }
 
 .color-theme-2 .token.keyword {
-  color: #3ac;
+  color: #f06;
 }
 
 .token.operator {
   background: none;
+}
+
+p[align="center"] a {
+  border: none !important;
+  text-decoration: none !important;
 }
