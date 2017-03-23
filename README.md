@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://fnx.js.org">
-    <img src="https://cdn.rawgit.com/fnxjs/fnx/9ac04dfd/assets/logo.svg" alt="FNX - Wickedly quick, stunningly simple, reactive state management."/>
+    <img width="580" src="https://cdn.rawgit.com/fnxjs/fnx/9ac04dfd/assets/logo.svg" alt="FNX - Wickedly quick, stunningly simple, reactive state management."/>
   </a>
 </p>
 
