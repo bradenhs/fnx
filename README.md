@@ -34,8 +34,6 @@
 
 <br/>
 
-## A Word of Cation
-
 > FNX aspires to be rock-solid, production-ready state management solution. Currently, however,
 > FNX is in it's early stages. Until `v1.0.0` don't use it for anything critical. You can
 > help FNX reach `v1.0.0` by asking questions, finding bugs, or sugesting improvements.
