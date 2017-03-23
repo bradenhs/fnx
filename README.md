@@ -46,6 +46,6 @@ help FNX reach `v1.0.0` by asking questions, finding bugs, or sugesting improvem
 
 ## Getting Started
 
-Clone the [fnx-starter repo](https://github.com/fnxjs/fnx-starter) for an example of FNX in action.
+Clone the [fnx-starter repository](https://github.com/fnxjs/fnx-starter) for an example of FNX in action.
 
 Install with `yarn add fnx`  or  `npm install fnx`
