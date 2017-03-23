@@ -15,6 +15,20 @@ export const objectProperty: core.Property = {
         if (core.isObservableDesignatorKey(k)) {
           return true
         }
+
+        if (core.isDescriptionDesignator(k)) {
+          return description
+        }
+
+        if (k === 'toString') {
+          return () => {
+            core.incrementSerializationCounter()
+            const result = JSON.stringify(proxy)
+            core.decrementSerializationCounter()
+            return result
+          }
+        }
+
         return core.getProperty(t, k, description.properties[k], root || proxy, proxy)
       },
       set(t, k, v) {

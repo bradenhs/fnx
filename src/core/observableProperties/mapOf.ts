@@ -13,6 +13,18 @@ export const mapOfProperty: core.Property = {
           return true
         }
 
+        if (core.isDescriptionDesignator(k)) {
+          return description
+        }
+        if (k === 'toString') {
+          return () => {
+            core.incrementSerializationCounter()
+            const result = JSON.stringify(proxy)
+            core.decrementSerializationCounter()
+            return result
+          }
+        }
+
         return core.getProperty(t, k, description.kind, root, proxy)
       },
       set(t, k, v) {
