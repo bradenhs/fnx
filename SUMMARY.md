@@ -1,5 +1,3 @@
-* v0.0.17
-
 ### Overview
 
 * [Introduction](/README.md)
