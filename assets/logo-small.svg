@@ -15,7 +15,7 @@
    viewBox="0 0 169.99999 169.99998"
    height="170"
    width="170"
-   inkscape:export-filename="/Users/braden/projects/fnx/logo/logo-small.png"
+   inkscape:export-filename="/Users/braden/projects/fnx/assets/logo-small.png"
    inkscape:export-xdpi="271.05884"
    inkscape:export-ydpi="271.05884">
   <sodipodi:namedview
@@ -24,8 +24,8 @@
      inkscape:window-y="297"
      inkscape:window-x="4"
      inkscape:cy="70.026759"
-     inkscape:cx="9.1941327"
-     inkscape:zoom="4.4190849"
+     inkscape:cx="-44.097444"
+     inkscape:zoom="1.5623825"
      showgrid="false"
      id="namedview4261"
      inkscape:window-height="1036"
@@ -51,7 +51,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -104,9 +104,18 @@
        id="c"
        xlink:href="#b" />
   </defs>
+  <rect
+     style="opacity:1;fill:#ff0055;fill-opacity:1;stroke:none;stroke-width:8.69999981;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     id="rect4142"
+     width="169.99998"
+     height="169.99998"
+     x="-2.5033939e-06"
+     y="-2.5033939e-06"
+     rx="20"
+     ry="20" />
   <path
      sodipodi:nodetypes="ccccccccccccc"
-     style="color:#000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:medium;line-height:129.99999523%;font-family:Seravek;-inkscape-font-specification:'Seravek, Bold';text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#ff0055;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:7.99999905;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+     style="color:#000000;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:medium;line-height:129.99999523%;font-family:Seravek;-inkscape-font-specification:'Seravek, Bold';text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:7.99999905;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
      d="m 40.947003,45.023572 27.935869,40.004067 -28.88288,40.930851 33.432908,0 12.448923,-18.6735 12.582147,18.6735 c 11.73883,-2.1869 24.60917,-5.66966 39.65001,-6.20558 -16.73084,-6.31936 -24.72007,-20.562899 -35.2544,-34.725271 l 28.10066,-40.004067 c -11.86411,-1.446905 -24.31127,-1.164363 -33.10269,0 L 85.881823,62.790005 74.039389,45.023572 c -9.013025,-0.959923 -20.420653,-1.365185 -33.092386,0 z"
      id="path4271"
      inkscape:connector-curvature="0" />
