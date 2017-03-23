@@ -1,8 +1,9 @@
 import { ArrayOfDescriptor, descriptionTypes } from '../core'
 
 /**
- * TODO
- * @param kind TODO
+ * Describe an array. Pass in a type to specify type of array elements.
+ * https://fnx.js.org/docs/api/arrayOf.html
+ * @param kind The type of elements in the array
  */
 export function arrayOf<T>(kind: T) {
   if (arguments.length === 0) {

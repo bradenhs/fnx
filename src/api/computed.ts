@@ -1,8 +1,9 @@
 import { ComputedDescriptor, descriptionTypes } from '../core'
 
 /**
- * TODO
- * @param computation TODO
+ * Describes a computed value. Takes a function to run when computing the value. This function
+ * should be pure.
+ * @param computation The computation to performs. The current and root context are passed in.
  */
 export function computed<T>(fn: (self?, root?) => T): T {
   if (arguments.length === 0) {

@@ -1,8 +1,9 @@
 import { ActionDescriptor, descriptionTypes } from '../core'
 
 /**
- * TODO
- * @param action TODO
+ * Describes an action. Actions are used to mutate state.
+ * https://fnx.js.org/docs/api/action.html
+ * @param action A composition of two functions the first taking the context the second taking args
  */
 export function action<T extends (...args: any[]) => void>(fn: (self?, root?) => T): T {
   if (arguments.length === 0) {

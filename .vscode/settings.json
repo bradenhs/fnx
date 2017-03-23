@@ -6,7 +6,7 @@
     "**/.svn": true,
     "**/.hg": true,
     "**/.DS_Store": true,
-    "node_modules": false,
+    "node_modules": true,
     "lib": true,
     "coverage": true,
     ".fusebox": true,

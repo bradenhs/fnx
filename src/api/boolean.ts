@@ -5,4 +5,7 @@ const descriptor: BooleanDescriptor = {
   readonly: false, optional: false,
 }
 
+/**
+ * Describes a boolean
+ */
 export const boolean = descriptor as any as boolean
