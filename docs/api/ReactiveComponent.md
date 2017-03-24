@@ -46,9 +46,9 @@ ReactDOM.render(<App/>, document.querySelector('#app'))
 ```
 
 Wrapping a component in `ReactiveComponent` or extending it create a
-[`PureComponent`](https://facebook.github.io/react/docs/react-api.html#react.purecomponent) that
+[PureComponent](https://facebook.github.io/react/docs/react-api.html#react.purecomponent) that
 re-renders when the state tree is updated in addition to when `props` or `state` are mutated. It
-literally extends the [`React.PureComponent`](https://facebook.github.io/react/docs/react-api.html#react.purecomponent)
+literally extends the [React.PureComponent](https://facebook.github.io/react/docs/react-api.html#react.purecomponent)
 class and adds in the logic to re-render the component. Think of it like your render method being
 wrapped in a [reaction](/docs/api/reaction.md).
 

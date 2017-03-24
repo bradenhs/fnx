@@ -1,4 +1,4 @@
-## `createObservable(StateDescription, initialState)
+## `createObservable(StateDescription, initialState)`
 
 Creates a new state tree out of the given state description and initial state.
 
