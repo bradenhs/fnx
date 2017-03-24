@@ -20,6 +20,7 @@
   * [complex](/docs/api/complex.md)
   * [mapOf](/docs/api/mapOf.md)
   * [number](/docs/api/number.md)
+  * [object](/docs/api/object.md)
   * [oneOf](/docs/api/oneOf.md)
   * [optional](/docs/api/optional.md)
   * [readonly](/docs/api/readonly.md)
@@ -28,7 +29,7 @@
   * [reaction](/docs/api/reaction.md)
   * [ReactiveComponent](/docs/api/ReactiveComponent.md)
 * Serialization
-  * [\[observable\].toString](/docs/api/toString.md)
+  * [toString](/docs/api/toString.md)
   * [parseInto](/docs/api/parseInto.md)
 
 ### Patterns

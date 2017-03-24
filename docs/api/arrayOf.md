@@ -1,6 +1,6 @@
-## arrayOf
+## `arrayOf(kind)`
 
-> Describes an array in your state tree
+`arrayOf` describes an array in your state tree.
 
 ```javascript
 import { arrayOf, string } from 'fnx'
@@ -8,10 +8,4 @@ import { arrayOf, string } from 'fnx'
 class State {
   stringArray = arrayOf(string)
 }
-```
-
-This will serialize to
-
-```json
-{ "stringArray": [ ... ] }
 ```

@@ -1,8 +1,8 @@
-## `action(f => g => { ... })`
+## `action(fn)`
 
 Actions provide a controlled way to mutate the state of your application. They should be simple and synchronous.
 
-> [How do I handle asynchronous events like network requests?](/docs/patterns/AsynchronousActions.md)
+[How do I handle asynchronous events like network requests?](/docs/patterns/AsynchronousActions.md)
 
 ```javascript
 import { action, createObservable, string } from 'fnx'
