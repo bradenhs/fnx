@@ -21,7 +21,7 @@ const ReactiveComponent: ReactiveComponentType = (function(this: any) {
     }
   }
 
-  React.Component.call(this, ...arguments)
+  React.Component.call(this, ...Array.prototype.slice.call(arguments))
 
   const reaction = core.registerReaction(
     this.render.bind(this),
