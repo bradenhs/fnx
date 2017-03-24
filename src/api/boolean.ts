@@ -7,5 +7,6 @@ const descriptor: BooleanDescriptor = {
 
 /**
  * Describes a boolean
+ * https://fnx.js.org/docs/api/boolean.html
  */
 export const boolean = descriptor as any as boolean

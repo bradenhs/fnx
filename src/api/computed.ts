@@ -3,6 +3,7 @@ import { ComputedDescriptor, descriptionTypes } from '../core'
 /**
  * Describes a computed value. Takes a function to run when computing the value. This function
  * should be pure.
+ * https://fnx.js.org/docs/api/computed.html
  * @param computation The computation to performs. The current and root context are passed in.
  */
 export function computed<T>(fn: (self?, root?) => T): T {

@@ -1,6 +1,7 @@
 /**
- * TODO
+ * Not implemented yet
+ * https://fnx.js.org/docs/api/configure.html
  */
 export function configure() {
-  return undefined
+  throw new Error('configure has not yet been implemented')
 }

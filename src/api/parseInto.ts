@@ -1,17 +1,23 @@
 import * as core from '../core'
 
-export function parseInto(str: string, observable: object) {
+/**
+ * Parses the given json string into the provided observable.
+ * https://fnx.js.org/docs/api/parseInto.html
+ * @param string The raw json string
+ * @param observable The observable to set
+ */
+export function parseInto(string: string, observable: object) {
   if (typeof observable !== 'object' || !core.isObservable(observable)) {
     throw new Error('you must parse into an observable object')
   }
 
-  if (typeof str !== 'string') {
+  if (typeof string !== 'string') {
     throw new Error('you must parse a string')
   }
 
   let object
   try {
-    object = JSON.parse(str)
+    object = JSON.parse(string)
   } catch(e) {
     throw new Error('The string you provided was not valid json')
   }

@@ -1,8 +1,9 @@
 import { descriptionTypes, ObjectDescriptor } from '../core'
 
 /**
- * TODO
- * @param clazz TODO
+ * Describes an object in the state tree.
+ * https://fnx.js.org/docs/api/object.html
+ * @param clazz The class of this object
  */
 export function object<T>(clazz: new() => T) {
   if (arguments.length === 0) {

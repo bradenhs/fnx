@@ -1,8 +1,9 @@
 import { descriptionTypes, MapOfDescriptor } from '../core'
 
 /**
- * TODO
- * @param kind TODO
+ * Describes a map of the given type.
+ * https://fnx.js.org/docs/api/mapOf.html
+ * @param kind The type of items this map contains
  */
 export function mapOf<T>(kind: T) {
   if (arguments.length === 0) {

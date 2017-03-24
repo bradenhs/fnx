@@ -1,9 +1,8 @@
 import { descriptionTypes } from '../core'
 
 /**
- * TODO
- * @param target TODO
- * @param key TODO
+ * Marks a property in the state tree as readonly
+ * https://fnx.js.org/docs/api/readonly.html
  */
 export function readonly(target, key) {
   if (target[descriptionTypes.readonly] == undefined) {
