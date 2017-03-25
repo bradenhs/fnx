@@ -16,10 +16,16 @@ const initialState: AppState = {
 
 const appState = createObservable(AppState, initialState)
 
-const Counter = ReactiveComponent(() =>
-  <div onClick={ appState.increment }>
+const Counter = ReactiveComponent(() => {
+  return <div onClick={ appState.increment }>
     { appState.count }
   </div>
-)
+})
 
-ReactDOM.render(<Counter/>, document.getElementById('app'))
+class App extends ReactiveComponent<{}, {}> {
+  render() {
+    return <Counter/>
+  }
+}
+
+ReactDOM.render(<App/>, document.getElementById('app'))
