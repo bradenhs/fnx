@@ -146,13 +146,6 @@ describe('parseDescription', () => {
     expect(actual).toBe(expected)
   })
 
-  it('should throw when tyring to parse an arrow function that isn\'t a class', () => {
-    const actual = catchErrType(() => (parseDescription as any)(() => 0))
-    const expected = Error
-
-    expect(actual).toBe(expected)
-  })
-
   it('should parse action correctly', () => {
     const fn = _0 => _1 => 0
     class Description {
