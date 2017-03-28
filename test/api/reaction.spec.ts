@@ -139,4 +139,54 @@ describe('reaction', () => {
 
     expect(actual).toBe(expected)
   })
+
+  it('should trigger reaction when property is added to mapOf', () => {
+    class State {
+      m = mapOf(number)
+      add? = action((state: State) => () => {
+        state.m.hi = 2
+      })
+    }
+
+    const state = createObservable(State, { m: { }})
+
+    let runs = 0
+
+    reaction(() => {
+      runs++
+      state.m
+    })
+
+    state.add()
+
+    const actual = runs
+    const expected = 2
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should trigger reaction when property is deleted from mapOf', () => {
+    class State {
+      m = mapOf(number)
+      remove? = action((state: State) => () => {
+        delete state.m.hi
+      })
+    }
+
+    const state = createObservable(State, { m: { hi: 2 }})
+
+    let runs = 0
+
+    reaction(() => {
+      runs++
+      state.m
+    })
+
+    state.remove()
+
+    const actual = runs
+    const expected = 2
+
+    expect(actual).toBe(expected)
+  })
 })

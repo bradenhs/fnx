@@ -7,6 +7,15 @@ export const arrayOfProperty: core.Property = {
     }
 
     const proxy = new Proxy(value, {
+      setPrototypeOf(): boolean {
+        throw new Error('setPrototypeOf is disabled for fnx objects')
+      },
+      defineProperty(): boolean {
+        throw new Error('Define property is disabled for fnx objects')
+      },
+      deleteProperty(): boolean {
+        throw new Error('The delete operator may only be used for properties in maps')
+      },
       get(t, k) {
         if (core.isObservableDesignatorKey(k)) {
           return true

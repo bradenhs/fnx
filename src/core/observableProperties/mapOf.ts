@@ -8,6 +8,21 @@ export const mapOfProperty: core.Property = {
     }
 
     const proxy = new Proxy(value, {
+      setPrototypeOf(): boolean {
+        throw new Error('setPrototypeOf is disabled for fnx objects')
+      },
+      defineProperty(): boolean {
+        throw new Error('Define property is disabled for fnx objects')
+      },
+      deleteProperty(t, k) {
+        const result = Reflect.deleteProperty(t, k)
+        if (result) {
+          // Trigger change on map when one of it's properties is deleted
+          core.markObservablesDerivationsAsStale(target, key)
+          core.addObservablesReactionsToPendingReactions(target, key)
+        }
+        return result
+      },
       get(t, k) {
         if (core.isObservableDesignatorKey(k)) {
           return true
