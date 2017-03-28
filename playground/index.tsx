@@ -1,16 +1,18 @@
-import { action, createObservable, number } from 'fnx-local'
+import { action, complex, createObservable, number } from 'fnx-local'
 import ReactiveComponent from 'fnx-local/react'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
 class AppState {
   count = number
+  date = complex.date
   increment? = action((app: AppState) => () => {
     app.count++
   })
 }
 
 const initialState: AppState = {
+  date: new Date(),
   count: 0,
 }
 
