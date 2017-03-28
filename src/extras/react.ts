@@ -12,11 +12,7 @@ export interface ReactiveComponentType {
 
 const ReactiveComponent = class extends React.PureComponent<{}, {}> {
   constructor(props, context) {
-    super(props, context)
-
-    const self: any = this
-
-    if ((new.target as any) === Object) {
+    if (typeof arguments[0] === 'function') {
       const render = arguments[0]
       return class extends ReactiveComponent<{}, {}> {
         public render(this: any) {
@@ -24,6 +20,10 @@ const ReactiveComponent = class extends React.PureComponent<{}, {}> {
         }
       } as any
     }
+
+    super(props, context)
+
+    const self: any = this
 
     if (self.render != undefined) {
       const reaction = core.registerReaction(

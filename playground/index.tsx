@@ -16,16 +16,25 @@ const initialState: AppState = {
 
 const appState = createObservable(AppState, initialState)
 
-const Counter = ReactiveComponent(() => {
+const c = ReactiveComponent
+
+const Counter = c(() => {
   return <div onClick={ appState.increment }>
     { appState.count }
   </div>
 })
 
-class App extends ReactiveComponent<{}, {}> {
+interface IProps {
+  word: string
+}
+
+class App extends ReactiveComponent<IProps, {}> {
   render() {
-    return <Counter/>
+    return <div>
+      { this.props.word }
+      <Counter/>
+    </div>
   }
 }
 
-ReactDOM.render(<App/>, document.getElementById('app'))
+ReactDOM.render(<App word='hi'/>, document.getElementById('app'))
