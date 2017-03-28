@@ -1,5 +1,15 @@
 import { ComplexDescriptor, descriptionTypes } from '../core'
 
+export type Complex = {
+  <ComplexType, PrimitiveType extends (number | string | boolean | object)>(
+    serialize: (complexValue: ComplexType) => PrimitiveType,
+    deserialize: (primitiveValue: PrimitiveType) => ComplexType,
+  ): ComplexType
+
+  date: Date
+  regexp: RegExp
+}
+
 /**
  * Describes a complex type. Takes two pure function which are exact inverses of each other.
  * The first is the serialization function which should return something that can be serialized
@@ -9,7 +19,9 @@ import { ComplexDescriptor, descriptionTypes } from '../core'
  * @param serialize Serializes the complex value. Result is passed into JSON.stringify
  * @param deserialize Deserializes the value into the complex type.
  */
-export function complex<ComplexType, PrimitiveType extends (number | string | boolean | object)>(
+export const complex: Complex = function<
+  ComplexType, PrimitiveType extends (number | string | boolean | object)
+>(
   serialize: (complexValue: ComplexType) => PrimitiveType,
   deserialize: (primitiveValue: PrimitiveType) => ComplexType,
 ) {
@@ -30,4 +42,7 @@ export function complex<ComplexType, PrimitiveType extends (number | string | bo
     readonly: false, optional: false,
   }
   return descriptor as any as ComplexType
-};
+} as Complex
+
+complex.date = complex((d: Date) => d.toUTCString(), v => new Date(v))
+complex.regexp = complex((r: RegExp) => r.toString(), v => new RegExp(v))
