@@ -1,6 +1,6 @@
 {
   "name": "fnx",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "Work in Progress: Wickedly quick, stunningly simple, reactive state management.",
   "main": "./lib/fnx.js",
   "types": "./lib/fnx.d.ts",
