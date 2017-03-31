@@ -32,7 +32,7 @@ export const objectProperty: core.Property = {
         if (k === 'toString') {
           return () => {
             core.incrementSerializationCounter()
-            const result = JSON.stringify(proxy)
+            const result = JSON.stringify(proxy, (_, v) => v === undefined ? null : v)
             core.decrementSerializationCounter()
             return result
           }
