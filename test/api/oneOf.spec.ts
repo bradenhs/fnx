@@ -1,4 +1,4 @@
-import { boolean, computed, number, oneOf as typedOneOf, string } from '../../src/api'
+import { boolean, number, oneOf as typedOneOf, string } from '../../src/api'
 import { descriptionTypes } from '../../src/core'
 import { catchErrType } from '../testHelpers'
 

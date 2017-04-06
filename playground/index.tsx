@@ -1,28 +1,30 @@
-import { action, complex, createObservable, number } from 'fnx-local'
+import fnx, { action, readonly } from 'fnx-local'
 import ReactiveComponent from 'fnx-local/react'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 
-class AppState {
-  count = number
-  date = complex.date
-  increment? = action((app: AppState) => () => {
-    app.count++
-  })
+class Model extends fnx.Model<App> { }
+
+class App extends Model {
+  count = fnx.number
+
+  @readonly
+  date = fnx.complex.date
+
+  @action
+  increment?() {
+    this.count++
+  }
 }
 
-const initialState: AppState = {
-  date: new Date(),
+const app = new App({
   count: 0,
-}
+  date: new Date()
+})
 
-const appState = createObservable(AppState, initialState)
-
-const c = ReactiveComponent
-
-const Counter = c(() => {
-  return <div onClick={ appState.increment }>
-    { appState.count }
+const Counter = ReactiveComponent(() => {
+  return <div onClick={ app.increment }>
+    { app.count }
   </div>
 })
 
@@ -30,7 +32,7 @@ interface IProps {
   word: string
 }
 
-class App extends ReactiveComponent<IProps, {}> {
+class Main extends ReactiveComponent<IProps, {}> {
   render() {
     return <div>
       { this.props.word }
@@ -39,4 +41,4 @@ class App extends ReactiveComponent<IProps, {}> {
   }
 }
 
-ReactDOM.render(<App word='hi'/>, document.getElementById('app'))
+ReactDOM.render(<Main word='hi'/>, document.getElementById('app'))

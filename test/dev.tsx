@@ -1,5 +1,5 @@
-import { Model, number, object } from '../src/fnx'
-import { catchErrType } from './testHelpers'
+import { descriptionTypes, parseDescription } from '../src/core'
+import { Model, string } from '../src/fnx'
 
 /**
  * Use this file for constructing new test suites without having to worry about
@@ -8,50 +8,25 @@ import { catchErrType } from './testHelpers'
  * Run with `yarn run test-dev`
  */
 describe('test', () => {
-  it('should enforce descriptions be extended from Model', () => {
-    class Hi { }
-
-    class App extends Model<App> {
-      hi = object(Hi)
-    }
-
-    const initialAppState: App = {
-      hi: { }
-    }
-
-    const actual = catchErrType(() => new App(initialAppState))
-    const expected = Error
-
-    expect(actual).toBe(expected)
-  })
-
   it('should initialize state properly', () => {
-    class Hi extends Model<App> {
-      count = number
+    class Description extends Model<Description> {
+      str = string
     }
 
-    class Hello extends Model<App> {
-      hello = number
-    }
-
-    class App extends Hello {
-      hi = object(Hi)
-    }
-
-    const initialAppState: App = {
-      hello: 3,
-      hi: {
-        count: 2
+    const actual = parseDescription(Description)
+    const expected = {
+      readonly: true,
+      optional: false,
+      type: descriptionTypes.object,
+      properties: {
+        str: {
+          readonly: false,
+          optional: false,
+          type: descriptionTypes.string
+        }
       }
     }
 
-    const app = new App(initialAppState)
-
-    console.log(app)
-
-    const actual = app.toString()
-    const expected = '{"hello":3,"hi":{"count":2}}'
-
-    expect(actual).toBe(expected)
+    expect(actual).toEqual(expected)
   })
 })

@@ -706,7 +706,7 @@ describe('createObservable', () => {
   })
 
   it('should enforce descriptions be extended from Model', () => {
-    class Hi extends Model<App> { }
+    class Hi { }
 
     class App extends Model<App> {
       hi = object(Hi)

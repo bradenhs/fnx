@@ -24,6 +24,26 @@ const observablesDerivations = new ObjectKeyWeakMap<any, Map<symbol, {
 const OBSERVABLE_DESIGNATOR = Symbol('OBSERVABLE_DESIGNATOR')
 const DESCRIPTION_DESIGNATOR = Symbol('DESCRIPTION_DESIGNATOR')
 
+export interface IModelMethodArgs {
+  target: object
+  root: object
+}
+
+export const virtualMethods = {
+  getRoot({ root }: IModelMethodArgs) {
+    return () => root
+  },
+  toString({ target }: IModelMethodArgs) {
+    return () => core.toString(target)
+  },
+  toJS({ target }) {
+    return () => JSON.stringify(core.toString(target))
+  },
+  parse({ target }) {
+    return (input) => core.parseInto(input, target)
+  }
+}
+
 /**
  * Test an object to see if it's an observable
  * @param object The object in question

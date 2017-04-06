@@ -1,4 +1,4 @@
-import { arrayOf as typedArrayOf, computed, number  } from '../../src/api'
+import { arrayOf as typedArrayOf, number  } from '../../src/api'
 import { descriptionTypes } from '../../src/core'
 import { catchErrType } from '../testHelpers'
 

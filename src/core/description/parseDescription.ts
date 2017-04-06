@@ -19,6 +19,16 @@ const identifierParserMap = {
   [descriptionTypes.string]: parsePrimitiveDescriptor,
 }
 
+let parsingDescription = false
+
+export function setParsingDescription(value: boolean) {
+  parsingDescription = value
+}
+
+export function isParsingDescription() {
+  return parsingDescription
+}
+
 // Keeps a cache of parsed classes so we don't have to keep parsing them
 const parsedObjectCache = new WeakMap<new () => any, ParsedObjectDescriptor<any>>()
 
@@ -27,11 +37,16 @@ const parsedObjectCache = new WeakMap<new () => any, ParsedObjectDescriptor<any>
  * @param Description The description of the observable
  */
 export function parseDescription(Description: new(initialState?: any) => any) {
+  const wasAlreadyParsing = isParsingDescription()
+  setParsingDescription(true)
   const description = parseObjectDescriptor({
     type: descriptionTypes.object,
     readonly: true, optional: false,
     clazz: Description,
   })
+  if (!wasAlreadyParsing) {
+    setParsingDescription(false)
+  }
   return description
 }
 

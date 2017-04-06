@@ -25,13 +25,9 @@ export const arrayOfProperty: core.Property = {
           return description
         }
 
-        if (k === 'toString') {
-          return () => {
-            core.incrementSerializationCounter()
-            const result = JSON.stringify(proxy, (_, v) => v === undefined ? null : v)
-            core.decrementSerializationCounter()
-            return result
-          }
+        const method = core.virtualMethods[k]
+        if (method != undefined) {
+          return method({ target: proxy, root })
         }
 
         return core.getProperty(t, k, description.kind, root, proxy)

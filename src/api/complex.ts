@@ -1,6 +1,6 @@
 import { ComplexDescriptor, descriptionTypes } from '../core'
 
-export type Complex = {
+type Complex = {
   <ComplexType, PrimitiveType extends (number | string | boolean | object)>(
     serialize: (complexValue: ComplexType) => PrimitiveType,
     deserialize: (primitiveValue: PrimitiveType) => ComplexType,
@@ -19,7 +19,7 @@ export type Complex = {
  * @param serialize Serializes the complex value. Result is passed into JSON.stringify
  * @param deserialize Deserializes the value into the complex type.
  */
-export const complex: Complex = function<
+export const complex = function<
   ComplexType, PrimitiveType extends (number | string | boolean | object)
 >(
   serialize: (complexValue: ComplexType) => PrimitiveType,

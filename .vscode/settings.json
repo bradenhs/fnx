@@ -11,7 +11,7 @@
     "coverage": true,
     ".fusebox": true,
     "yarn.lock": true,
-    ".localbuild": true
+    ".localbuild": false
   },
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 1000,

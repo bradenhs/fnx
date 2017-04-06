@@ -6,7 +6,7 @@ describe('parseInto', () => {
       str = string
       bool = boolean
 
-      @action parse?(value: string) {
+      @action parse2?(value: string) {
         parseInto(value, this)
       }
     }
@@ -15,7 +15,7 @@ describe('parseInto', () => {
 
     const str = '{"str":"string2","bool":true}'
 
-    state.parse(str)
+    state.parse2(str)
 
     const actual = state.toString()
     const expected = str
@@ -28,7 +28,7 @@ describe('parseInto', () => {
       str = string
       date = complex((d: Date) => d.toUTCString(), v => new Date(v))
 
-      @action parse?(value: string) {
+      @action parse2?(value: string) {
         parseInto(value, this)
       }
     }
@@ -37,7 +37,7 @@ describe('parseInto', () => {
 
     const str = '{"str":"string2","date":"Thu, 01 Jan 1970 00:00:00 GMT"}'
 
-    state.parse(str)
+    state.parse2(str)
 
     const actual = state.toString()
     const expected = str

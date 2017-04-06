@@ -1,4 +1,4 @@
-import { computed, mapOf as typedMapOf, number } from '../../src/api'
+import { mapOf as typedMapOf, number } from '../../src/api'
 import { descriptionTypes } from '../../src/core'
 import { catchErrType } from '../testHelpers'
 

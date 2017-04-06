@@ -5,7 +5,6 @@
   "main": "./lib/fnx.js",
   "types": "./lib/fnx.d.ts",
   "scripts": {
-    "prepublish": "yarn run build",
     "lint": "tslint -c tslint.typed.json --type-check --project tsconfig.build.json --format stylish",
     "clean": "rm -rf lib/*",
     "test": "jest",

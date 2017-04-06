@@ -1,7 +1,7 @@
 import * as core from '../../core'
 import { ObjectKeyWeakMap } from '../../utils'
 
-const skipInit = new ObjectKeyWeakMap()
+const skipInit = new ObjectKeyWeakMap<object, boolean>()
 
 export function skipPropertyInitialization(target, property) {
   skipInit.set(target, property, true)
@@ -36,13 +36,9 @@ export const objectProperty: core.Property = {
           return description
         }
 
-        if (k === 'toString') {
-          return () => {
-            core.incrementSerializationCounter()
-            const result = JSON.stringify(proxy, (_, v) => v === undefined ? null : v)
-            core.decrementSerializationCounter()
-            return result
-          }
+        const method = core.virtualMethods[k]
+        if (method != undefined) {
+          return method({ target: proxy, root })
         }
 
         if (typeof description.properties[k] === 'function') {
