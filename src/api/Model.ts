@@ -1,7 +1,19 @@
 import * as core from '../core'
 
+/**
+ * The base every model must inherit from.
+ *
+ * **https://fnx.js.org/docs/api/Model.html**
+ */
 export abstract class Model<Root extends object> {
-  constructor(initialState: Root) {
+  /**
+   * Creates a new state tree with the given intial value.
+   *
+   * **https://fnx.js.org/docs/api/Model.html**
+   *
+   * @param initialState The initial value of the state tree.
+   */
+  constructor(initialValue: Root) {
     if (!core.isParsingDescription()) {
       core.setParsingDescription(true)
       let description, properties
@@ -14,7 +26,7 @@ export abstract class Model<Root extends object> {
       }
       core.setParsingDescription(false)
       const object = { state: undefined }
-      core.objectProperty.set(object, 'state', initialState, description)
+      core.objectProperty.set(object, 'state', initialValue, description)
       properties.forEach(property => {
         core.skipPropertyInitialization(object.state, property)
       })
@@ -22,13 +34,47 @@ export abstract class Model<Root extends object> {
     }
   }
 
+  /**
+   * Returns the root of the state tree.
+   *
+   * **https://fnx.js.org/docs/api/Model.html**
+   */
   protected getRoot?(): Root
 
+  /**
+   * Serializes the fnx object into a json string.
+   *
+   * **https://fnx.js.org/docs/api/toString.html**
+   */
   toString?(): string
 
+  /**
+   * Converts the fnx object into a plain javascript object.
+   *
+   * **https://fnx.js.org/docs/api/toJS.html**
+   *
+   * @param options (Optional) Pass in { serializeComplex: true } to return serialized version
+   * of complex properties.
+   */
   toJS?(options?: { serializeComplex: boolean }): any
 
+  /**
+   * Parses the given string into the fnx object.
+   *
+   * **https://fnx.js.org/docs/api/parse.html**
+   *
+   * @param jsonString The json string compatible with this fnx object.
+   */
   parse?(jsonString: string)
+
+  /**
+   * Parses the given object into the fnx object.
+   *
+   * **https://fnx.js.org/docs/api/parse.html**
+   *
+   * @param jsObject The plain javascript object compatible with this fnx object.
+   * @param options (Optional) Pass in { asJson: true } to treat given values for complex
+   * properties as their serialized versions.
+   */
   parse?(jsObject: object, options?: { asJson: boolean })
-  parse?(...args: any[])
 }

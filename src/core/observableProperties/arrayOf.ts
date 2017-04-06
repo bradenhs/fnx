@@ -25,9 +25,9 @@ export const arrayOfProperty: core.Property = {
           return description
         }
 
-        const method = core.virtualMethods[k]
+        const method = core.virtualCollectionMethods[k]
         if (method != undefined) {
-          return method({ target: proxy, root })
+          return method({ proxy, root })
         }
 
         return core.getProperty(t, k, description.kind, root, proxy)
@@ -36,7 +36,16 @@ export const arrayOfProperty: core.Property = {
         if (!core.isActionInProgress(root)) {
           throw new Error('You cannot mutate state outside of an action')
         }
+
+        if (core.virtualCollectionMethods[k] != undefined) {
+          throw new Error(`The '${k}' key is reserved by fnx`)
+        }
+
         if (k === 'length') {
+          if (t.length !== v) {
+            core.markObservablesDerivationsAsStale(target, key)
+            core.addObservablesReactionsToPendingReactions(target, key)
+          }
           return Reflect.set(t, k, v)
         } else {
           return core.setProperty(t, k, v, description.kind, root)

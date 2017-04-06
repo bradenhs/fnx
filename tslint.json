@@ -52,7 +52,7 @@
     "no-misused-new": true,
     "no-null-keyword": false,
     "no-shadowed-variable": true,
-    "no-string-literal": true,
+    "no-string-literal": false,
     "no-string-throw": true,
     "no-switch-case-fall-through": true,
     "no-unsafe-finally": true,

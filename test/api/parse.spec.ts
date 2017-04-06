@@ -1,4 +1,4 @@
-import { action, boolean, complex, Model, parseInto, string } from '../../src/fnx'
+import { action, boolean, complex, Model, string } from '../../src/fnx'
 
 describe('parseInto', () => {
   test('parseInto should work', () => {
@@ -7,7 +7,7 @@ describe('parseInto', () => {
       bool = boolean
 
       @action parse2?(value: string) {
-        parseInto(value, this)
+        this.parse(value)
       }
     }
 
@@ -29,7 +29,7 @@ describe('parseInto', () => {
       date = complex((d: Date) => d.toUTCString(), v => new Date(v))
 
       @action parse2?(value: string) {
-        parseInto(value, this)
+        this.parse(value)
       }
     }
 

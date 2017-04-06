@@ -59,7 +59,7 @@ export function addObservablesReactionsToPendingReactions(
 /**
  * Wrap actions so they are awesome
  */
-export function wrapAction(description: core.ActionDescriptor<any>, root, proxy) {
+export function wrapAction(fn: Function, root, proxy) {
   return (...args: any[]) => {
     if (core.isReactionInProgress()) {
       throw new Error('Actions should not be called in reactions')
@@ -68,7 +68,7 @@ export function wrapAction(description: core.ActionDescriptor<any>, root, proxy)
       throw new Error('Actions should not be called in derivations')
     }
     incrementActionsInProgress(root)
-    const result = description.fn.bind(proxy)(...args)
+    const result = fn.bind(proxy)(...args)
     decrementActionsInProgress(root)
     if (isActionInProgress(root) === false) {
       triggerReactions()

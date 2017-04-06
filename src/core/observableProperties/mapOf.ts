@@ -32,9 +32,9 @@ export const mapOfProperty: core.Property = {
           return description
         }
 
-        const method = core.virtualMethods[k]
+        const method = core.virtualCollectionMethods[k]
         if (method != undefined) {
-          return method({ target: proxy, root })
+          return method({ proxy, root })
         }
 
         return core.getProperty(t, k, description.kind, root, proxy)
@@ -42,6 +42,10 @@ export const mapOfProperty: core.Property = {
       set(t, k, v) {
         if (!core.isActionInProgress(root)) {
           throw new Error('You cannot mutate state outside of an action')
+        }
+
+        if (core.virtualCollectionMethods[k] != undefined) {
+          throw new Error(`The '${k}' key is reserved by fnx`)
         }
 
         // This is a new property meaning we should trigger a change for the parent

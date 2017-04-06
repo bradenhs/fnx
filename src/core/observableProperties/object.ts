@@ -36,9 +36,9 @@ export const objectProperty: core.Property = {
           return description
         }
 
-        const method = core.virtualMethods[k]
+        const method = core.virtualObjectMethods[k]
         if (method != undefined) {
-          return method({ target: proxy, root })
+          return method({ proxy, root })
         }
 
         if (typeof description.properties[k] === 'function') {
@@ -56,6 +56,9 @@ export const objectProperty: core.Property = {
         }
         if (!Reflect.has(description.properties, k)) {
           throw new Error(`The description for this object does not include ${key}`)
+        }
+        if (core.virtualObjectMethods[k] != undefined) {
+          throw new Error(`The '${k}' key is reserved by fnx`)
         }
         if (description.properties[k].readonly) {
           throw new Error('Tried to mutate readonly value')

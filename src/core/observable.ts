@@ -24,24 +24,30 @@ const observablesDerivations = new ObjectKeyWeakMap<any, Map<symbol, {
 const OBSERVABLE_DESIGNATOR = Symbol('OBSERVABLE_DESIGNATOR')
 const DESCRIPTION_DESIGNATOR = Symbol('DESCRIPTION_DESIGNATOR')
 
-export interface IModelMethodArgs {
-  target: object
+export interface IVirtualMethodFactoryArgs {
+  proxy: object
   root: object
 }
 
-export const virtualMethods = {
-  getRoot({ root }: IModelMethodArgs) {
+export const virtualCollectionMethods = {
+  toString({ proxy }: IVirtualMethodFactoryArgs) {
+    return () => core.toString(proxy)
+  },
+  toJS({ proxy }: IVirtualMethodFactoryArgs) {
+    return () => JSON.stringify(core.toString(proxy))
+  },
+  parse({ root, proxy }) {
+    return core.wrapAction((input) => {
+      core.parseInto(input, proxy)
+    }, root, proxy)
+  }
+}
+
+export const virtualObjectMethods = {
+  getRoot({ root }: IVirtualMethodFactoryArgs) {
     return () => root
   },
-  toString({ target }: IModelMethodArgs) {
-    return () => core.toString(target)
-  },
-  toJS({ target }) {
-    return () => JSON.stringify(core.toString(target))
-  },
-  parse({ target }) {
-    return (input) => core.parseInto(input, target)
-  }
+  ...virtualCollectionMethods
 }
 
 /**
