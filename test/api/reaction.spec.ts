@@ -1,17 +1,18 @@
-import { action, createObservable, mapOf, number, reaction, string } from '../../src/fnx'
+import { action, computed, mapOf, Model, number, reaction, string } from '../../src/fnx'
 
 describe('reaction', () => {
   it('should trigger the reaction', () => {
-    class State {
+    class State extends Model<State> {
       foo = string
-      changeFoo? = action((state: State) => (foo: string) => {
-        state.foo = foo
-      })
+
+      @action changeFoo?(foo: string) {
+        this.foo = foo
+      }
     }
 
     let reactionRuns = 0
 
-    const state = createObservable(State, { foo: 'Foo' })
+    const state = new State({ foo: 'Foo' })
 
     reaction(() => {
       reactionRuns++
@@ -27,20 +28,20 @@ describe('reaction', () => {
   })
 
   it('should only use last accessed properties when determining whether to run a reaction', () => {
-    class State {
+    class State extends Model<State> {
       foo = string
       bar = string
-      changeFoo? = action((state: State) => (foo: string) => {
-        state.foo = foo
-      })
-      changeBar? = action((state: State) => (bar: string) => {
-        state.bar = bar
-      })
+      @action changeFoo?(foo: string) {
+        this.foo = foo
+      }
+      @action changeBar?(bar: string) {
+        this.bar = bar
+      }
     }
 
     let reactionRuns = 0
 
-    const state = createObservable(State, { foo: 'Foo', bar: 'Bar' })
+    const state = new State({ foo: 'Foo', bar: 'Bar' })
 
     reaction(() => {
       reactionRuns++
@@ -62,14 +63,14 @@ describe('reaction', () => {
   })
 
   it('should not allow actions to be triggered within reactions', () => {
-    class State {
+    class State extends Model<State> {
       foo = string
-      changeFoo? = action((state: State) => (foo: string) => {
-        state.foo = foo
-      })
+      @action changeFoo?(foo: string) {
+        this.foo = foo
+      }
     }
 
-    const state = createObservable(State, { foo: 'Foo' })
+    const state = new State({ foo: 'Foo' })
 
     let didError = false
 
@@ -89,14 +90,14 @@ describe('reaction', () => {
   })
 
   it('should trigger reaction on map when property is added', () => {
-    class State {
+    class State extends Model<State> {
       nums = mapOf(number)
-      addNum? = action((state: State) => (key: string, value: number) => {
-        state.nums[key] = value
-      })
+      @action addNum?(key: string, value: number) {
+        this.nums[key] = value
+      }
     }
 
-    const state = createObservable(State, { nums: {} })
+    const state = new State({ nums: {} })
 
     let reactionRuns = 0
 
@@ -114,14 +115,14 @@ describe('reaction', () => {
   })
 
   it('should properly dispose of the reaction', () => {
-    class State {
+    class State extends Model<State> {
       num = number
-      setNum? = action((state: State) => (value: number) => {
-        state.num = value
-      })
+      @action setNum?(value: number) {
+        this.num = value
+      }
     }
 
-    const state = createObservable(State, { num: 0 })
+    const state = new State({ num: 0 })
 
     let reactionRuns = 0
 
@@ -141,14 +142,14 @@ describe('reaction', () => {
   })
 
   it('should trigger reaction when property is added to mapOf', () => {
-    class State {
+    class State extends Model<State> {
       m = mapOf(number)
-      add? = action((state: State) => () => {
-        state.m.hi = 2
-      })
+      @action add?() {
+        this.m.hi = 2
+      }
     }
 
-    const state = createObservable(State, { m: { }})
+    const state = new State({ m: { }})
 
     let runs = 0
 
@@ -166,14 +167,14 @@ describe('reaction', () => {
   })
 
   it('should trigger reaction when property is deleted from mapOf', () => {
-    class State {
+    class State extends Model<State> {
       m = mapOf(number)
-      remove? = action((state: State) => () => {
-        delete state.m.hi
-      })
+      @action remove?() {
+        delete this.m.hi
+      }
     }
 
-    const state = createObservable(State, { m: { hi: 2 }})
+    const state = new State({ m: { hi: 2 }})
 
     let runs = 0
 
@@ -183,6 +184,78 @@ describe('reaction', () => {
     })
 
     state.remove()
+
+    const actual = runs
+    const expected = 2
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should track computed values after stale', () => {
+    class State extends Model<State> {
+      count = number
+      @computed countPlusOne?() {
+        return this.count + 1
+      }
+      @action increment?() {
+        this.count++
+      }
+    }
+
+    const initialState: State = {
+      count: 0
+    }
+
+    const state = new State(initialState)
+
+    let runs = 0
+
+    state.countPlusOne()
+
+    reaction(() => {
+      runs++
+      state.countPlusOne()
+    })
+
+    state.increment()
+
+    const actual = runs
+    const expected = 2
+
+    expect(actual).toBe(expected)
+  })
+
+  it('computed values should track computed values after stale', () => {
+    class State extends Model<State> {
+      count = number
+      @computed countPlusOne?() {
+        return this.count + 1
+      }
+      @computed countPlusTwo?() {
+        return this.countPlusOne() + 1
+      }
+      @action increment?() {
+        this.count++
+      }
+    }
+
+    const initialState: State = {
+      count: 0
+    }
+
+    const state = new State(initialState)
+
+    let runs = 0
+
+    state.countPlusOne()
+    state.countPlusTwo()
+
+    reaction(() => {
+      runs++
+      state.countPlusTwo()
+    })
+
+    state.increment()
 
     const actual = runs
     const expected = 2

@@ -1,5 +1,5 @@
 import {
-  action, arrayOf, complex, computed, createObservable, mapOf, number, object, oneOf,
+  action, arrayOf, complex, computed, mapOf, Model, number, object, oneOf,
   optional, readonly, string
 } from '../../src/api'
 import * as core from '../../src/core'
@@ -7,11 +7,11 @@ import { catchErrType } from '../testHelpers'
 
 describe('createObservable', () => {
   it('creates an observable with a number as a property', () => {
-    class State {
+    class State extends Model<State> {
       num = number
     }
 
-    const state = createObservable(State, { num: 4 })
+    const state = new State({ num: 4 })
 
     const actual = state.num
     const expected = 4
@@ -20,11 +20,11 @@ describe('createObservable', () => {
   })
 
   it('throws when mutating state outside of an action', () => {
-    class State {
+    class State extends Model<{}> {
       count = number
     }
 
-    const state = createObservable(State, { count: 0 })
+    const state = new State({ count: 0 })
 
     const actual = catchErrType(() => state.count = state.count + 1)
     const expected = Error
@@ -33,14 +33,14 @@ describe('createObservable', () => {
   })
 
   it('allows properties to be mutated through actions', () => {
-    class State {
+    class State extends Model<State> {
       count = number
-      increment? = action((state: State) => () => {
-        state.count++
-      })
+      @action increment?() {
+        this.count++
+      }
     }
 
-    const state = createObservable(State, { count: 0 })
+    const state = new State({ count: 0 })
 
     state.increment()
 
@@ -51,63 +51,63 @@ describe('createObservable', () => {
   })
 
   it('throws if trying to redefine an action', () => {
-    class State {
+    class State extends Model<State> {
       count = number
-      increment? = action((state: State) => () => {
-        state.count++
-      })
+      @action increment?() {
+        this.count++
+      }
     }
 
-    const actual = catchErrType(() => createObservable(State, { count: 0, increment: () => 0 }))
+    const actual = catchErrType(() => new State({ count: 0, increment: () => 0 }))
     const expected = Error
 
     expect(actual).toBe(expected)
   })
 
   it('throws if there are extraneous properties on the object', () => {
-    class State {
+    class State extends Model<State> {
       count = number
     }
 
-    const actual = catchErrType(() => (createObservable as any)(State, { count: 0, hello: 1 }))
+    const actual = catchErrType(() => new (State as any)({ count: 0, hello: 1 }))
     const expected = Error
 
     expect(actual).toBe(expected)
   })
 
   it('throws if trying to mutate a readonly property', () => {
-    class State {
+    class State extends Model<State> {
       @readonly count = number
-      increment? = action((state: State) => () => {
-        state.count++
-      })
+      @action increment?() {
+        this.count++
+      }
     }
 
-    const actual = catchErrType(() => createObservable(State, { count: 0 }).increment())
+    const actual = catchErrType(() => new State({ count: 0 }).increment())
     const expected = Error
 
     expect(actual).toBe(expected)
   })
 
   it('throws if trying missing props on object', () => {
-    class State {
+    class State extends Model<State> {
       count = number
     }
 
-    const actual = catchErrType(() => createObservable(State, { }))
+    const actual = catchErrType(() => new (State as any)({ }))
     const expected = Error
 
     expect(actual).toBe(expected)
   })
 
   it('allows optional props to be missing', () => {
-    class State {
+    class State extends Model<State> {
       @optional count? = number
     }
 
     const initialState: State = { }
 
-    const state = createObservable(State, initialState)
+    const state = new State(initialState)
 
     const actual = state.count
     const expected = undefined
@@ -116,11 +116,11 @@ describe('createObservable', () => {
   })
 
   it('allows nested objects at create time', () => {
-    class Person {
+    class Person extends Model<State> {
       firstName = string
     }
 
-    class State {
+    class State extends Model<State> {
       person = object(Person)
     }
 
@@ -130,7 +130,7 @@ describe('createObservable', () => {
       }
     }
 
-    const state = createObservable(State, initialState)
+    const state = new State(initialState)
 
     const actual = state.person.firstName
     const expected = 'Foo'
@@ -139,11 +139,11 @@ describe('createObservable', () => {
   })
 
   it('allows properties not on the description to be accessed', () => {
-    class State {
+    class State extends Model<State> {
       firstName = string
     }
 
-    const state = createObservable(State, { firstName: 'Foo' } )
+    const state = new State({ firstName: 'Foo' } )
 
     const actual = state['asdfasdf'] // tslint:disable-line
     const expected = undefined
@@ -152,20 +152,20 @@ describe('createObservable', () => {
   })
 
   it('allows nested objects to be set in an action', () => {
-    class Person {
+    class Person extends Model<State> {
       firstName = string
     }
 
-    class State {
+    class State extends Model<State> {
       @optional person? = object(Person)
-      setPerson? = action((state: State) => (person: Person) => {
-        state.person = person
-      })
+      @action setPerson?(person: Person) {
+        this.person = person
+      }
     }
 
     const initialState: State = { }
 
-    const state = createObservable(State, initialState)
+    const state = new State(initialState)
 
     state.setPerson({ firstName: 'Foo' })
 
@@ -176,29 +176,29 @@ describe('createObservable', () => {
   })
 
   it('should error if trying to set a string as a number in object creation', () => {
-    class State {
+    class State extends Model<State> {
       foo = string
     }
 
-    const actual = catchErrType(() => (createObservable as any)(State, { foo: 5 }))
+    const actual = catchErrType(() => new (State as any)({ foo: 5 }))
     const expected = Error
 
     expect(actual).toBe(expected)
   })
 
   it('should error if trying to set a string as a number in an action', () => {
-    class State {
+    class State extends Model<State> {
       str = string
-      setAsNum? = action(state => () => {
-        state.str = 0
-      })
+      @action setAsNum?() {
+        this.str = 0 as any
+      }
     }
 
     const initialState: State = {
       str: ''
     }
 
-    const state = createObservable(State, initialState)
+    const state = new State(initialState)
 
     const actual = catchErrType(() => state.setAsNum())
     const expected = Error
@@ -207,16 +207,16 @@ describe('createObservable', () => {
   })
 
   it('should create observables out of nested objects', () => {
-    class Person {
+    class Person extends Model<State> {
       firstName = string
     }
-    class State {
+    class State extends Model<State> {
       person = object(Person)
     }
     const initialState: State = {
       person: { firstName: '' }
     }
-    const state = createObservable(State, initialState)
+    const state = new State(initialState)
 
     const actual = core.isObservable(state.person)
     const expected = true
@@ -225,11 +225,11 @@ describe('createObservable', () => {
   })
 
   it('should allow arrays', () => {
-    class State {
+    class State extends Model<State> {
       foo = arrayOf(string)
     }
 
-    const state = createObservable(State, { foo: [ 'one', 'two' ] } )
+    const state = new State({ foo: [ 'one', 'two' ] } )
 
     const actual = state.foo
     const expected = [ 'one', 'two' ]
@@ -238,11 +238,11 @@ describe('createObservable', () => {
   })
 
   it('should throw error when mutating array out of action', () => {
-    class State {
+    class State extends Model<State> {
       foo = arrayOf(number)
     }
 
-    const state = createObservable(State, { foo: [ ] })
+    const state = new State({ foo: [ ] })
 
     const actual = catchErrType(() => state.foo.push(5))
     const expected = Error
@@ -251,14 +251,14 @@ describe('createObservable', () => {
   })
 
   it('should allow mutation of arrays through actions', () => {
-    class State {
+    class State extends Model<State> {
       foo = arrayOf(string)
-      addFoo? = action((state: State) => () => {
-        state.foo.push('item')
-      })
+      @action addFoo?() {
+        this.foo.push('item')
+      }
     }
 
-    const state = createObservable(State, { foo: [ ]})
+    const state = new State({ foo: [ ]})
 
     state.addFoo()
 
@@ -269,14 +269,14 @@ describe('createObservable', () => {
   })
 
   it('should update length property on array update', () => {
-    class State {
+    class State extends Model<State> {
       foo = arrayOf(string)
-      addFoo? = action((state: State) => () => {
-        state.foo.push('item')
-      })
+      @action addFoo?() {
+        this.foo.push('item')
+      }
     }
 
-    const state = createObservable(State, { foo: [ ]})
+    const state = new State({ foo: [ ]})
 
     state.addFoo()
 
@@ -287,11 +287,11 @@ describe('createObservable', () => {
   })
 
   it('should allow mapOf type', () => {
-    class State {
+    class State extends Model<State> {
       foo = mapOf(number)
     }
 
-    const state = createObservable(State, { foo: { bar: 5 } })
+    const state = new State({ foo: { bar: 5 } })
 
     const actual = state
     const expected = { foo: { bar: 5 } }
@@ -300,11 +300,11 @@ describe('createObservable', () => {
   })
 
   it('should throw on mutating mapOf type', () => {
-    class State {
+    class State extends Model<State> {
       foo = mapOf(number)
     }
 
-    const state = createObservable(State, { foo: { } })
+    const state = new State({ foo: { } })
 
     const actual = catchErrType(() => state.foo.asdf = 5 )
     const expected = Error
@@ -313,14 +313,14 @@ describe('createObservable', () => {
   })
 
   it('should allow mutation of mapOf through an action', () => {
-    class State {
+    class State extends Model<State> {
       foo = mapOf(number)
-      addFoo? = action((state: State) => (key, num: number) => {
-        state.foo[key] = num
-      })
+      @action addFoo?(key, num: number) {
+        this.foo[key] = num
+      }
     }
 
-    const state = createObservable(State, { foo: { } })
+    const state = new State({ foo: { } })
 
     state.addFoo('hello', 5)
 
@@ -331,14 +331,14 @@ describe('createObservable', () => {
   })
 
   it('should allow throw when trying to assign wrong type in mapOf', () => {
-    class State {
+    class State extends Model<State> {
       foo = mapOf(number)
-      addFoo? = action((state: State) => (key, num: string) => {
-        state.foo[key] = num as any
-      })
+      @action addFoo?(key, num: string) {
+        this.foo[key] = num as any
+      }
     }
 
-    const state = createObservable(State, { foo: { } })
+    const state = new State({ foo: { } })
 
     const actual = catchErrType(() => state.addFoo('hello', 'no'))
     const expected = Error
@@ -347,11 +347,11 @@ describe('createObservable', () => {
   })
 
   it('should allow complex types', () => {
-    class State {
+    class State extends Model<State> {
       date = complex((d: Date) => d.toUTCString(), v => new Date(v))
     }
 
-    const state = createObservable(State, { date: new Date(1000) })
+    const state = new State({ date: new Date(1000) })
 
     const actual = state.date.toString()
     const expected = new Date(1000).toString()
@@ -360,11 +360,11 @@ describe('createObservable', () => {
   })
 
   it('should throw error when mutating complex type outside of an action', () => {
-    class State {
+    class State extends Model<State> {
       date = complex((d: Date) => d.toUTCString(), v => new Date(v))
     }
 
-    const state = createObservable(State, { date: new Date(0) })
+    const state = new State({ date: new Date(0) })
 
     const actual = catchErrType(() => state.date.setMonth(4))
     const expected = Error
@@ -373,14 +373,14 @@ describe('createObservable', () => {
   })
 
   it('should allow mutating complex types in actions', () => {
-    class State {
+    class State extends Model<State> {
       date = complex((d: Date) => d.toUTCString(), v => new Date(v))
-      setYear? = action((s: State) => (year: number) => {
-        s.date.setFullYear(year)
-      })
+      @action setYear?(year: number) {
+        this.date.setFullYear(year)
+      }
     }
 
-    const s = createObservable(State, { date: new Date(1000) })
+    const s = new State({ date: new Date(1000) })
 
     s.setYear(2000)
 
@@ -391,14 +391,14 @@ describe('createObservable', () => {
   })
 
   it('should throw when mutating readonly complex type in action', () => {
-    class State {
+    class State extends Model<State> {
       @readonly date = complex((d: Date) => d.toUTCString(), v => new Date(v))
-      setYear? = action((s: State) => (year: number) => {
-        s.date.setFullYear(year)
-      })
+      @action setYear?(year: number) {
+        this.date.setFullYear(year)
+      }
     }
 
-    const s = createObservable(State, { date: new Date(1000) })
+    const s = new State({ date: new Date(1000) })
 
     const actual = catchErrType(() => s.setYear(2000))
     const expected = Error
@@ -407,17 +407,17 @@ describe('createObservable', () => {
   })
 
   it('should allow oneOf', () => {
-    class State {
+    class State extends Model<State> {
       numOrString = oneOf(number, string)
-      setNum? = action((state: State) => (num: number) => {
-        state.numOrString = num
-      })
-      setString? = action((state: State) => (str: string) => {
-        state.numOrString = str
-      })
+      @action setNum?(num: number) {
+        this.numOrString = num
+      }
+      @action setString?(str: string) {
+        this.numOrString = str
+      }
     }
 
-    const state = createObservable(State, { numOrString: '' })
+    const state = new State({ numOrString: '' })
 
     state.setNum(4)
     state.setString('hi')
@@ -429,14 +429,14 @@ describe('createObservable', () => {
   })
 
   it('should throw when misassigning oneOf', () => {
-    class State {
+    class State extends Model<State> {
       numOrString = oneOf(number, string)
-      setBool? = action((state: State) => (bool: boolean) => {
-        state.numOrString = bool as any
-      })
+      @action setBool?(bool: boolean) {
+        this.numOrString = bool as any
+      }
     }
 
-    const state = createObservable(State, { numOrString: '' })
+    const state = new State({ numOrString: '' })
 
     const actual = catchErrType(() => state.setBool(false))
     const expected = Error
@@ -445,30 +445,34 @@ describe('createObservable', () => {
   })
 
   it('should allow computed properties', () => {
-    class State {
+    class State extends Model<State> {
       firstName = string
       lastName = string
 
-      fullName? = computed((state: State) => state.firstName + ' ' + state.lastName)
+      @computed fullName?() {
+        return this.firstName + ' ' + this.lastName
+      }
     }
 
-    const state = createObservable(State, { firstName: 'Foo', lastName: 'Bar' })
+    const state = new State({ firstName: 'Foo', lastName: 'Bar' })
 
-    const actual = state.fullName
+    const actual = state.fullName()
     const expected = 'Foo Bar'
 
     expect(actual).toBe(expected)
   })
 
   it('should throw when trying to mutate computed', () => {
-    class State {
-      comp? = computed(() => 0)
-      mutateComputed? = action((state: State) => () => {
-        state.comp = 5
-      })
+    class State extends Model<State> {
+      @computed comp?() {
+        return 0
+      }
+      @action mutateComputed?() {
+        (this as any).comp = 5
+      }
     }
 
-    const state = createObservable(State, {})
+    const state = new State({})
 
     const actual = catchErrType(() => state.mutateComputed())
     const expected = Error
@@ -479,20 +483,20 @@ describe('createObservable', () => {
   it('should only recompute when stale', () => {
     let runs = 0
 
-    class State {
+    class State extends Model<State> {
       firstName = string
       lastName = string
 
-      fullName? = computed((state: State) => {
+      @computed fullName?() {
         runs++
-        return state.firstName + ' ' + state.lastName
-      })
+        return this.firstName + ' ' + this.lastName
+      }
     }
 
-    const state = createObservable(State, { firstName: 'Foo', lastName: 'Bar' })
+    const state = new State({ firstName: 'Foo', lastName: 'Bar' })
 
-    state.fullName
-    state.fullName
+    state.fullName()
+    state.fullName()
 
     const actual = runs
     const expected = 1
@@ -503,24 +507,24 @@ describe('createObservable', () => {
   it('should mark as stale without rerunning', () => {
     let runs = 0
 
-    class State {
+    class State extends Model<State> {
       firstName = string
       lastName = string
 
-      fullName? = computed((state: State) => {
+      @computed fullName?() {
         runs++
-        return state.firstName + ' ' + state.lastName
-      })
+        return this.firstName + ' ' + this.lastName
+      }
 
-      changeName? = action((state: State) => (firstName: string, lastName: string) => {
-        state.firstName = firstName
-        state.lastName = lastName
-      })
+      @action changeName?(firstName: string, lastName: string) {
+        this.firstName = firstName
+        this.lastName = lastName
+      }
     }
 
-    const state = createObservable(State, { firstName: 'Foo', lastName: 'Bar' })
+    const state = new State({ firstName: 'Foo', lastName: 'Bar' })
 
-    state.fullName
+    state.fullName()
     state.changeName('Foo2', 'Bar2')
 
     const actual = runs
@@ -532,26 +536,26 @@ describe('createObservable', () => {
   it('should recompute when marked as stale', () => {
     let runs = 0
 
-    class State {
+    class State extends Model<State> {
       firstName = string
       lastName = string
 
-      fullName? = computed((state: State) => {
+      @computed fullName?() {
         runs++
-        return state.firstName + ' ' + state.lastName
-      })
+        return this.firstName + ' ' + this.lastName
+      }
 
-      changeName? = action((state: State) => (firstName: string, lastName: string) => {
-        state.firstName = firstName
-        state.lastName = lastName
-      })
+      @action changeName?(firstName: string, lastName: string) {
+        this.firstName = firstName
+        this.lastName = lastName
+      }
     }
 
-    const state = createObservable(State, { firstName: 'Foo', lastName: 'Bar' })
+    const state = new State({ firstName: 'Foo', lastName: 'Bar' })
 
-    state.fullName
+    state.fullName()
     state.changeName('Foo2', 'Bar2')
-    state.fullName
+    state.fullName()
 
     const actual = runs
     const expected = 2
@@ -560,35 +564,35 @@ describe('createObservable', () => {
   })
 
   it('should allowed nested computed props 1', () => {
-    class Person {
+    class Person extends Model<State> {
       @readonly id = number
       firstName = string
       lastName = string
 
-      fullName? = computed((person: Person) => {
-        return person.firstName + ' ' + person.lastName
-      })
+      @computed fullName?() {
+        return this.firstName + ' ' + this.lastName
+      }
 
-      changeName? = action((person: Person) => (firstName: string, lastName: string) => {
-        person.firstName = firstName
-        person.lastName = lastName
-      })
+      @action changeName?(firstName: string, lastName: string) {
+        this.firstName = firstName
+        this.lastName = lastName
+      }
     }
 
-    class State {
+    class State extends Model<State> {
       people = mapOf(object(Person))
-      sortedPeople? = computed((state: State) => {
-        return Object.keys(state.people).map(k => state.people[k]).sort((a: Person, b: Person) => {
-          return a.fullName.localeCompare(b.fullName)
+      @computed sortedPeople?() {
+        return Object.keys(this.people).map(k => this.people[k]).sort((a: Person, b: Person) => {
+          return a.fullName().localeCompare(b.fullName())
         })
-      })
+      }
 
-      addPerson? = action((state: State) => (person: Person) => {
-        state.people[person.id] = person
-      })
+      @action addPerson?(person: Person) {
+        this.people[person.id] = person
+      }
     }
 
-    const state = createObservable(State, { people: {} })
+    const state = new State({ people: {} })
 
     state.addPerson({
       id: 1,
@@ -602,7 +606,7 @@ describe('createObservable', () => {
       lastName: 'C'
     })
 
-    const actual = state.sortedPeople
+    const actual = state.sortedPeople()
     const expected = [
       { id: 1, firstName: 'B', lastName: 'B' },
       { id: 2, firstName: 'C', lastName: 'C' }
@@ -612,35 +616,35 @@ describe('createObservable', () => {
   })
 
   it('should allowed nested computed props 2', () => {
-    class Person {
+    class Person extends Model<State> {
       @readonly id = number
       firstName = string
       lastName = string
 
-      fullName? = computed((person: Person) => {
-        return person.firstName + ' ' + person.lastName
-      })
+      @computed fullName?() {
+        return this.firstName + ' ' + this.lastName
+      }
 
-      changeName? = action((person: Person) => (firstName: string, lastName: string) => {
-        person.firstName = firstName
-        person.lastName = lastName
-      })
+      @action changeName?(firstName: string, lastName: string) {
+        this.firstName = firstName
+        this.lastName = lastName
+      }
     }
 
-    class State {
+    class State extends Model<State> {
       people = mapOf(object(Person))
-      sortedPeople? = computed((state: State) => {
-        return Object.keys(state.people).map(k => state.people[k]).sort((a: Person, b: Person) => {
-          return a.fullName.localeCompare(b.fullName)
+      @computed sortedPeople?() {
+        return Object.keys(this.people).map(k => this.people[k]).sort((a: Person, b: Person) => {
+          return a.fullName().localeCompare(b.fullName())
         })
-      })
+      }
 
-      addPerson? = action((state: State) => (person: Person) => {
-        state.people[person.id] = person
-      })
+      @action addPerson?(person: Person) {
+        this.people[person.id] = person
+      }
     }
 
-    const state = createObservable(State, { people: {} })
+    const state = new State({ people: {} })
 
     state.addPerson({
       id: 1,
@@ -656,7 +660,7 @@ describe('createObservable', () => {
 
     state.people[2].changeName('A', 'A')
 
-    const actual = state.sortedPeople
+    const actual = state.sortedPeople()
     const expected = [
       { id: 2, firstName: 'A', lastName: 'A' },
       { id: 1, firstName: 'B', lastName: 'B' }
@@ -668,35 +672,80 @@ describe('createObservable', () => {
   it('should stop tracking values not passed over in last computation', () => {
     let runs = 0
 
-    class State {
+    class State extends Model<State> {
       @optional num? = number
       letter = string
-      comp? = computed((state: State) => {
+      @computed comp?() {
         runs++
-        if (state.num != undefined) {
-          return state.num
+        if (this.num != undefined) {
+          return this.num
         } else {
-          return state.letter
+          return this.letter
         }
-      })
-      setNum? = action((state: State) => () => {
-        state.num = 1
-      })
-      setLetter? = action((state: State) => () => {
-        state.letter = 'B'
-      })
+      }
+      @action setNum?() {
+        this.num = 1
+      }
+      @action setLetter?() {
+        this.letter = 'B'
+      }
     }
 
-    const state = createObservable(State, { letter: 'A' })
+    const state = new State({ letter: 'A' })
 
-    state.comp
+    state.comp()
     state.setNum()
-    state.comp
+    state.comp()
     state.setLetter()
-    state.comp
+    state.comp()
 
     const actual = runs
     const expected = 2
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should enforce descriptions be extended from Model', () => {
+    class Hi extends Model<App> { }
+
+    class App extends Model<App> {
+      hi = object(Hi)
+    }
+
+    const initialAppState: App = {
+      hi: { }
+    }
+
+    const actual = catchErrType(() => new App(initialAppState))
+    const expected = Error
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should initialize state properly', () => {
+    class Hi extends Model<App> {
+      count = number
+    }
+
+    class Hello extends Model<App> {
+      hello = number
+    }
+
+    class App extends Hello {
+      hi = object(Hi)
+    }
+
+    const initialAppState: App = {
+      hello: 3,
+      hi: {
+        count: 2
+      }
+    }
+
+    const app = new App(initialAppState)
+
+    const actual = app.toString()
+    const expected = '{"hello":3,"hi":{"count":2}}'
 
     expect(actual).toBe(expected)
   })

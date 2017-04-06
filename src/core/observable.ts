@@ -55,6 +55,32 @@ export function isObservableDesignatorKey(key) {
   return key === OBSERVABLE_DESIGNATOR
 }
 
+const setMap = {
+  [core.descriptionTypes.action]: core.actionProperty.set,
+  [core.descriptionTypes.arrayOf]: core.arrayOfProperty.set,
+  [core.descriptionTypes.boolean]: core.booleanProperty.set,
+  [core.descriptionTypes.complex]: core.complexProperty.set,
+  [core.descriptionTypes.computed]: core.computedProperty.set,
+  [core.descriptionTypes.mapOf]: core.mapOfProperty.set,
+  [core.descriptionTypes.number]: core.numberProperty.set,
+  [core.descriptionTypes.object]: core.objectProperty.set,
+  [core.descriptionTypes.oneOf]: core.oneOfProperty.set,
+  [core.descriptionTypes.string]: core.stringProperty.set,
+}
+
+const getMap = {
+  [core.descriptionTypes.action]: core.actionProperty.get,
+  [core.descriptionTypes.arrayOf]: core.arrayOfProperty.get,
+  [core.descriptionTypes.boolean]: core.booleanProperty.get,
+  [core.descriptionTypes.complex]: core.complexProperty.get,
+  [core.descriptionTypes.computed]: core.computedProperty.get,
+  [core.descriptionTypes.mapOf]: core.mapOfProperty.get,
+  [core.descriptionTypes.number]: core.numberProperty.get,
+  [core.descriptionTypes.object]: core.objectProperty.get,
+  [core.descriptionTypes.oneOf]: core.oneOfProperty.get,
+  [core.descriptionTypes.string]: core.stringProperty.get,
+}
+
 /**
  * Sets a property on an object
  * @param target The target you are setting the property on
@@ -70,18 +96,10 @@ export function setProperty(
     throw new Error('You cannot mutate stuff inside of a computed property')
   }
 
-  const setMap = {
-    [core.descriptionTypes.action]: core.actionProperty.set,
-    [core.descriptionTypes.arrayOf]: core.arrayOfProperty.set,
-    [core.descriptionTypes.boolean]: core.booleanProperty.set,
-    [core.descriptionTypes.complex]: core.complexProperty.set,
-    [core.descriptionTypes.computed]: core.computedProperty.set,
-    [core.descriptionTypes.mapOf]: core.mapOfProperty.set,
-    [core.descriptionTypes.number]: core.numberProperty.set,
-    [core.descriptionTypes.object]: core.objectProperty.set,
-    [core.descriptionTypes.oneOf]: core.oneOfProperty.set,
-    [core.descriptionTypes.string]: core.stringProperty.set,
+  if (typeof description === 'function') {
+    throw new Error('You cannot re-assign a class method')
   }
+
   const set = setMap[description.type]
   if (set == undefined) {
     throw new Error(`Unrecognized property type: ${description.type.toString()}`)
@@ -117,18 +135,6 @@ export function markObservablesDerivationsAsStale(target, key) {
  * Get property
  */
 export function getProperty(target, key, description: core.Descriptor, root, proxy) {
-  const getMap = {
-    [core.descriptionTypes.action]: core.actionProperty.get,
-    [core.descriptionTypes.arrayOf]: core.arrayOfProperty.get,
-    [core.descriptionTypes.boolean]: core.booleanProperty.get,
-    [core.descriptionTypes.complex]: core.complexProperty.get,
-    [core.descriptionTypes.computed]: core.computedProperty.get,
-    [core.descriptionTypes.mapOf]: core.mapOfProperty.get,
-    [core.descriptionTypes.number]: core.numberProperty.get,
-    [core.descriptionTypes.object]: core.objectProperty.get,
-    [core.descriptionTypes.oneOf]: core.oneOfProperty.get,
-    [core.descriptionTypes.string]: core.stringProperty.get,
-  }
 
   // If there is no description then this key doesn't exist on the
   // description - try to return it anyhow.
@@ -142,14 +148,17 @@ export function getProperty(target, key, description: core.Descriptor, root, pro
     throw new Error(`Unrecognized property type: ${description.type.toString()}`)
   }
 
-  if (core.isReactionInProgress() && description.type !== core.descriptionTypes.action) {
-    const reaction = core.getActiveReaction()
-    addReactionToObservable(target, key, reaction.id, reaction.round)
-  }
+  if (description.type !== core.descriptionTypes.action &&
+      description.type !== core.descriptionTypes.computed) {
+    if (core.isReactionInProgress()) {
+      const reaction = core.getActiveReaction()
+      addReactionToObservable(target, key, reaction.id, reaction.round)
+    }
 
-  if (core.isDerivationInProgress() && description.type !== core.descriptionTypes.action) {
-    const derivation = core.getActiveDerivation()
-    addDerivationToObservable(target, key, derivation)
+    if (core.isDerivationInProgress()) {
+      const derivation = core.getActiveDerivation()
+      addDerivationToObservable(target, key, derivation)
+    }
   }
 
   return get(target, key, description, root, proxy)
@@ -159,7 +168,7 @@ export function getProperty(target, key, description: core.Descriptor, root, pro
  * Registers a reaction with an observable so when the observable is mutated it
  * can know to trigger this reaction.
  */
-function addReactionToObservable(
+export function addReactionToObservable(
   object: any, key: PropertyKey, reactionId: symbol, roundAdded: number
 ) {
   if (observablesReactions.has(object, key)) {

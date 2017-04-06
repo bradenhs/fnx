@@ -1,18 +1,20 @@
 import * as React from 'react'
 import * as ReactTestUtils from 'react-addons-test-utils'
 import ReactiveComponent from '../../src/extras/react'
-import { action, createObservable, number } from '../../src/fnx'
+import { action, Model, number } from '../../src/fnx'
 
 describe('ReactiveComponent', () => {
   it('Should behave like a reaction', () => {
-    class State {
+    class State extends Model<State> {
       count = number
-      increment? = action((state: State) => () => {
-        state.count++
-      })
+
+      @action
+      increment?() {
+        this.count++
+      }
     }
 
-    const state = createObservable(State, { count: 0 })
+    const state = new State({ count: 0 })
 
     let runs = 0
     const Component = ReactiveComponent(() => {
@@ -31,14 +33,16 @@ describe('ReactiveComponent', () => {
   })
 
   it('should not call componentWillReact on initial render', () => {
-    class State {
+    class State extends Model<State> {
       count = number
-      increment? = action((state: State) => () => {
-        state.count++
-      })
+
+      @action
+      increment?() {
+        this.count++
+      }
     }
 
-    const state = createObservable(State, { count: 0 })
+    const state = new State({ count: 0 })
 
     let willReactRuns = 0
     class Component extends ReactiveComponent<{}, {}> {

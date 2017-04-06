@@ -15,14 +15,34 @@ let activeDerivation: Derivation
 
 const derivations = new ObjectKeyWeakMap<any, Derivation>()
 
-export function runDerivation(derivation: Derivation, proxy, root) {
-  const lastActiveDerivation = activeDerivation
-  activeDerivation = derivation
-  derivation.round++
-  derivation.value = derivation.fn(proxy, root)
-  derivation.stale = false
-  activeDerivation = lastActiveDerivation
-  return derivation.value
+export function wrapDerivation(target, key, description: core.ComputedDescriptor<any>, proxy) {
+  return (...args: any[]) => {
+    if (args.length > 0) {
+      throw new Error('Computed values should take no parameters')
+    }
+
+    if (core.isReactionInProgress()) {
+      const reaction = core.getActiveReaction()
+      core.addReactionToObservable(target, key, reaction.id, reaction.round)
+    }
+
+    if (isDerivationInProgress()) {
+      core.addDerivationToObservable(target, key, activeDerivation)
+    }
+
+    const derivation = core.getDerivation(target, key, description)
+
+    if (!derivation.stale) {
+      return derivation.value
+    }
+    const lastActiveDerivation = activeDerivation
+    activeDerivation = derivation
+    derivation.round++
+    derivation.value = derivation.fn.bind(proxy)()
+    derivation.stale = false
+    activeDerivation = lastActiveDerivation
+    return derivation.value
+  }
 }
 
 export function getDerivation(target, key, description: core.ComputedDescriptor<any>) {

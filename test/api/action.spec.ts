@@ -1,6 +1,5 @@
-import { action as typedAction } from '../../src/api/action'
-import { descriptionTypes } from '../../src/core'
-import { catchErrType } from '../testHelpers'
+import { descriptionTypes, parseDescription } from '../../src/core'
+import { action as typedAction, Model } from '../../src/fnx'
 
 const action = typedAction as any
 
@@ -13,52 +12,23 @@ describe('action', () => {
     expect(actual).toEqual(expected)
   })
 
-  it('should throw `InvalidActionUage` with zero parameters', () => {
-    const actual = catchErrType(() => action())
-    const expected = Error
-
-    expect(actual).toBe(expected)
-  })
-
-  it('should throw `InvalidActionUage` with two or more parameters', () => {
-    const actual = catchErrType(() => action(() => 0, 'second'))
-    const expected = Error
-
-    expect(actual).toBe(expected)
-  })
-
-  it('should throw `InvalidActionUage` with parameter of type "string"', () => {
-    const actual = catchErrType(() => action('string'))
-    const expected = Error
-
-    expect(actual).toBe(expected)
-  })
-
-  it('should throw `Error` with parameter of type "number"', () => {
-    const actual = catchErrType(() => action(0))
-    const expected = Error
-
-    expect(actual).toBe(expected)
-  })
-
-  it('should throw `Error` with parameter of type "boolean"', () => {
-    const actual = catchErrType(() => action(true))
-    const expected = Error
-
-    expect(actual).toBe(expected)
-  })
-
-  it('should throw `Error` with parameter of type "object"', () => {
-    const actual = catchErrType(() => action({}))
-    const expected = Error
-
-    expect(actual).toBe(expected)
-  })
-
   it('should return an action descriptor', () => {
-    const fn = () => () => 0
-    const actual = action(fn)
-    const expected = { type: descriptionTypes.action, fn }
+    class App extends Model<App> {
+      @action test() { }
+    }
+    const description = parseDescription(App)
+    const actual = description
+    const expected = {
+      type: descriptionTypes.object,
+      readonly: true,
+      optional: false,
+      properties: {
+        test: {
+          type: descriptionTypes.action,
+          fn: (App.prototype.test as any).fn
+        }
+      }
+    }
 
     expect(actual).toEqual(expected)
   })

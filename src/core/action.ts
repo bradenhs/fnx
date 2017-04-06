@@ -60,12 +60,6 @@ export function addObservablesReactionsToPendingReactions(
  * Wrap actions so they are awesome
  */
 export function wrapAction(description: core.ActionDescriptor<any>, root, proxy) {
-  const action = description.fn(proxy, root)
-
-  if (typeof action !== 'function') {
-    throw new Error('Actions have a context function wrapping the inner one')
-  }
-
   return (...args: any[]) => {
     if (core.isReactionInProgress()) {
       throw new Error('Actions should not be called in reactions')
@@ -74,13 +68,12 @@ export function wrapAction(description: core.ActionDescriptor<any>, root, proxy)
       throw new Error('Actions should not be called in derivations')
     }
     incrementActionsInProgress(root)
-    if (action(...args) != undefined) {
-      throw new Error('Actions must not return stuff')
-    }
+    const result = description.fn.bind(proxy)(...args)
     decrementActionsInProgress(root)
     if (isActionInProgress(root) === false) {
       triggerReactions()
     }
+    return result
   }
 }
 
@@ -95,3 +88,59 @@ function triggerReactions() {
   // Reset pending reactions
   pendingReactions.clear()
 }
+
+// class App extends Model {
+//   @readonly
+//   id = string
+
+//   firstName = string
+
+//   @optional
+//   lastName = string
+
+//   @virtual
+
+//   @computed
+//   getFullName() {
+//     return this.firstName + ' ' + this.lastName
+//   }
+
+//   @action
+//   changeName(firstName: string, lastName: string) {
+//     this.firstName = firstName
+//     this.lastName = lastName
+//   }
+// }
+
+// defineMixin(base => class extends base {
+
+// })
+
+// Model.mixedWith()
+
+// @action
+// @computed
+// @optional
+// @readonly
+// @virtual
+// @intercept.get
+// @intercept.set
+// @intercept.delete
+// @intercept.action
+// types.arrayOf
+// types.string
+// types.number
+// types.boolean
+// types.complex
+// types.complex.regex
+// types.complex.date
+// types.mapOf
+// types.object
+// types.oneOf
+
+// getRoot
+
+// toString
+// toObject({ preserveComplex: true })
+// fromString
+// fromObject({ preserveComplex: true })

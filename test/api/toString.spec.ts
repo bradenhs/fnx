@@ -1,13 +1,13 @@
 import {
-  boolean, complex, createObservable, mapOf, number, object, string
+  boolean, complex, mapOf, Model, number, object, string
 } from '../../src/fnx'
 
 test('toString should work', () => {
-  class Example {
+  class Example extends Model<State> {
     foo = string
   }
 
-  class State {
+  class State extends Model<State> {
     str = string
     bool = boolean
     num = number
@@ -15,7 +15,7 @@ test('toString should work', () => {
     mp = mapOf(string)
   }
 
-  const state = createObservable(State, {
+  const state = new State({
     str: 'hi', bool: false, num: 0, obj: { foo: 'foo' }, mp: { }
   })
 
@@ -26,11 +26,11 @@ test('toString should work', () => {
 })
 
 test('toString should work with complex types', () => {
-  class Example {
+  class Example extends Model<State> {
     foo = complex((d: Date) => ({ date: d.toUTCString() }), v => new Date(v.date))
   }
 
-  class State {
+  class State extends Model<State> {
     str = string
     bool = boolean
     num = number
@@ -38,7 +38,7 @@ test('toString should work with complex types', () => {
     mp = mapOf(string)
   }
 
-  const state = createObservable(State, {
+  const state = new State({
     str: 'hi', bool: false, num: 0, obj: { foo: new Date(100) }, mp: { }
   })
 

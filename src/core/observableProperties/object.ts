@@ -1,4 +1,11 @@
 import * as core from '../../core'
+import { ObjectKeyWeakMap } from '../../utils'
+
+const skipInit = new ObjectKeyWeakMap()
+
+export function skipPropertyInitialization(target, property) {
+  skipInit.set(target, property, true)
+}
 
 export const objectProperty: core.Property = {
   set(target, key, value, description: core.ParsedObjectDescriptor<any>, root) {
@@ -38,11 +45,18 @@ export const objectProperty: core.Property = {
           }
         }
 
+        if (typeof description.properties[k] === 'function') {
+          return description.properties[k]
+        }
+
         return core.getProperty(t, k, description.properties[k], root || proxy, proxy)
       },
       set(t, k, v) {
+        if (skipInit.get(proxy, k)) {
+          return skipInit.set(proxy, k, false)
+        }
         if (!core.isActionInProgress(root || proxy)) {
-          throw new Error('You cannot mutate state outside of an action')
+          throw new Error(`You cannot mutate state outside of an action "${k.toString()}"`)
         }
         if (!Reflect.has(description.properties, k)) {
           throw new Error(`The description for this object does not include ${key}`)
@@ -71,6 +85,7 @@ export const objectProperty: core.Property = {
       if (Object.getOwnPropertyNames(value).indexOf(k) >= 0) {
         core.setProperty(value, k, value[k], description.properties[k], root || proxy)
       } else if (
+        typeof description.properties[k] !== 'function' &&
         description.properties[k].optional !== true &&
         description.properties[k].type !== core.descriptionTypes.action &&
         description.properties[k].type !== core.descriptionTypes.computed

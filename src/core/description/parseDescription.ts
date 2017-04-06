@@ -1,3 +1,4 @@
+import { Model } from '../../api/Model'
 import {
   ActionDescriptor, ArrayOfDescriptor, BooleanDescriptor, ComplexDescriptor, ComputedDescriptor,
   descriptionTypes, MapOfDescriptor, NumberDescriptor, ObjectDescriptor, OneOfDescriptor,
@@ -25,12 +26,13 @@ const parsedObjectCache = new WeakMap<new () => any, ParsedObjectDescriptor<any>
  * Parses and validates the provided description into a usable format
  * @param Description The description of the observable
  */
-export function parseDescription(Description: new() => any) {
-  return parseObjectDescriptor({
+export function parseDescription(Description: new(initialState?: any) => any) {
+  const description = parseObjectDescriptor({
     type: descriptionTypes.object,
     readonly: true, optional: false,
     clazz: Description,
   })
+  return description
 }
 
 /**
@@ -43,6 +45,10 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
     throw new Error()
   }
 
+  if (parsedObjectCache.has(descriptor.clazz)) {
+    return parsedObjectCache.get(descriptor.clazz)
+  }
+
   // Initialize arrays for keeping track of properties that need to be marked
   // as readonly or optional
   let readonlyProperties = []
@@ -52,15 +58,19 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
   let prototype = descriptor.clazz.prototype
 
   if (prototype == undefined) {
-    throw new Error()
+    throw new Error('Class prototype is undefined')
   }
+
+  const prototypeProperties: { [key: string]: any } = { }
 
   // Walk up the prototype chain
   do {
-    // 'constructor' should be the only property name defined
-    if (Object.getOwnPropertyNames(prototype).length !== 1) {
-      throw new Error()
-    }
+    Object.getOwnPropertyNames(prototype).forEach(key => {
+      if (key === 'constructor') {
+        return
+      }
+      prototypeProperties[key] = prototype[key]
+    })
 
     // Get the symbols
     const symbols = Object.getOwnPropertySymbols(prototype)
@@ -87,13 +97,16 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
 
     // If any symbols are left they're extraneous so throw an error
     if (symbols.length > 0) {
-      throw new Error()
+      throw new Error('Symbols should not be properties')
     }
 
     // Get the parent prototype and keep walking up the chain until we reach
     // Object.prototype
     prototype = Object.getPrototypeOf(prototype)
-  } while (prototype !== Object.prototype)
+    if (prototype === Object.prototype) {
+      throw new Error('Description must extend model')
+    }
+  } while (prototype !== Model.prototype)
 
   // Create a new instance of descriptor.type
   const instance = new descriptor.clazz()
@@ -111,24 +124,17 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
   // Initialize ParsedObjectTypeDescriptor to build and then return it as the description
   const description: ParsedObjectDescriptor<any> = {
     readonly: descriptor.readonly, optional: descriptor.optional,
-    properties: { }, type: descriptor.type,
+    properties: prototypeProperties, type: descriptor.type,
   }
 
   Object.keys(instance).forEach(key => {
     // Ensure all properties are objects
     if (typeof instance[key] !== 'object') {
-      throw new Error()
+      throw new Error('Found invalid property on description')
     }
 
     // If this is an object descriptor run this instead
     if (instance[key].identifier === descriptionTypes.object) {
-      // TODO parse objects lazily to allow for cicular references
-
-      // If we haven't stored this in our map of existing parsed object descriptors...
-      if (parsedObjectCache.get(instance[key]) == undefined) {
-        // Cache the result of this parse operation in our map
-        parsedObjectCache.set(instance[key], parseObjectDescriptor(instance[key]))
-      }
       // Set this to our cached result for this type of object
       description.properties[key] = parsedObjectCache.get(instance[key])
       return
@@ -139,16 +145,14 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
 
     // If one wasn't found throw an error
     if (parser == undefined) {
-      throw new Error()
+      throw new Error('Invalid property descriptor type')
     }
 
     // Set the description.type[key] to the parsed value of the instance[key]
-    if (parsedObjectCache.get(instance[key]) != undefined) {
-      description.properties[key] = parsedObjectCache.get(instance[key])
-    }
-
     description.properties[key] = parser(instance[key])
   })
+
+  parsedObjectCache.set(descriptor.clazz, description)
 
   return description
 }
@@ -159,7 +163,7 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
  */
 function parseActionDescriptor(descriptor: ActionDescriptor<(...args: any[]) => void>) {
   if (typeof descriptor.fn !== 'function') {
-    throw new Error()
+    throw new Error('Actions should be made of functions')
   }
   return descriptor
 }
@@ -170,23 +174,23 @@ function parseActionDescriptor(descriptor: ActionDescriptor<(...args: any[]) => 
  */
 function parseArrayOfDescriptor(descriptor: ArrayOfDescriptor<any>) {
   if (descriptor.type !== descriptionTypes.arrayOf) {
-    throw new Error()
+    throw new Error('Should be arrayOf')
   }
 
   if (typeof descriptor.kind !== 'object') {
-    throw new Error()
+    throw new Error('Invalid property kind on arrayOf')
   }
 
   if (descriptor.kind.type === descriptionTypes.action) {
-    throw new Error()
+    throw new Error('the type of the kind cannot be an action for arrayOf')
   }
 
   if (descriptor.kind.type === descriptionTypes.computed) {
-    throw new Error()
+    throw new Error('the type of the kind cannot be a computed property for arrayof')
   }
 
   if (identifierParserMap[descriptor.kind.type] == undefined) {
-    throw new Error()
+    throw new Error('invalid type for kind in arrayOf')
   }
 
   if (descriptor.kind.type === descriptionTypes.object) {
@@ -202,10 +206,10 @@ function parseArrayOfDescriptor(descriptor: ArrayOfDescriptor<any>) {
  */
 function parseComplexDescriptor(descriptor: ComplexDescriptor<any, any>) {
   if (typeof descriptor.serialize !== 'function') {
-    throw new Error()
+    throw new Error('complex serialize parameter should be function')
   }
   if (typeof descriptor.deserialize !== 'function') {
-    throw new Error()
+    throw new Error('complex deserialize parameter should be a function')
   }
   return descriptor
 }
@@ -216,7 +220,7 @@ function parseComplexDescriptor(descriptor: ComplexDescriptor<any, any>) {
  */
 function parseComputedDescriptor(descriptor: ComputedDescriptor<any>) {
   if (typeof descriptor.fn !== 'function') {
-    throw new Error()
+    throw new Error('Computed property should have function')
   }
   return descriptor
 }
