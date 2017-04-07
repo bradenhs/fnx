@@ -1,5 +1,4 @@
 // Other
-export * from './configure'
 export * from './reaction'
 export * from './Model'
 

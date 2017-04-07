@@ -2,11 +2,6 @@ import * as core from '../../core'
 
 export const mapOfProperty: core.Property = {
   set(target, key, value, description: core.ArrayOfDescriptor<any>, root) {
-    // TODO verify not just that it is an observable
-    if (core.isObservable(value)) {
-      return value
-    }
-
     const proxy = new Proxy(value, {
       setPrototypeOf(): boolean {
         throw new Error('setPrototypeOf is disabled for fnx objects')
@@ -18,7 +13,7 @@ export const mapOfProperty: core.Property = {
         const result = Reflect.deleteProperty(t, k)
         if (result) {
           // Trigger change on map when one of it's properties is deleted
-          core.markObservablesDerivationsAsStale(target, key)
+          core.markObservablesComputationsAsStale(target, key)
           core.addObservablesReactionsToPendingReactions(target, key)
         }
         return result
@@ -46,7 +41,7 @@ export const mapOfProperty: core.Property = {
 
         // This is a new property meaning we should trigger a change for the parent
         if (!Reflect.has(t, k)) {
-          core.markObservablesDerivationsAsStale(target, key)
+          core.markObservablesComputationsAsStale(target, key)
           core.addObservablesReactionsToPendingReactions(target, key)
         }
 

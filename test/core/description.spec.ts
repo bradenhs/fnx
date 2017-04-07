@@ -8,7 +8,7 @@
 import { cloneDeep } from 'lodash'
 import {
   action, arrayOf, boolean, complex, computed, mapOf, Model,
-  number, object, oneOf, optional, readonly, string
+  number, object, oneOf, optional, readonly, string,
 } from '../../src/api'
 import { descriptionTypes, parseDescription } from '../../src/core'
 import { catchErrType } from '../testHelpers'
@@ -267,6 +267,28 @@ describe('parseDescription', () => {
     }
 
     expect(actual).toEqual(expected)
+  })
+
+  it('should throw if trying to decorate wrong thing with computed', () => {
+    const actual = catchErrType(() => {
+      class Description extends Model<Description> {
+        @(computed as any) two = string
+      }
+    })
+    const expected = TypeError
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should throw if trying to decorate wrong thing with action', () => {
+    const actual = catchErrType(() => {
+      class Description extends Model<Description> {
+        @(action as any) two = string
+      }
+    })
+    const expected = TypeError
+
+    expect(actual).toBe(expected)
   })
 
   it('should parse computed correctly', () => {

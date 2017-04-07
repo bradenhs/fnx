@@ -4,30 +4,34 @@ import { ObjectKeyWeakMap } from '../../utils'
 const complexValues = new ObjectKeyWeakMap<any, string>()
 
 export const complexProperty: core.Property = {
-  set(target, key, value, description: core.ComplexDescriptor<any, any>, root) {
-    if (core.isDeserializing()) {
-      const didChange = value !== complexValues.get(target, key)
-      let result = true
-      if (didChange) {
-        result = Reflect.set(target, key, description.deserialize(value))
-        complexValues.set(target, key, JSON.stringify(value))
-      }
-      return { didChange, result }
-    } else {
-      const proxy = complexProxy(target, key, value, value, description, root)
-      const newValue = JSON.stringify(description.serialize(value))
-      const didChange = newValue !== complexValues.get(target, key)
-      complexValues.set(target, key, newValue)
-      return {
-        didChange, result: Reflect.set(target, key, proxy),
-      }
+  set(target, key, rawValue, description: core.ComplexDescriptor<any, any>, root) {
+    let value = rawValue
+    if (core.isDeserializingFromJSON()) {
+      value = description.deserialize(rawValue)
+    } else if (core.isDeserializingFromPlainObject()) {
+      value = description.deserialize(description.serialize(rawValue))
+    }
+
+    const proxy = complexProxy(target, key, value, value, description, root)
+    const newValue = JSON.stringify(description.serialize(value))
+    const didChange = newValue !== complexValues.get(target, key)
+    complexValues.set(target, key, newValue)
+    return {
+      didChange, result: Reflect.set(target, key, proxy),
     }
   },
-  get(target, key) {
-    if (core.isSerializing()) {
-      return JSON.parse(complexValues.get(target, key))
+  get(target, key, description: core.ComplexDescriptor<any, any>) {
+    const storedValue = complexValues.get(target, key)
+    if (storedValue == undefined) {
+      return target[key] == undefined ? undefined : target[key]
     }
-    return target[key]
+    if (core.isSerializingAsJSON()) {
+      return JSON.parse(storedValue)
+    } else if (core.isSerializingAsPlainObject()) {
+      return description.deserialize(JSON.parse(storedValue))
+    } else {
+      return target[key]
+    }
   }
 }
 
@@ -60,10 +64,14 @@ function complexProxy(
         return complexProxy(rootTarget, rootKey, rootValue, returnValue, description, root)
       }
     },
-    construct(_, argumentsList, newTarget) {
-      const returnValue = Reflect.construct(target, argumentsList, newTarget)
-      checkForMutation(rootTarget, rootKey, rootValue, description, root)
-      return complexProxy(rootTarget, rootKey, rootValue, returnValue, description, root)
+    construct(): object {
+      throw new Error(
+        'Currently fnx does not support storing constructable objects in a complex type'
+      )
+      // const actualNewTarget = newTarget === dummyTarget ? target : newTarget
+      // const returnValue = Reflect.construct(target, argumentsList, actualNewTarget)
+      // checkForMutation(rootTarget, rootKey, rootValue, description, root)
+      // return complexProxy(rootTarget, rootKey, rootValue, returnValue, description, root)
     },
     defineProperty(_, key, attributes) {
       const returnValue = Reflect.defineProperty(target, key, attributes)
@@ -135,12 +143,14 @@ function checkForMutation(
   const newSerializedValue = JSON.stringify(description.serialize(rootValue))
   const changed = complexValues.get(rootTarget, rootKey) !== newSerializedValue
   if (changed) {
-    complexValues.set(rootTarget,rootKey, newSerializedValue)
     if (!core.isActionInProgress(root)) {
       throw new Error('Attempted to mutate complex type of an action')
     }
     if (description.readonly) {
       throw new Error('Attemped to mutated readonly complex type')
     }
+    complexValues.set(rootTarget,rootKey, newSerializedValue)
+    core.markObservablesComputationsAsStale(rootTarget, rootKey)
+    core.addObservablesReactionsToPendingReactions(rootTarget, rootKey)
   }
 }

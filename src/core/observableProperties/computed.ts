@@ -4,7 +4,7 @@ export const computedProperty: core.Property = {
   set: () => {
     throw new Error('You cannot mutate a computed value')
   },
-  get: (target, key, description: core.ComputedDescriptor<any>, _, proxy) => {
-    return core.wrapDerivation(target, key, description, proxy)
+  get: (_0, key, description: core.ComputedDescriptor<any>, _1, proxy) => {
+    return core.wrapComputation(proxy, key, description.fn)
   }
 }

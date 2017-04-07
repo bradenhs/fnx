@@ -75,7 +75,7 @@ describe('virtual method access', () => {
     class App extends fnx.Model<App> {
       hi = fnx.mapOf(fnx.string)
       @fnx.action break?() {
-        this.hi.toJS = () => 'hi'
+        (this.hi as any).toJS = () => 'hi'
       }
     }
 
@@ -90,7 +90,7 @@ describe('virtual method access', () => {
     class App extends fnx.Model<App> {
       hi = fnx.arrayOf(fnx.string)
       @fnx.action break?() {
-        this.hi.toJS = () => 'hi'
+        (this.hi as any).toJS = () => 'hi'
       }
     }
 
@@ -104,7 +104,7 @@ describe('virtual method access', () => {
   it('rejects setting toJS on object', () => {
     class App extends fnx.Model<App> {
       @fnx.action break?() {
-        this.toJS = () => 'hi'
+        (this as any).toJS = () => 'hi'
       }
     }
 

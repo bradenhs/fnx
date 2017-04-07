@@ -16,8 +16,8 @@ const observablesReactions = new ObjectKeyWeakMap<any, Map<symbol, {
   roundAdded: number
 }>>()
 
-const observablesDerivations = new ObjectKeyWeakMap<any, Map<symbol, {
-  derivation: core.Derivation
+const observablesComputations = new ObjectKeyWeakMap<any, Map<symbol, {
+  computation: core.Computation
   roundSet: number
 }>>()
 
@@ -30,14 +30,24 @@ export interface IVirtualMethodFactoryArgs {
 
 export const virtualCollectionMethods = {
   toString({ proxy }: IVirtualMethodFactoryArgs) {
-    return () => core.toString(proxy)
+    return core.wrapComputation(proxy, 'toString', () => core.toString(proxy))
   },
-  toJSON({ proxy }: IVirtualMethodFactoryArgs) {
-    return () => core.toJSON(proxy)
+  toJS({ proxy }: IVirtualMethodFactoryArgs) {
+    return (options?: { serializeComplex: boolean }) => {
+      if (options && options.serializeComplex) {
+        return core.wrapComputation(proxy, '__toJS______internal_unique________', () => {
+          return core.toJS(proxy, { serializeComplex: true })
+        })()
+      } else {
+        return core.wrapComputation(proxy, 'toJS', () => {
+          return core.toJS(proxy)
+        })()
+      }
+    }
   },
   parse({ root, proxy }) {
-    return core.wrapAction((input) => {
-      core.parseInto(input, proxy)
+    return core.wrapAction((input, options?: { asJSON: boolean }) => {
+      core.parseInto(input, proxy, options)
     }, root, proxy)
   }
 }
@@ -102,7 +112,7 @@ const getMap = {
 export function setProperty(
   target, key, value, description: core.Descriptor, root
 ) {
-  if (core.isDerivationInProgress()) {
+  if (core.isComputationInProgress()) {
     throw new Error('You cannot mutate stuff inside of a computed property')
   }
 
@@ -117,7 +127,7 @@ export function setProperty(
   const setResult = set(target, key, value, description, root)
 
   if (setResult.didChange) {
-    markObservablesDerivationsAsStale(target, key)
+    markObservablesComputationsAsStale(target, key)
     core.addObservablesReactionsToPendingReactions(target, key)
   }
 
@@ -125,18 +135,18 @@ export function setProperty(
 }
 
 /**
- * Mark this derivation and all of it's parent derivations as stale and setup the reactions to
+ * Mark this computation and all of it's parent computations as stale and setup the reactions to
  * trigger
  */
-export function markObservablesDerivationsAsStale(target, key) {
-  getDerivationsOfObservable(target, key).forEach(({ derivation, roundSet }) => {
-    if (derivation.round !== roundSet) {
-      removeDerivationFromObservable(target, key, derivation.id)
-    } else if (derivation.stale === false) {
-      derivation.stale = true
+export function markObservablesComputationsAsStale(target, key) {
+  getComputationsOfObservable(target, key).forEach(({ computation, roundSet }) => {
+    if (computation.round !== roundSet) {
+      removeComputationFromObservable(target, key, computation.id)
+    } else if (computation.stale === false) {
+      computation.stale = true
       // Include some way to throw away observables that are not part of it's calculation anymore
-      core.addObservablesReactionsToPendingReactions(derivation.object, derivation.key)
-      markObservablesDerivationsAsStale(derivation.object, derivation.key)
+      core.addObservablesReactionsToPendingReactions(computation.object, computation.key)
+      markObservablesComputationsAsStale(computation.object, computation.key)
     }
   })
 }
@@ -145,11 +155,10 @@ export function markObservablesDerivationsAsStale(target, key) {
  * Get property
  */
 export function getProperty(target, key, description: core.Descriptor, root, proxy) {
-
   // If there is no description then this key doesn't exist on the
   // description - try to return it anyhow.
   if (description == undefined) {
-    return Reflect.get(target, key)
+    return target[key]
   }
 
   const get = getMap[description.type]
@@ -165,9 +174,9 @@ export function getProperty(target, key, description: core.Descriptor, root, pro
       addReactionToObservable(target, key, reaction.id, reaction.round)
     }
 
-    if (core.isDerivationInProgress()) {
-      const derivation = core.getActiveDerivation()
-      addDerivationToObservable(target, key, derivation)
+    if (core.isComputationInProgress()) {
+      const computation = core.getActiveComputation()
+      addComputationToObservable(target, key, computation)
     }
   }
 
@@ -188,13 +197,15 @@ export function addReactionToObservable(
   }
 }
 
-export function addDerivationToObservable(object, key: PropertyKey, derivation: core.Derivation) {
-  if (observablesDerivations.has(object, key)) {
-    observablesDerivations.get(object, key)
-      .set(derivation.id, { derivation, roundSet: derivation.round })
+export function addComputationToObservable(
+  object, key: PropertyKey, computation: core.Computation
+) {
+  if (observablesComputations.has(object, key)) {
+    observablesComputations.get(object, key)
+      .set(computation.id, { computation, roundSet: computation.round })
   } else {
-    observablesDerivations.set(object, key, new Map(
-      [[derivation.id, { derivation, roundSet: derivation.round }]]
+    observablesComputations.set(object, key, new Map(
+      [[computation.id, { computation, roundSet: computation.round }]]
     ))
   }
 }
@@ -209,13 +220,13 @@ export function getReactionsOfObservable(object: any, key: PropertyKey) {
   return observablesReactions.get(object, key)
 }
 
-export function getDerivationsOfObservable(
+export function getComputationsOfObservable(
   object: object, key: PropertyKey
-): Map<symbol, { derivation: core.Derivation, roundSet: number }> {
-  if (!observablesDerivations.has(object, key)) {
-    observablesDerivations.set(object, key, new Map())
+): Map<symbol, { computation: core.Computation, roundSet: number }> {
+  if (!observablesComputations.has(object, key)) {
+    observablesComputations.set(object, key, new Map())
   }
-  return observablesDerivations.get(object, key)
+  return observablesComputations.get(object, key)
 }
 
 /**
@@ -229,10 +240,10 @@ export function removeReactionFromObservable(
   }
 }
 
-export function removeDerivationFromObservable(
-  object: object, key: PropertyKey, derivationId: symbol
+export function removeComputationFromObservable(
+  object: object, key: PropertyKey, computationId: symbol
 ) {
-  if (observablesDerivations.has(object, key)) {
-    observablesDerivations.get(object, key).delete(derivationId)
+  if (observablesComputations.has(object, key)) {
+    observablesComputations.get(object, key).delete(computationId)
   }
 }

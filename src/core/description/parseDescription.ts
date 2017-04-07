@@ -196,14 +196,6 @@ function parseArrayOfDescriptor(descriptor: ArrayOfDescriptor<any>) {
     throw new Error('Invalid property kind on arrayOf')
   }
 
-  if (descriptor.kind.type === descriptionTypes.action) {
-    throw new Error('the type of the kind cannot be an action for arrayOf')
-  }
-
-  if (descriptor.kind.type === descriptionTypes.computed) {
-    throw new Error('the type of the kind cannot be a computed property for arrayof')
-  }
-
   if (identifierParserMap[descriptor.kind.type] == undefined) {
     throw new Error('invalid type for kind in arrayOf')
   }
@@ -253,14 +245,6 @@ function parseMapOfDescriptor(descriptor: MapOfDescriptor<any>) {
     throw new Error()
   }
 
-  if (descriptor.kind.type === descriptionTypes.action) {
-    throw new Error()
-  }
-
-  if (descriptor.kind.type === descriptionTypes.computed) {
-    throw new Error()
-  }
-
   if (identifierParserMap[descriptor.kind.type] == undefined) {
     throw new Error()
   }
@@ -297,12 +281,6 @@ function parseOneOfDescriptor(descriptor: OneOfDescriptor) {
     if (kind.type === descriptionTypes.object) {
       descriptor.kinds[index] = parseObjectDescriptor(kind)
       return
-    }
-    if (kind.type === descriptionTypes.action) {
-      throw new Error()
-    }
-    if (kind.type === descriptionTypes.computed) {
-      throw new Error()
     }
     if (identifierParserMap[kind.type] == undefined) {
       throw new Error()

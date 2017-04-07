@@ -1,18 +1,33 @@
 import * as core from '../core'
 
-let serializationCounter = 0
-let deserializationCounter = 0
+let serializeAsJSONCounter = 0
+let serializeAsPlainObjectCounter = 0
 
-export function isSerializing() {
-  return serializationCounter > 0
+export function isSerializingAsJSON() {
+  return serializeAsJSONCounter > 0
 }
 
-export function isDeserializing() {
-  return deserializationCounter > 0
+export function isSerializingAsPlainObject() {
+  return serializeAsPlainObjectCounter > 0
+}
+
+let deserializeFromJSON = false
+let deserializeFromPlainObject = false
+
+export function setIsDeserializingFromPlainObject(value: boolean) {
+  deserializeFromPlainObject = value
+}
+
+export function isDeserializingFromJSON() {
+  return deserializeFromJSON
+}
+
+export function isDeserializingFromPlainObject() {
+  return deserializeFromPlainObject
 }
 
 export function toString(observable: object) {
-  serializationCounter++
+  serializeAsJSONCounter++
   let str = ''
   if (observable instanceof Array) {
     str += '['
@@ -52,12 +67,16 @@ export function toString(observable: object) {
     }).join(',')
     str += '}'
   }
-  serializationCounter--
+  serializeAsJSONCounter--
   return str
 }
 
-export function toJSON(observable: object) {
-  serializationCounter++
+export function toJS(observable: object, options?: { serializeComplex: boolean }) {
+  if (options && options.serializeComplex) {
+    serializeAsJSONCounter++
+  } else {
+    serializeAsPlainObjectCounter++
+  }
   let result
   if (observable instanceof Array) {
     result = []
@@ -66,7 +85,7 @@ export function toJSON(observable: object) {
   }
   Object.keys(observable).forEach(key => {
     if (typeof observable[key] === 'object' && core.isObservable(observable[key])) {
-      result[key] = observable[key].toJSON()
+      result[key] = observable[key].toJS(options)
     } else {
       result[key] = observable[key]
     }
@@ -74,15 +93,25 @@ export function toJSON(observable: object) {
       result[key] = null
     }
   })
-  serializationCounter--
+  if (options && options.serializeComplex) {
+    serializeAsJSONCounter--
+  } else {
+    serializeAsPlainObjectCounter--
+  }
   return result
 }
 
-export function parseInto(input: object | string, observable: object) {
+export function parseInto(
+  json: object | string, observable: object, options?: { asJSON: boolean }
+) {
   let obj
-  if (typeof input === 'string') {
+  if (typeof json === 'string') {
+    if (options !== undefined) {
+      throw new Error('options should not be defined if given value is string')
+    }
+    options = { asJSON: true }
     try {
-      obj = JSON.parse(input)
+      obj = JSON.parse(json)
     } catch(e) {
       throw new Error('The string you provided was not valid json')
     }
@@ -90,17 +119,21 @@ export function parseInto(input: object | string, observable: object) {
     if (typeof obj !== 'object') {
       throw new Error('The string you provided was not a json object')
     }
-  } else if (typeof input === 'object') {
-    obj = input
+  } else if (typeof json === 'object') {
+    obj = json
   } else {
     throw new Error('input should be a string or a plain json object')
   }
-
-  deserializationCounter++
+  if (options && options.asJSON) {
+    deserializeFromJSON = true
+  } else {
+    deserializeFromPlainObject = true
+  }
   Object.keys(obj).forEach(k => {
     observable[k] = obj[k]
   })
-  deserializationCounter--
+  deserializeFromJSON = false
+  deserializeFromPlainObject = false
 }
 
 //

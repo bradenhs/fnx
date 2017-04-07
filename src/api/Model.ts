@@ -26,7 +26,9 @@ export abstract class Model<Root extends object> {
       }
       core.setParsingDescription(false)
       const object = { state: undefined }
+      core.setIsDeserializingFromPlainObject(true)
       core.objectProperty.set(object, 'state', initialValue, description)
+      core.setIsDeserializingFromPlainObject(false)
       properties.forEach(property => {
         core.skipPropertyInitialization(object.state, property)
       })
@@ -49,18 +51,36 @@ export abstract class Model<Root extends object> {
   toString?(): string
 
   /**
-   * Serializes the fnx object into a json object
+   * Converts the fnx object into a plain js object. If `{ serializeComplex: true }` is passed in
+   * then all complex properties will be in their serialized form. `serializeComplex` defaults to
+   * false.
    *
    * **https://fnx.js.org/docs/api/toJSON.html**
+   *
+   * @param options (Optional) Pass in `{ serializeComplex: true }` to return serialized versions
+   * of complex properties
    */
-  toJSON?(): object
+  toJS?(options?: { serializeComplex: boolean }): any
 
   /**
-   * Parses the given value into the fnx object.
+   * Parses the given json string into the fnx object.
    *
    * **https://fnx.js.org/docs/api/parse.html**
    *
-   * @param json The json string or object compatible with this fnx object.
+   * @param string The json string compatible with this fnx object.
    */
-  parse?(json: string | object)
+  parse?(string: string)
+
+  /**
+   * Parses the given object into the fnx object. If `{ asJSON: true }` is passed in as the second
+   * parameter then all complex properties on the given object will be treated as if they are
+   * serialized and will be run through their respective deserialization functions. `asJSON`
+   * defaults to false.
+   *
+   * **https://fnx.js.org/docs/api/parse.html**
+   *
+   * @param object The js object compatible with this fnx object.
+   * @param options (Optional) Pass in `{ asJSON: true }` to treat the given object as JSON
+   */
+  parse?(object: object, options?: { asJSON: boolean })
 }

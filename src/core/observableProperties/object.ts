@@ -13,10 +13,6 @@ export const objectProperty: core.Property = {
       throw new Error('tried to set object to non-object value')
     }
 
-    if (core.isObservable(value)) {
-      return value
-    }
-
     const proxy = new Proxy(value, {
       setPrototypeOf(): boolean {
         throw new Error('setPrototypeOf is disabled for fnx objects')

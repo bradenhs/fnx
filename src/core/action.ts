@@ -64,8 +64,8 @@ export function wrapAction(fn: (...args: any[]) => any, root, proxy) {
     if (core.isReactionInProgress()) {
       throw new Error('Actions should not be called in reactions')
     }
-    if (core.isDerivationInProgress()) {
-      throw new Error('Actions should not be called in derivations')
+    if (core.isComputationInProgress()) {
+      throw new Error('Actions should not be called in computations')
     }
     incrementActionsInProgress(root)
     const result = fn.bind(proxy)(...args)

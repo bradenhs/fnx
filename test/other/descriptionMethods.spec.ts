@@ -1,5 +1,5 @@
-import { Model } from '../src/fnx'
-import { catchErrType } from './testHelpers'
+import { Model } from '../../src/fnx'
+import { catchErrType } from '../testHelpers'
 
 describe('test', () => {
   it('should allow normal methods', () => {
