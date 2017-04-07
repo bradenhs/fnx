@@ -22,7 +22,6 @@ const observablesDerivations = new ObjectKeyWeakMap<any, Map<symbol, {
 }>>()
 
 const OBSERVABLE_DESIGNATOR = Symbol('OBSERVABLE_DESIGNATOR')
-const DESCRIPTION_DESIGNATOR = Symbol('DESCRIPTION_DESIGNATOR')
 
 export interface IVirtualMethodFactoryArgs {
   proxy: object
@@ -33,8 +32,8 @@ export const virtualCollectionMethods = {
   toString({ proxy }: IVirtualMethodFactoryArgs) {
     return () => core.toString(proxy)
   },
-  toJS({ proxy }: IVirtualMethodFactoryArgs) {
-    return () => JSON.stringify(core.toString(proxy))
+  toJSON({ proxy }: IVirtualMethodFactoryArgs) {
+    return () => core.toJSON(proxy)
   },
   parse({ root, proxy }) {
     return core.wrapAction((input) => {
@@ -56,21 +55,6 @@ export const virtualObjectMethods = {
  */
 export function isObservable(object) {
   return object[OBSERVABLE_DESIGNATOR]
-}
-
-/**
- * Test a key to see if it's a designator of the object's description
- */
-export function isDescriptionDesignator(key) {
-  return key === DESCRIPTION_DESIGNATOR
-}
-
-/**
- * Returns the description
- */
-export function getDescription(target):
-  core.ParsedObjectDescriptor<any> | core.MapOfDescriptor<any> | core.ArrayOfDescriptor<any> {
-  return target[DESCRIPTION_DESIGNATOR]
 }
 
 /**

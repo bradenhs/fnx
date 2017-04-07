@@ -21,10 +21,6 @@ export const arrayOfProperty: core.Property = {
           return true
         }
 
-        if (core.isDescriptionDesignator(k)) {
-          return description
-        }
-
         const method = core.virtualCollectionMethods[k]
         if (method != undefined) {
           return method({ proxy, root })

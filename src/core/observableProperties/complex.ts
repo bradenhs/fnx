@@ -35,7 +35,8 @@ function complexProxy(
   rootTarget: any, rootKey: any, rootValue: any, target: any,
   description: core.ComplexDescriptor<any, any>, root: any
 ) {
-  if (typeof target === 'string' ||
+  if (target == undefined ||
+      typeof target === 'string' ||
       typeof target === 'number' ||
       typeof target === 'boolean') {
     return target

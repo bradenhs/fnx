@@ -1,3 +1,5 @@
+import * as core from '../core'
+
 let serializationCounter = 0
 let deserializationCounter = 0
 
@@ -11,17 +13,69 @@ export function isDeserializing() {
 
 export function toString(observable: object) {
   serializationCounter++
-  const result = JSON.stringify(observable, (_, v) => v === undefined ? null : v)
+  let str = ''
+  if (observable instanceof Array) {
+    str += '['
+    str += observable.map(v => {
+      if (typeof v === 'object') {
+        if (core.isObservable(v)) {
+          return v.toString()
+        } else {
+          return JSON.stringify(v)
+        }
+      } else if (typeof v === 'string') {
+        return `"${v}"`
+      } else if (v === undefined) {
+        return 'null'
+      } else {
+        return v
+      }
+    }).join(',')
+    str += ']'
+  } else {
+    str += '{'
+    str += Object.keys(observable).map(key => {
+      const v = observable[key]
+      if (typeof v === 'object') {
+        if (core.isObservable(v)) {
+          return `"${key}":${v.toString()}`
+        } else {
+          return `"${key}":${JSON.stringify(v)}`
+        }
+      } else if (typeof v === 'string') {
+        return `"${key}":"${v}"`
+      } else if (v === undefined) {
+        return `"${key}":null'`
+      } else {
+        return `"${key}":${v}`
+      }
+    }).join(',')
+    str += '}'
+  }
   serializationCounter--
-  return result
+  return str
 }
 
-export function toJS(observable: object) {
+export function toJSON(observable: object) {
   serializationCounter++
+  let result
+  if (observable instanceof Array) {
+    result = []
+  } else {
+    result = {}
+  }
   Object.keys(observable).forEach(key => {
-    observable[key]
+    if (typeof observable[key] === 'object' && core.isObservable(observable[key])) {
+      result[key] = observable[key].toJSON()
+    } else {
+      result[key] = observable[key]
+    }
+    if (result[key] === undefined) {
+      result[key] = null
+    }
   })
   serializationCounter--
+  return result
 }
 
 export function parseInto(input: object | string, observable: object) {

@@ -59,7 +59,7 @@ export function addObservablesReactionsToPendingReactions(
 /**
  * Wrap actions so they are awesome
  */
-export function wrapAction(fn: Function, root, proxy) {
+export function wrapAction(fn: (...args: any[]) => any, root, proxy) {
   return (...args: any[]) => {
     if (core.isReactionInProgress()) {
       throw new Error('Actions should not be called in reactions')
@@ -88,59 +88,3 @@ function triggerReactions() {
   // Reset pending reactions
   pendingReactions.clear()
 }
-
-// class App extends Model {
-//   @readonly
-//   id = string
-
-//   firstName = string
-
-//   @optional
-//   lastName = string
-
-//   @virtual
-
-//   @computed
-//   getFullName() {
-//     return this.firstName + ' ' + this.lastName
-//   }
-
-//   @action
-//   changeName(firstName: string, lastName: string) {
-//     this.firstName = firstName
-//     this.lastName = lastName
-//   }
-// }
-
-// defineMixin(base => class extends base {
-
-// })
-
-// Model.mixedWith()
-
-// @action
-// @computed
-// @optional
-// @readonly
-// @virtual
-// @intercept.get
-// @intercept.set
-// @intercept.delete
-// @intercept.action
-// types.arrayOf
-// types.string
-// types.number
-// types.boolean
-// types.complex
-// types.complex.regex
-// types.complex.date
-// types.mapOf
-// types.object
-// types.oneOf
-
-// getRoot
-
-// toString
-// toObject({ preserveComplex: true })
-// fromString
-// fromObject({ preserveComplex: true })

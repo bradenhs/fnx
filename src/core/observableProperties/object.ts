@@ -32,19 +32,14 @@ export const objectProperty: core.Property = {
           return true
         }
 
-        if (core.isDescriptionDesignator(k)) {
-          return description
-        }
-
         const method = core.virtualObjectMethods[k]
         if (method != undefined) {
-          return method({ proxy, root })
+          return method({ proxy, root: root || proxy })
         }
 
         if (typeof description.properties[k] === 'function') {
           return description.properties[k]
         }
-
         return core.getProperty(t, k, description.properties[k], root || proxy, proxy)
       },
       set(t, k, v) {

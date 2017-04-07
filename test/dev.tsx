@@ -1,5 +1,5 @@
 import fnx from '../src/fnx'
-import { catchErrType } from './testHelpers'
+// import { catchErrType } from './testHelpers'
 
 /**
  * Use this file for constructing new test suites without having to worry about
@@ -9,16 +9,33 @@ import { catchErrType } from './testHelpers'
  */
 describe('serialization', () => {
   it('toString should work', () => {
-    class App extends fnx.Model<App> {
-      hello = fnx.string
+    class Sub extends fnx.Model<App> {
+      hi = fnx.string
     }
-    const app = new App({ hello: 'hello' })
+    class App extends fnx.Model<App> {
+      sub = fnx.object(Sub)
+    }
+    const app = new App({ sub: { hi: 'hello' } })
 
     const actual = app.toString()
-    const expected = '{"hello":"hello"}'
+    const expected = '{"sub":{"hi":"hello"}}'
 
     expect(actual).toBe(expected)
   })
+
+  it('should be able to stringify arrays', () => {
+    class App extends fnx.Model<App> {
+      arr = fnx.arrayOf(fnx.string)
+    }
+
+    const app = new App({ arr: ['a', 'b']})
+
+    const actual = app.toString()
+    const expected = '{"arr":["a","b"]}'
+
+    expect(actual).toBe(expected)
+  })
+
   it('toString should work with complex types', () => {
     class App extends fnx.Model<App> {
       date = fnx.complex.date
@@ -30,26 +47,7 @@ describe('serialization', () => {
 
     expect(actual).toBe(expected)
   })
-  it('should create an object with toJS', () => {
-    class App extends fnx.Model<App> {
-      date = fnx.complex.date
-    }
-    const app = new App({ date: new Date(100) })
-    const actual = app.toJS().date.valueOf()
-    const expected = new Date(100).valueOf()
 
-    expect(actual).toBe(expected)
-  })
-  it('should created an object with serialized complex values with toJS', () => {
-    class App extends fnx.Model<App> {
-      date = fnx.complex.date
-    }
-    const app = new App({ date: new Date(100) })
-    const actual = app.toJS({ serializeComplex: true }).date
-    const expected = 'Thu, 01 Jan 1970 00:00:00 GMT'
-
-    expect(actual).toBe(expected)
-  })
   it('should parse string input', () => {
     class App extends fnx.Model<App> {
       hello = fnx.string
@@ -102,35 +100,10 @@ describe('serialization', () => {
 
     const app = new App({ date: new Date() })
 
-    app.parse({ date: 1000 }, { asJson: true })
+    app.parse({ date: 1000 })
 
     const actual = app.date.valueOf()
     const expected = 1000
-
-    expect(actual).toBe(expected)
-  })
-})
-
-describe('oneOf', () => {
-  it('should let oneOf accept primitive value', () => {
-    class App extends fnx.Model<App> {
-      helloOrGoodbye = fnx.oneOf('hello', 'goodbye')
-    }
-
-    const app = new App({ helloOrGoodbye: 'hello' })
-
-    const actual = app.helloOrGoodbye
-    const expected = 'hello'
-
-    expect(actual).toBe(expected)
-  })
-  it('should err with oneOf if not the expected value', () => {
-    class App extends fnx.Model<App> {
-      helloOrGoodbye = fnx.oneOf('hello', 'goodbye')
-    }
-
-    const actual = catchErrType(() => new App({ helloOrGoodbye: 'hi' }))
-    const expected = Error
 
     expect(actual).toBe(expected)
   })

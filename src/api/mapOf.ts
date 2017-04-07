@@ -46,34 +46,20 @@ export function mapOf<T>(kind: T) {
     toString?(): string
 
     /**
-     * Converts the fnx map into a plain javascript object.
+     * Serializes the fnx object into a json object
      *
-     * **https://fnx.js.org/docs/api/toJS.html**
-     *
-     * @param options (Optional) Pass in { serializeComplex: true } to return serialized version
-     * of complex properties.
+     * **https://fnx.js.org/docs/api/toJSON.html**
      */
-    toJS?(options?: { serializeComplex: boolean }): any
+    toJSON?(): object
 
     /**
-     * Parses the given string into the fnx map.
+     * Parses the given value into the fnx object.
      *
      * **https://fnx.js.org/docs/api/parse.html**
      *
-     * @param jsonString The json string compatible with this fnx map.
+     * @param json The json string or object compatible with this fnx object.
      */
-    parse?(jsonString: string)
-
-    /**
-     * Parses the given object into the fnx map.
-     *
-     * **https://fnx.js.org/docs/api/parse.html**
-     *
-     * @param jsObject The plain javascript object compatible with this fnx map.
-     * @param options (Optional) Pass in { asJson: true } to treat given values for complex
-     * properties as their serialized versions.
-     */
-    parse?(jsObject: object, options?: { asJson: boolean })
+    parse?(json: string | object)
   } & {
     [key: string]: T
     [key: number]: T
