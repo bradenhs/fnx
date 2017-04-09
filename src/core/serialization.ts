@@ -71,7 +71,7 @@ export function toString(observable: object) {
   return str
 }
 
-export function toJS(observable: object, options?: { serializeComplex: boolean }) {
+export function getSnapshot(observable: object, options?: { serializeComplex: boolean }) {
   if (options && options.serializeComplex) {
     serializeAsJSONCounter++
   } else {
@@ -85,7 +85,7 @@ export function toJS(observable: object, options?: { serializeComplex: boolean }
   }
   Object.keys(observable).forEach(key => {
     if (typeof observable[key] === 'object' && core.isObservable(observable[key])) {
-      result[key] = observable[key].toJS(options)
+      result[key] = observable[key].getSnapshot(options)
     } else {
       result[key] = observable[key]
     }

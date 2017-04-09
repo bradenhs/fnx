@@ -57,7 +57,7 @@ export function arrayOf<T>(kind: T) {
      * @param options (Optional) Pass in `{ serializeComplex: true }` to return serialized versions
      * of complex properties
      */
-    toJS?(options?: { serializeComplex: boolean }): any
+    getSnapshot?(options?: { serializeComplex: boolean }): any
 
     /**
      * Parses the given json string into the fnx object.

@@ -116,27 +116,27 @@ describe('serialization', () => {
     expect(actual).toBe(expected)
   })
 
-  it('should produce valid toJS output', () => {
+  it('should produce valid getSnapshot output', () => {
     class App extends fnx.Model<App> {
       date = fnx.complex.date
     }
 
     const app = new App({ date: new Date(40000) })
 
-    const actual = app.toJS().date.valueOf()
+    const actual = app.getSnapshot().date.valueOf()
     const expected = 40000
 
     expect(actual).toBe(expected)
   })
 
-  it('should produce valid toJS asJSON output', () => {
+  it('should produce valid getSnapshot asJSON output', () => {
     class App extends fnx.Model<App> {
       date = fnx.complex.date
     }
 
     const app = new App({ date: new Date(2000) })
 
-    const actual = app.toJS({ serializeComplex: true }).date
+    const actual = app.getSnapshot({ serializeComplex: true }).date
     const expected = 'Thu, 01 Jan 1970 00:00:02 GMT'
 
     expect(actual).toBe(expected)

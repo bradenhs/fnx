@@ -7,11 +7,10 @@
     "**/.hg": true,
     "**/.DS_Store": true,
     "node_modules": true,
-    "lib": false,
+    "lib": true,
     "coverage": true,
-    ".fusebox": true,
     "yarn.lock": true,
-    ".localbuild": false
+    ".localbuild": true
   },
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 1000,

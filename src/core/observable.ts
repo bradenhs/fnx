@@ -28,19 +28,21 @@ export interface IVirtualMethodFactoryArgs {
   root: object
 }
 
+const getSnapshotWithSerializeComplex = Symbol('getSnapshotWithSerializeComplex')
+
 export const virtualCollectionMethods = {
   toString({ proxy }: IVirtualMethodFactoryArgs) {
     return core.wrapComputation(proxy, 'toString', () => core.toString(proxy))
   },
-  toJS({ proxy }: IVirtualMethodFactoryArgs) {
+  getSnapshot({ proxy }: IVirtualMethodFactoryArgs) {
     return (options?: { serializeComplex: boolean }) => {
       if (options && options.serializeComplex) {
-        return core.wrapComputation(proxy, '__toJS______internal_unique________', () => {
-          return core.toJS(proxy, { serializeComplex: true })
+        return core.wrapComputation(proxy, getSnapshotWithSerializeComplex, () => {
+          return core.getSnapshot(proxy, { serializeComplex: true })
         })()
       } else {
-        return core.wrapComputation(proxy, 'toJS', () => {
-          return core.toJS(proxy)
+        return core.wrapComputation(proxy, 'getSnapshot', () => {
+          return core.getSnapshot(proxy)
         })()
       }
     }

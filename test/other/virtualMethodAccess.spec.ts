@@ -71,11 +71,11 @@ describe('virtual method access', () => {
 
     expect(actual).toBe(expected)
   })
-  it('rejects setting toJS on map', () => {
+  it('rejects setting getSnapshot on map', () => {
     class App extends fnx.Model<App> {
       hi = fnx.mapOf(fnx.string)
       @fnx.action break?() {
-        (this.hi as any).toJS = () => 'hi'
+        (this.hi as any).getSnapshot = () => 'hi'
       }
     }
 
@@ -86,11 +86,11 @@ describe('virtual method access', () => {
 
     expect(actual).toBe(expected)
   })
-  it('rejects setting toJS on array', () => {
+  it('rejects setting getSnapshot on array', () => {
     class App extends fnx.Model<App> {
       hi = fnx.arrayOf(fnx.string)
       @fnx.action break?() {
-        (this.hi as any).toJS = () => 'hi'
+        (this.hi as any).getSnapshot = () => 'hi'
       }
     }
 
@@ -101,10 +101,10 @@ describe('virtual method access', () => {
 
     expect(actual).toBe(expected)
   })
-  it('rejects setting toJS on object', () => {
+  it('rejects setting getSnapshot on object', () => {
     class App extends fnx.Model<App> {
       @fnx.action break?() {
-        (this as any).toJS = () => 'hi'
+        (this as any).getSnapshot = () => 'hi'
       }
     }
 
