@@ -1,4 +1,4 @@
-import { action, computed, mapOf, Model, number, reaction, string } from '../../src/fnx'
+import fnx, { action, computed, mapOf, Model, number, reaction, string } from '../../src/fnx'
 
 describe('reaction', () => {
   it('should trigger the reaction', () => {
@@ -131,7 +131,7 @@ describe('reaction', () => {
       state.num
     })
 
-    myReaction.dispose()
+    myReaction.remove()
 
     state.setNum(1)
 
@@ -162,6 +162,38 @@ describe('reaction', () => {
 
     const actual = runs
     const expected = 2
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should not trigger reaction when any property in tree is manipulated', () => {
+    class Person extends Model<App> {
+      firstName = fnx.string
+      lastName = fnx.string
+
+      @fnx.action
+      setFirstName?(firstName: string) {
+        this.firstName = firstName
+      }
+    }
+
+    class App extends Model<App> {
+      person = fnx.object(Person)
+    }
+
+    const app = new App({ person: { firstName: 'hi', lastName: 'bye' }})
+
+    let runs = 0
+
+    reaction(() => {
+      runs++
+      app.person.lastName
+    })
+
+    app.person.setFirstName('bob')
+
+    const actual = runs
+    const expected = 1
 
     expect(actual).toBe(expected)
   })

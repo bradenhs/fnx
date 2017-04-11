@@ -7,7 +7,7 @@ describe('parseInto', () => {
       bool = boolean
 
       @action parse2?(value: string) {
-        this.parse(value)
+        this.applySnapshot(value)
       }
     }
 
@@ -17,7 +17,7 @@ describe('parseInto', () => {
 
     state.parse2(str)
 
-    const actual = state.toString()
+    const actual = state.getSnapshot({ asString: true })
     const expected = str
 
     expect(actual).toBe(expected)
@@ -29,7 +29,7 @@ describe('parseInto', () => {
       date = complex((d: Date) => d.toUTCString(), v => new Date(v))
 
       @action parse2?(value: string) {
-        this.parse(value)
+        this.applySnapshot(value)
       }
     }
 
@@ -39,7 +39,7 @@ describe('parseInto', () => {
 
     state.parse2(str)
 
-    const actual = state.toString()
+    const actual = state.getSnapshot({ asString: true })
     const expected = str
 
     expect(actual).toBe(expected)

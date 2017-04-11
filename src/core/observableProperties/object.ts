@@ -8,7 +8,8 @@ export function skipPropertyInitialization(target, property) {
 }
 
 export const objectProperty: core.Property = {
-  set(target, key, value, description: core.ParsedObjectDescriptor<any>, root) {
+  set(target, key, value, description: core.ParsedObjectDescriptor<any>, root, parentObservable,
+      path: string[] = []) {
     if (typeof value !== 'object') {
       throw new Error('tried to set object to non-object value')
     }
@@ -28,8 +29,16 @@ export const objectProperty: core.Property = {
           return true
         }
 
+        if (core.isParentDesignatorKey(k)) {
+          return parentObservable
+        }
+
+        if (core.isPathDesignatorKey(k)) {
+          return path
+        }
+
         const method = core.virtualObjectMethods[k]
-        if (method != undefined) {
+        if (method != null) {
           return method({ proxy, root: root || proxy })
         }
 
@@ -48,13 +57,18 @@ export const objectProperty: core.Property = {
         if (!Reflect.has(description.properties, k)) {
           throw new Error(`The description for this object does not include ${key}`)
         }
-        if (core.virtualObjectMethods[k] != undefined) {
+        if (core.virtualObjectMethods[k] != null) {
           throw new Error(`The '${k}' key is reserved by fnx`)
         }
         if (description.properties[k].readonly) {
           throw new Error('Tried to mutate readonly value')
         }
-        return core.setProperty(t, k, v, description.properties[k], root || proxy)
+        if (typeof k !== 'string') {
+          throw new Error('Keys should only be of type string')
+        }
+        return core.setProperty(
+          t, k, v, description.properties[k], root || proxy, proxy, path.concat([ k ])
+        )
       }
     })
 
@@ -73,7 +87,10 @@ export const objectProperty: core.Property = {
 
     Object.getOwnPropertyNames(description.properties).forEach(k => {
       if (Object.getOwnPropertyNames(value).indexOf(k) >= 0) {
-        core.setProperty(value, k, value[k], description.properties[k], root || proxy)
+        core.setProperty(
+          value, k, value[k], description.properties[k], root || proxy,
+          proxy, path.concat([ k ])
+        )
       } else if (
         typeof description.properties[k] !== 'function' &&
         description.properties[k].optional !== true &&

@@ -58,7 +58,7 @@ export function getComputation(proxy, key, fn: () => any) {
 }
 
 export function isComputationInProgress() {
-  return activeComputation != undefined
+  return activeComputation != null
 }
 
 export function getActiveComputation() {

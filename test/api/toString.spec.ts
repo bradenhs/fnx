@@ -19,7 +19,7 @@ test('toString should work', () => {
     str: 'hi', bool: false, num: 0, obj: { foo: 'foo' }, mp: { }
   })
 
-  const actual = state.toString()
+  const actual = state.getSnapshot({ asString: true })
   const expected = '{"str":"hi","bool":false,"num":0,"obj":{"foo":"foo"},"mp":{}}'
 
   expect(actual).toBe(expected)
@@ -42,7 +42,7 @@ test('toString should work with complex types', () => {
     str: 'hi', bool: false, num: 0, obj: { foo: new Date(100) }, mp: { }
   })
 
-  const actual = state.toString()
+  const actual = state.getSnapshot({ asString: true })
   const expected =
     '{"str":"hi","bool":false,"num":0,"obj":{"foo":' +
     '{"date":"Thu, 01 Jan 1970 00:00:00 GMT"}},"mp":{}}'

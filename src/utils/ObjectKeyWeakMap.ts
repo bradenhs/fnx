@@ -3,7 +3,7 @@ export class ObjectKeyWeakMap<K extends object, V> {
 
   get(object: K, key: PropertyKey): V {
     const container = this.weakMap.get(object)
-    return container == undefined ? undefined : container[key]
+    return container == null ? null : container[key]
   }
 
   has(object: K, key: PropertyKey) {
@@ -11,7 +11,7 @@ export class ObjectKeyWeakMap<K extends object, V> {
   }
 
   set(object: K, key: PropertyKey, value: V) {
-    if (this.weakMap.get(object) == undefined) {
+    if (this.weakMap.get(object) == null) {
       this.weakMap.set(object, {})
     }
     const container = this.weakMap.get(object)

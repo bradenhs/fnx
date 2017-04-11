@@ -121,7 +121,7 @@ describe('objects', () => {
 
     app.assign()
 
-    const actual = app.toString()
+    const actual = app.getSnapshot({ asString: true })
     const expected = '{"obj":{"hi":"bye"}}'
 
     expect(actual).toBe(expected)

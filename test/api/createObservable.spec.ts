@@ -677,7 +677,7 @@ describe('createObservable', () => {
       letter = string
       @computed comp?() {
         runs++
-        if (this.num != undefined) {
+        if (this.num != null) {
           return this.num
         } else {
           return this.letter
@@ -744,7 +744,7 @@ describe('createObservable', () => {
 
     const app = new App(initialAppState)
 
-    const actual = app.toString()
+    const actual = app.getSnapshot({ asString: true })
     const expected = '{"hello":3,"hi":{"count":2}}'
 
     expect(actual).toBe(expected)

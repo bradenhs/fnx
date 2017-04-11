@@ -9,7 +9,7 @@ describe('arrays', () => {
 
     const app = new App({ multi: [ [ 1 ] ]})
 
-    const actual = app.toString()
+    const actual = app.getSnapshot({ asString: true })
     const expected = '{"multi":[[1]]}'
 
     expect(actual).toBe(expected)
@@ -22,7 +22,7 @@ describe('arrays', () => {
 
     const app = new App({bools: [true, false]})
 
-    const actual = app.bools.toString()
+    const actual = app.bools.getSnapshot({ asString: true })
     const expected = '[true,false]'
 
     expect(actual).toBe(expected)
@@ -35,7 +35,7 @@ describe('arrays', () => {
 
     const app = new App({maps: [ { 1: true, 2: false}, { three: false } ] })
 
-    const actual = app.maps.toString()
+    const actual = app.maps.getSnapshot({ asString: true })
     const expected = '[{"1":true,"2":false},{"three":false}]'
 
     expect(actual).toBe(expected)
@@ -48,7 +48,7 @@ describe('arrays', () => {
 
     const app = new App({ dates: [ new Date(1000), new Date(2000) ]})
 
-    const actual = app.dates.toString()
+    const actual = app.dates.getSnapshot({ asString: true })
     const expected = '["Thu, 01 Jan 1970 00:00:01 GMT","Thu, 01 Jan 1970 00:00:02 GMT"]'
 
     expect(actual).toBe(expected)
@@ -61,7 +61,7 @@ describe('arrays', () => {
 
     const app = new App({bools: [0, 1]})
 
-    const actual = app.bools.toString()
+    const actual = app.bools.getSnapshot({ asString: true })
     const expected = '[0,1]'
 
     expect(actual).toBe(expected)
@@ -77,7 +77,7 @@ describe('arrays', () => {
 
     const app = new App({objs: [ { hi: '0' }, { hi: 'one'} ]})
 
-    const actual = app.objs.toString()
+    const actual = app.objs.getSnapshot({ asString: true })
     const expected = '[{"hi":"0"},{"hi":"one"}]'
 
     expect(actual).toBe(expected)
@@ -90,7 +90,7 @@ describe('arrays', () => {
 
     const app = new App({ numsOrBools: [ 0, false ]})
 
-    const actual = app.numsOrBools.toString()
+    const actual = app.numsOrBools.getSnapshot({ asString: true })
     const expected = '[0,false]'
 
     expect(actual).toBe(expected)
@@ -103,7 +103,7 @@ describe('arrays', () => {
 
     const app = new App({strs: ['one', 'two']})
 
-    const actual = app.strs.toString()
+    const actual = app.strs.getSnapshot({ asString: true })
     const expected = '["one","two"]'
 
     expect(actual).toBe(expected)
@@ -218,7 +218,7 @@ describe('arrays', () => {
 
     app.swapArrays()
 
-    const actual = app.toString()
+    const actual = app.getSnapshot({ asString: true })
     const expected = '{"arr1":["bye"],"arr2":["hi"]}'
 
     expect(actual).toBe(expected)

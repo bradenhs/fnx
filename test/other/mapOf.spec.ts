@@ -9,7 +9,7 @@ describe('maps', () => {
 
     const app = new App({ multi: { hi: { bye: 1 } } })
 
-    const actual = app.toString()
+    const actual = app.getSnapshot({ asString: true })
     const expected = '{"multi":{"hi":{"bye":1}}}'
 
     expect(actual).toBe(expected)
@@ -22,7 +22,7 @@ describe('maps', () => {
 
     const app = new App({ bools: { t: true, f: false}})
 
-    const actual = app.bools.toString()
+    const actual = app.bools.getSnapshot({ asString: true })
     const expected = '{"t":true,"f":false}'
 
     expect(actual).toBe(expected)
@@ -35,7 +35,7 @@ describe('maps', () => {
 
     const app = new App({maps: { 1: [ true, false ] } })
 
-    const actual = app.maps.toString()
+    const actual = app.maps.getSnapshot({ asString: true })
     const expected = '{"1":[true,false]}'
 
     expect(actual).toBe(expected)
@@ -48,7 +48,7 @@ describe('maps', () => {
 
     const app = new App({ dates: { 1000: new Date(1000), 2000: new Date(2000) }})
 
-    const actual = app.dates.toString()
+    const actual = app.dates.getSnapshot({ asString: true })
     const expected =
       '{"1000":"Thu, 01 Jan 1970 00:00:01 GMT","2000":"Thu, 01 Jan 1970 00:00:02 GMT"}'
 
@@ -62,7 +62,7 @@ describe('maps', () => {
 
     const app = new App({bools: { 0: 1 }})
 
-    const actual = app.bools.toString()
+    const actual = app.bools.getSnapshot({ asString: true })
     const expected = '{"0":1}'
 
     expect(actual).toBe(expected)
@@ -78,7 +78,7 @@ describe('maps', () => {
 
     const app = new App({objs: { one: { hi: '0' }, two: { hi: 'one'} }})
 
-    const actual = app.objs.toString()
+    const actual = app.objs.getSnapshot({ asString: true })
     const expected = '{"one":{"hi":"0"},"two":{"hi":"one"}}'
 
     expect(actual).toBe(expected)
@@ -91,7 +91,7 @@ describe('maps', () => {
 
     const app = new App({ numsOrBools: { hi: 0, bye: false }})
 
-    const actual = app.numsOrBools.toString()
+    const actual = app.numsOrBools.getSnapshot({ asString: true })
     const expected = '{"hi":0,"bye":false}'
 
     expect(actual).toBe(expected)
@@ -104,7 +104,7 @@ describe('maps', () => {
 
     const app = new App({strs: {one:'one', two:'two'}})
 
-    const actual = app.strs.toString()
+    const actual = app.strs.getSnapshot({ asString: true })
     const expected = '{"one":"one","two":"two"}'
 
     expect(actual).toBe(expected)
@@ -157,7 +157,7 @@ describe('maps', () => {
 
     app.legalDelete()
 
-    const actual = app.toString()
+    const actual = app.getSnapshot({ asString: true })
     const expected = '{"map":{}}'
 
     expect(actual).toBe(expected)
@@ -194,7 +194,7 @@ describe('maps', () => {
 
     app.swapMaps()
 
-    const actual = app.toString()
+    const actual = app.getSnapshot({ asString: true })
     const expected = '{"map1":{"bye":"bye"},"map2":{"hi":"hi"}}'
 
     expect(actual).toBe(expected)

@@ -25,7 +25,7 @@ const ReactiveComponent = class extends React.PureComponent<{}, {}> {
 
     const self: any = this
 
-    if (self.render != undefined) {
+    if (self.render != null) {
       const reaction = core.registerReaction(
         self.render.bind(self),
         () => {
@@ -49,7 +49,7 @@ const ReactiveComponent = class extends React.PureComponent<{}, {}> {
         if (typeof originalComponentWillUnmount === 'function') {
           originalComponentWillUnmount()
         }
-        core.disposeReaction(reaction.id)
+        core.removeReaction(reaction.id)
       }
     }
   }

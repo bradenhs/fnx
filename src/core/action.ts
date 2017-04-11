@@ -59,7 +59,7 @@ export function addObservablesReactionsToPendingReactions(
 /**
  * Wrap actions so they are awesome
  */
-export function wrapAction(fn: (...args: any[]) => any, root, proxy) {
+export function wrapAction(fn: (...args: any[]) => any, root, proxy, key) {
   return (...args: any[]) => {
     if (core.isReactionInProgress()) {
       throw new Error('Actions should not be called in reactions')
@@ -67,13 +67,21 @@ export function wrapAction(fn: (...args: any[]) => any, root, proxy) {
     if (core.isComputationInProgress()) {
       throw new Error('Actions should not be called in computations')
     }
+    const runMiddleware = !isActionInProgress(root)
     incrementActionsInProgress(root)
-    const result = fn.bind(proxy)(...args)
+    const runAction = () => fn.bind(proxy)(...args)
+    let returnValue
+    if (runMiddleware) {
+      const actionInfo: core.ActionInfo = { args, path: core.getPath(proxy).concat([ key ]) }
+      returnValue = core.executeMiddlewareAroundAction(proxy, runAction, actionInfo)
+    } else {
+      returnValue = runAction()
+    }
     decrementActionsInProgress(root)
     if (isActionInProgress(root) === false) {
       triggerReactions()
     }
-    return result
+    return returnValue
   }
 }
 

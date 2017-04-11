@@ -9,7 +9,7 @@ describe('complex', () => {
 
     const app = new App({ reg: /hello/i })
 
-    const actual = app.toString()
+    const actual = app.getSnapshot({ asString: true })
     const expected = '{"reg":"/\\/hello\\/i/\"}'
 
     expect(actual).toBe(expected)
@@ -47,7 +47,7 @@ describe('complex', () => {
 
     const app = new App({ ret: ret1 })
 
-    app.parse('{"ret":"two"}')
+    app.applySnapshot('{"ret":"two"}')
 
     const actual = app.ret()
     const expected = 2

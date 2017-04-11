@@ -5,7 +5,7 @@ import { descriptionTypes } from '../core'
  * https://fnx.js.org/docs/api/readonly.html
  */
 export function readonly(target, key) {
-  if (target[descriptionTypes.readonly] == undefined) {
+  if (target[descriptionTypes.readonly] == null) {
     target[descriptionTypes.readonly] = {}
   }
   target[descriptionTypes.readonly][key] = key

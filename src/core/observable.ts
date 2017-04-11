@@ -1,9 +1,11 @@
 import * as core from '../core'
+import { Diff } from '../core'
 import { ObjectKeyWeakMap } from '../utils'
 
 export type Property = {
   set: (target?: object, key?: PropertyKey, value?: any,
-        description?: core.Descriptor, root?: object) => { didChange: boolean, result: boolean }
+        description?: core.Descriptor, root?: object,
+        parentObservable?: object, path?: string[]) => { didChange: boolean, result: boolean }
   get: (target?: object, key?: PropertyKey, description?: core.Descriptor,
         root?: object, proxy?: object) => any
 }
@@ -21,24 +23,29 @@ const observablesComputations = new ObjectKeyWeakMap<any, Map<symbol, {
   roundSet: number
 }>>()
 
+const PARENT_DESIGNATOR = Symbol('PARENT_DESIGNATOR')
+const PATH_DESIGNATOR = Symbol('PATH_DESIGNATOR')
 const OBSERVABLE_DESIGNATOR = Symbol('OBSERVABLE_DESIGNATOR')
 
 export interface IVirtualMethodFactoryArgs {
   proxy: object
   root: object
+  key: string
 }
 
-const getSnapshotWithSerializeComplex = Symbol('getSnapshotWithSerializeComplex')
+const getSnapshotAsString = Symbol('getSnapshotAsString')
+const getSnapshotAsJSON = Symbol('getSnapshotAsJSON')
 
 export const virtualCollectionMethods = {
-  toString({ proxy }: IVirtualMethodFactoryArgs) {
-    return core.wrapComputation(proxy, 'toString', () => core.toString(proxy))
-  },
   getSnapshot({ proxy }: IVirtualMethodFactoryArgs) {
-    return (options?: { serializeComplex: boolean }) => {
-      if (options && options.serializeComplex) {
-        return core.wrapComputation(proxy, getSnapshotWithSerializeComplex, () => {
-          return core.getSnapshot(proxy, { serializeComplex: true })
+    return (options?: { asString?: boolean, asJSON?: boolean }) => {
+      if (options && options.asString) {
+        return core.wrapComputation(proxy, getSnapshotAsString, () => {
+          return core.getSnapshotAsString(proxy)
+        })()
+      } else if (options && options.asJSON) {
+        return core.wrapComputation(proxy, getSnapshotAsJSON, () => {
+          return core.getSnapshot(proxy, { asJSON: true })
         })()
       } else {
         return core.wrapComputation(proxy, 'getSnapshot', () => {
@@ -47,10 +54,20 @@ export const virtualCollectionMethods = {
       }
     }
   },
-  parse({ root, proxy }) {
-    return core.wrapAction((input, options?: { asJSON: boolean }) => {
-      core.parseInto(input, proxy, options)
-    }, root, proxy)
+  applySnapshot({ root, proxy, key }) {
+    return core.wrapAction((snapshot, options?: { asJSON: boolean }) => {
+      core.applySnapshot(snapshot, proxy, options)
+    }, root, proxy, key)
+  },
+  applyDiffs({ root, proxy, key }) {
+    return core.wrapAction((diffs: Diff[]) => {
+      core.applyDiffs(proxy, diffs)
+    }, root, proxy, key)
+  },
+  use({ proxy }) {
+    return (middleware: core.Middleware) => {
+      return core.use(proxy, middleware)
+    }
   }
 }
 
@@ -75,6 +92,22 @@ export function isObservable(object) {
  */
 export function isObservableDesignatorKey(key) {
   return key === OBSERVABLE_DESIGNATOR
+}
+
+export function isParentDesignatorKey(key) {
+  return key === PARENT_DESIGNATOR
+}
+
+export function isPathDesignatorKey(key) {
+  return key === PATH_DESIGNATOR
+}
+
+export function getParent(observable) {
+  return observable[PARENT_DESIGNATOR]
+}
+
+export function getPath(observable) {
+  return observable[PATH_DESIGNATOR]
 }
 
 const setMap = {
@@ -112,8 +145,12 @@ const getMap = {
  * @param root The root of the state tree
  */
 export function setProperty(
-  target, key, value, description: core.Descriptor, root
+  target, key, value, description: core.Descriptor, root, parentObservable, path: string[]
 ) {
+  if (value === undefined) {
+    throw new Error('Only null is a valid bottom value to make sure things are JSON compatible')
+  }
+
   if (core.isComputationInProgress()) {
     throw new Error('You cannot mutate stuff inside of a computed property')
   }
@@ -123,10 +160,10 @@ export function setProperty(
   }
 
   const set = setMap[description.type]
-  if (set == undefined) {
+  if (set == null) {
     throw new Error(`Unrecognized property type: ${description.type.toString()}`)
   }
-  const setResult = set(target, key, value, description, root)
+  const setResult = set(target, key, value, description, root, parentObservable, path)
 
   if (setResult.didChange) {
     markObservablesComputationsAsStale(target, key)
@@ -159,13 +196,13 @@ export function markObservablesComputationsAsStale(target, key) {
 export function getProperty(target, key, description: core.Descriptor, root, proxy) {
   // If there is no description then this key doesn't exist on the
   // description - try to return it anyhow.
-  if (description == undefined) {
+  if (description == null) {
     return target[key]
   }
 
   const get = getMap[description.type]
 
-  if (get == undefined) {
+  if (get == null) {
     throw new Error(`Unrecognized property type: ${description.type.toString()}`)
   }
 

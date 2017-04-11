@@ -26,7 +26,7 @@ export function isDeserializingFromPlainObject() {
   return deserializeFromPlainObject
 }
 
-export function toString(observable: object) {
+export function getSnapshotAsString(observable: object) {
   serializeAsJSONCounter++
   let str = ''
   if (observable instanceof Array) {
@@ -34,7 +34,7 @@ export function toString(observable: object) {
     str += observable.map(v => {
       if (typeof v === 'object') {
         if (core.isObservable(v)) {
-          return v.toString()
+          return v.getSnapshot({ asString: true })
         } else {
           return JSON.stringify(v)
         }
@@ -53,7 +53,7 @@ export function toString(observable: object) {
       const v = observable[key]
       if (typeof v === 'object') {
         if (core.isObservable(v)) {
-          return `"${key}":${v.toString()}`
+          return `"${key}":${v.getSnapshot({ asString: true })}`
         } else {
           return `"${key}":${JSON.stringify(v)}`
         }
@@ -71,8 +71,8 @@ export function toString(observable: object) {
   return str
 }
 
-export function getSnapshot(observable: object, options?: { serializeComplex: boolean }) {
-  if (options && options.serializeComplex) {
+export function getSnapshot(observable: object, options?: { asJSON: boolean }) {
+  if (options && options.asJSON) {
     serializeAsJSONCounter++
   } else {
     serializeAsPlainObjectCounter++
@@ -93,15 +93,15 @@ export function getSnapshot(observable: object, options?: { serializeComplex: bo
       result[key] = null
     }
   })
-  if (options && options.serializeComplex) {
+  if (options && options.asJSON) {
     serializeAsJSONCounter--
   } else {
     serializeAsPlainObjectCounter--
   }
-  return result
+  return Object.freeze(result)
 }
 
-export function parseInto(
+export function applySnapshot(
   json: object | string, observable: object, options?: { asJSON: boolean }
 ) {
   let obj
@@ -135,13 +135,3 @@ export function parseInto(
   deserializeFromJSON = false
   deserializeFromPlainObject = false
 }
-
-//
-// toString
-// toJSON
-// toJS
-//
-// fromString
-// fromJSON
-// fromJS
-//

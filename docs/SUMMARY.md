@@ -3,7 +3,7 @@
 * [Introduction](/README.md)
 * [Describing State](/overview/DescribingState.md)
 * [Reacting to Changes](/overview/ReactingToChanges.md)
-* [Serialization](/overview/Serialization.md)
+* [Middleware](/overview/Middleware.md)
 * [Design Patterns](/overview/DesignPatterns.md)
 
 ### Setup
@@ -13,31 +13,34 @@
 
 ### API Reference
 
-* Describing State
-  * [action](/api/action.md)
-  * [arrayOf](/api/arrayOf.md)
-  * [boolean](/api/boolean.md)
-  * [computed](/api/computed.md)
-  * [complex](/api/complex.md)
-  * [mapOf](/api/mapOf.md)
+* Model
   * [Model](/api/Model.md)
+  * [applyMutation](/api/applyMutation.md)
+  * [applySnapshot](/api/applySnapshot.md)
+  * [getRoot](/api/getRoot.md)
+  * [getSnapshot](/api/getSnapshot.md)
+  * [use](/api/use.md)
+* Describing State
+  * [@action](/api/action.md)
+  * [@computed](/api/computed.md)
+  * [@optional](/api/optional.md)
+  * [@readonly](/api/readonly.md)
+  * [arrayOf](/api/arrayOf.md)
+  * [complex](/api/complex.md)
+  * [boolean](/api/boolean.md)
+  * [mapOf](/api/mapOf.md)
   * [number](/api/number.md)
   * [object](/api/object.md)
   * [oneOf](/api/oneOf.md)
-  * [optional](/api/optional.md)
-  * [readonly](/api/readonly.md)
   * [string](/api/string.md)
 * Reacting to Changes
   * [reaction](/api/reaction.md)
   * [ReactiveComponent](/api/ReactiveComponent.md)
-* Serialization
-  * [toString](/api/toString.md)
-  * [getSnapshot](/api/getSnapshot.md)
-  * [parse](/api/parseInto.md)
 
 ### Patterns
 
 * [Asynchronous Actions](/patterns/AsynchronousActions.md)
+* [Mixins](/patterns/Mixins.md)
 * [Transactions](/patterns/Transactions.md)
 
 ### Links

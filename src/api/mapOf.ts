@@ -1,4 +1,4 @@
-import { descriptionTypes, MapOfDescriptor } from '../core'
+import { descriptionTypes, Diff, Disposable, MapOfDescriptor, Middleware } from '../core'
 
 /**
  * Describes a map of the given type.
@@ -38,46 +38,16 @@ export function mapOf<T>(kind: T) {
   }
 
   return descriptor as any as {
-    /**
-     * Serializes the fnx object into a json string.
-     *
-     * **https://fnx.js.org/docs/api/toString.html**
-     */
-    toString?(): string
+    applySnapshot?(snapshot: string): boolean
+    applySnapshot?(snapshot: object, options?: { asJSON: true }): boolean
 
-    /**
-     * Converts the fnx object into a plain js object. If `{ serializeComplex: true }` is passed in
-     * then all complex properties will be in their serialized form. `serializeComplex` defaults to
-     * false.
-     *
-     * **https://fnx.js.org/docs/api/toJSON.html**
-     *
-     * @param options (Optional) Pass in `{ serializeComplex: true }` to return serialized versions
-     * of complex properties
-     */
-    getSnapshot?(options?: { serializeComplex: boolean }): any
+    getSnapshot?(): object
+    getSnapshot?(options: { asString: true }): string
+    getSnapshot?(options: { asJSON: true }): object
 
-    /**
-     * Parses the given json string into the fnx object.
-     *
-     * **https://fnx.js.org/docs/api/parse.html**
-     *
-     * @param string The json string compatible with this fnx object.
-     */
-    parse?(string: string)
+    applyDiffs?(diffs: Diff[]): boolean
 
-    /**
-     * Parses the given object into the fnx object. If `{ asJSON: true }` is passed in as the second
-     * parameter then all complex properties on the given object will be treated as if they are
-     * serialized and will be run through their respective deserialization functions. `asJSON`
-     * defaults to false.
-     *
-     * **https://fnx.js.org/docs/api/parse.html**
-     *
-     * @param object The js object compatible with this fnx object.
-     * @param options (Optional) Pass in `{ asJSON: true }` to treat the given object as JSON
-     */
-    parse?(object: object, options?: { asJSON: boolean })
+    use?(middleware: Middleware): Disposable
   } & {
     [key: string]: T
     [key: number]: T

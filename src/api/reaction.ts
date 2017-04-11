@@ -11,8 +11,8 @@ export function reaction(fn: () => void) {
   core.invokeReaction(reaction)
 
   return {
-    dispose() {
-      core.disposeReaction(reaction.id)
+    remove() {
+      core.removeReaction(reaction.id)
     }
   }
 }

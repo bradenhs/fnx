@@ -22,8 +22,8 @@ export const complexProperty: core.Property = {
   },
   get(target, key, description: core.ComplexDescriptor<any, any>) {
     const storedValue = complexValues.get(target, key)
-    if (storedValue == undefined) {
-      return target[key] == undefined ? undefined : target[key]
+    if (storedValue == null) {
+      return target[key] == null ? null : target[key]
     }
     if (core.isSerializingAsJSON()) {
       return JSON.parse(storedValue)
@@ -39,7 +39,7 @@ function complexProxy(
   rootTarget: any, rootKey: any, rootValue: any, target: any,
   description: core.ComplexDescriptor<any, any>, root: any
 ) {
-  if (target == undefined ||
+  if (target == null ||
       typeof target === 'string' ||
       typeof target === 'number' ||
       typeof target === 'boolean') {

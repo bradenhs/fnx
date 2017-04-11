@@ -72,7 +72,7 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
   // Ready a reassignable prototype variable
   let prototype = descriptor.clazz.prototype
 
-  if (prototype == undefined) {
+  if (prototype == null) {
     throw new Error('Class prototype is undefined')
   }
 
@@ -91,7 +91,7 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
     const symbols = Object.getOwnPropertySymbols(prototype)
 
     // If it has the readonly symbol add it's contents to the readonly array
-    if (prototype[descriptionTypes.readonly] != undefined) {
+    if (prototype[descriptionTypes.readonly] != null) {
       readonlyProperties = [
         ...readonlyProperties,
         ...Object.keys(prototype[descriptionTypes.readonly])
@@ -101,7 +101,7 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
     }
 
     // If it has the optional symbol add it's contents to the optional array
-    if (prototype[descriptionTypes.optional] != undefined) {
+    if (prototype[descriptionTypes.optional] != null) {
       optionalProperties = [
         ...optionalProperties,
         ...Object.keys(prototype[descriptionTypes.optional])
@@ -159,7 +159,7 @@ function parseObjectDescriptor<T>(descriptor: ObjectDescriptor<T>) {
     const parser = identifierParserMap[instance[key].type] as any
 
     // If one wasn't found throw an error
-    if (parser == undefined) {
+    if (parser == null) {
       throw new Error('Invalid property descriptor type')
     }
 
@@ -196,7 +196,7 @@ function parseArrayOfDescriptor(descriptor: ArrayOfDescriptor<any>) {
     throw new Error('Invalid property kind on arrayOf')
   }
 
-  if (identifierParserMap[descriptor.kind.type] == undefined) {
+  if (identifierParserMap[descriptor.kind.type] == null) {
     throw new Error('invalid type for kind in arrayOf')
   }
 
@@ -245,7 +245,7 @@ function parseMapOfDescriptor(descriptor: MapOfDescriptor<any>) {
     throw new Error()
   }
 
-  if (identifierParserMap[descriptor.kind.type] == undefined) {
+  if (identifierParserMap[descriptor.kind.type] == null) {
     throw new Error()
   }
 
@@ -282,7 +282,7 @@ function parseOneOfDescriptor(descriptor: OneOfDescriptor) {
       descriptor.kinds[index] = parseObjectDescriptor(kind)
       return
     }
-    if (identifierParserMap[kind.type] == undefined) {
+    if (identifierParserMap[kind.type] == null) {
       throw new Error()
     }
   })

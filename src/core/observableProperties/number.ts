@@ -2,7 +2,7 @@ import * as core from '../../core'
 
 export const numberProperty: core.Property = {
   set(target, key, value) {
-    if (value == undefined || typeof value === 'number') {
+    if (value === null || typeof value === 'number') {
       const didChange = value !== target[key]
       return {
         didChange, result: Reflect.set(target, key, value)

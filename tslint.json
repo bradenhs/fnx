@@ -32,7 +32,7 @@
         "variable-declaration": "onespace"
       }
     ],
-    "unified-signatures": true,
+    "unified-signatures": false,
     // Functionality
     "ban": false,
     "curly": true,
@@ -62,7 +62,7 @@
     "no-var-keyword": true,
     "radix": true,
     "switch-default": true,
-    "triple-equals": [ true, "allow-undefined-check" ],
+    "triple-equals": [ true, "allow-null-check" ],
     "typeof-compare": true,
     "use-isnan": true,
     // Maintainability
@@ -85,7 +85,7 @@
     "array-type": [ true, "array" ],
     "arrow-parens": false,
     "arrow-return-shorthand": [ true ],
-    "callable-types": true,
+    "callable-types": false,
     "class-name": true,
     "comment-format": [ true, "check-space" ],
     "file-header": [ false ],
