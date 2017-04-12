@@ -119,7 +119,7 @@ describe('virtual method access', () => {
     class App extends fnx.Model<App> {
       hi = fnx.mapOf(fnx.string)
       @fnx.action break?() {
-        this.hi.parse = () => 'hi'
+        (this.hi as any).applySnapshot = () => 'hi'
       }
     }
 
@@ -134,7 +134,7 @@ describe('virtual method access', () => {
     class App extends fnx.Model<App> {
       hi = fnx.arrayOf(fnx.string)
       @fnx.action break?() {
-        this.hi.parse = () => 'hi'
+        (this.hi as any).applySnapshot = () => 'hi'
       }
     }
 
@@ -148,7 +148,7 @@ describe('virtual method access', () => {
   it('rejects setting parse on object', () => {
     class App extends fnx.Model<App> {
       @fnx.action break?() {
-        this.parse = () => 'hi'
+        (this as any).applySnapshot = () => 'hi'
       }
     }
 
