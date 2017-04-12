@@ -1,8 +1,10 @@
-import { ArrayOfDescriptor, descriptionTypes } from '../core'
+import { ArrayOfDescriptor, descriptionTypes, Diff, Disposable, Middleware } from '../core'
 
 /**
  * Describe an array. Pass in a type to specify type of array elements.
- * https://fnx.js.org/docs/api/arrayOf.html
+ *
+ * **https://fnx.js.org/docs/api/arrayOf.html**
+ *
  * @param kind The type of elements in the array
  */
 export function arrayOf<T>(kind: T) {
@@ -37,5 +39,16 @@ export function arrayOf<T>(kind: T) {
     readonly: false, optional: false,
   }
 
-  return descriptor as any as T[]
+  return descriptor as any as {
+    applySnapshot?(snapshot: string): boolean
+    applySnapshot?(snapshot: object, options?: { asJSON: true }): boolean
+
+    getSnapshot?(): any
+    getSnapshot?(options: { asString: true }): string
+    getSnapshot?(options: { asJSON: true }): any
+
+    applyDiffs?(diffs: Diff[]): boolean
+
+    use?(middleware: Middleware): Disposable
+  } & T[]
 }

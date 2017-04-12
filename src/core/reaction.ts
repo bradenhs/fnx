@@ -31,7 +31,7 @@ export function invokeReaction(reaction: Reaction) {
   reaction.round++
   activeReaction = reaction.id
   const result = reaction.fn()
-  activeReaction = undefined
+  activeReaction = null
   return result
 }
 
@@ -39,7 +39,7 @@ export function invokeReaction(reaction: Reaction) {
  * Removes reaction from reaction collection and ensures no observables
  * are set to trigger it in the future.
  */
-export function disposeReaction(reactionId: symbol) {
+export function removeReaction(reactionId: symbol) {
   reactionCollection.delete(reactionId)
 }
 
@@ -54,7 +54,7 @@ export function getReaction(reactionId: symbol) {
  * TODO
  */
 export function isReactionInProgress() {
-  return activeReaction != undefined
+  return activeReaction != null
 }
 
 /**

@@ -1,1 +1,4 @@
-export * from './api';
+import * as fnx from './api'
+export * from './api'
+
+export default fnx

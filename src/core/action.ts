@@ -59,28 +59,29 @@ export function addObservablesReactionsToPendingReactions(
 /**
  * Wrap actions so they are awesome
  */
-export function wrapAction(description: core.ActionDescriptor<any>, root, proxy) {
-  const action = description.fn(proxy, root)
-
-  if (typeof action !== 'function') {
-    throw new Error('Actions have a context function wrapping the inner one')
-  }
-
+export function wrapAction(fn: (...args: any[]) => any, root, proxy, key) {
   return (...args: any[]) => {
     if (core.isReactionInProgress()) {
       throw new Error('Actions should not be called in reactions')
     }
-    if (core.isDerivationInProgress()) {
-      throw new Error('Actions should not be called in derivations')
+    if (core.isComputationInProgress()) {
+      throw new Error('Actions should not be called in computations')
     }
+    const runMiddleware = !isActionInProgress(root)
     incrementActionsInProgress(root)
-    if (action(...args) != undefined) {
-      throw new Error('Actions must not return stuff')
+    const runAction = () => fn.bind(proxy)(...args)
+    let returnValue
+    if (runMiddleware) {
+      const actionInfo: core.ActionInfo = { args, path: core.getPath(proxy).concat([ key ]) }
+      returnValue = core.executeMiddlewareAroundAction(proxy, runAction, actionInfo)
+    } else {
+      returnValue = runAction()
     }
     decrementActionsInProgress(root)
     if (isActionInProgress(root) === false) {
       triggerReactions()
     }
+    return returnValue
   }
 }
 
@@ -89,7 +90,12 @@ export function wrapAction(description: core.ActionDescriptor<any>, root, proxy)
  */
 function triggerReactions() {
   pendingReactions.forEach(id => {
-    core.getReaction(id).invoke()
+    const reaction = core.getReaction(id)
+    // Sometimes the reaction may be removed after being added to the list of pending reactions but
+    // before this function is triggered. For that reason we need to do a null check here.
+    if (reaction != null) {
+      reaction.invoke()
+    }
   })
 
   // Reset pending reactions

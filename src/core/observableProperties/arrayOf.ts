@@ -1,11 +1,10 @@
 import * as core from '../../core'
 
 export const arrayOfProperty: core.Property = {
-  set(target, key, value, description: core.ArrayOfDescriptor<any>, root) {
-    if (core.isObservable(value)) {
-      return value
-    }
-
+  set(
+    target, key, value, description: core.ArrayOfDescriptor<any>, root,
+    parentObservable, path: string[]
+  ) {
     const proxy = new Proxy(value, {
       setPrototypeOf(): boolean {
         throw new Error('setPrototypeOf is disabled for fnx objects')
@@ -14,24 +13,28 @@ export const arrayOfProperty: core.Property = {
         throw new Error('Define property is disabled for fnx objects')
       },
       deleteProperty(): boolean {
-        throw new Error('The delete operator may only be used for properties in maps')
+        throw new Error('The delete operator may not be used in arrays (has to do with json)')
       },
       get(t, k) {
         if (core.isObservableDesignatorKey(k)) {
           return true
         }
 
-        if (core.isDescriptionDesignator(k)) {
-          return description
+        if (core.isParentDesignatorKey(k)) {
+          return parentObservable
         }
 
-        if (k === 'toString') {
-          return () => {
-            core.incrementSerializationCounter()
-            const result = JSON.stringify(proxy, (_, v) => v === undefined ? null : v)
-            core.decrementSerializationCounter()
-            return result
-          }
+        if (core.isPathDesignatorKey(k)) {
+          return path
+        }
+
+        const method = core.virtualCollectionMethods[k]
+        if (method != null) {
+          return method({ proxy, root })
+        }
+
+        if (Reflect.has(Array.prototype, k)) {
+          return t[k]
         }
 
         return core.getProperty(t, k, description.kind, root, proxy)
@@ -40,10 +43,23 @@ export const arrayOfProperty: core.Property = {
         if (!core.isActionInProgress(root)) {
           throw new Error('You cannot mutate state outside of an action')
         }
+
+        if (core.virtualCollectionMethods[k] != null) {
+          throw new Error(`The '${k}' key is reserved by fnx`)
+        }
+
+        if (typeof k !== 'string') {
+          throw new Error('Keys should only be of type string')
+        }
+
         if (k === 'length') {
+          core.markObservablesComputationsAsStale(target, key)
+          core.addObservablesReactionsToPendingReactions(target, key)
           return Reflect.set(t, k, v)
         } else {
-          return core.setProperty(t, k, v, description.kind, root)
+          return core.setProperty(
+            t, k, v, description.kind, root, proxy, path.concat([ k ])
+          )
         }
       }
     })
@@ -56,7 +72,9 @@ export const arrayOfProperty: core.Property = {
 
     Object.getOwnPropertyNames(value).forEach(k => {
       if (k !== 'length') {
-        core.setProperty(value, k, value[k], description.kind, root)
+        core.setProperty(
+          value, k, value[k], description.kind, root, proxy, path.concat([ k ])
+        )
       }
     })
 

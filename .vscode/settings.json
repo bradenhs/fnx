@@ -7,9 +7,8 @@
     "**/.hg": true,
     "**/.DS_Store": true,
     "node_modules": true,
-    "lib": false,
+    "lib": true,
     "coverage": true,
-    ".fusebox": true,
     "yarn.lock": true,
     ".localbuild": true
   },

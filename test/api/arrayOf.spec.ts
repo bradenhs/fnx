@@ -1,4 +1,4 @@
-import { action, arrayOf as typedArrayOf, computed, number  } from '../../src/api'
+import { arrayOf as typedArrayOf, number  } from '../../src/api'
 import { descriptionTypes } from '../../src/core'
 import { catchErrType } from '../testHelpers'
 
@@ -50,20 +50,6 @@ describe('arrayOf', () => {
 
   it('should throw `Error` with parameter of type "function"', () => {
     const actual = catchErrType(() => arrayOf(() => 0))
-    const expected = Error
-
-    expect(actual).toBe(expected)
-  })
-
-  it('should throw `Error` with parameter of type action', () => {
-    const actual = catchErrType(() => arrayOf(action(() => () => 0)))
-    const expected = Error
-
-    expect(actual).toBe(expected)
-  })
-
-  it('should throw `Error` with parameter of type computed', () => {
-    const actual = catchErrType(() => arrayOf(computed(() => 0)))
     const expected = Error
 
     expect(actual).toBe(expected)

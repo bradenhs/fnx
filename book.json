@@ -4,6 +4,7 @@
   "plugins": [
     "edit-link", "github", "prism", "-highlight", "hide-published-with", "-sharing"
   ],
+  "root": "/docs",
   "pluginsConfig": {
     "github": {
       "url": "https://github.com/fnxjs/fnx"

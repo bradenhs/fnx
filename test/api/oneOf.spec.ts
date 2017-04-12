@@ -1,4 +1,4 @@
-import { action, boolean, computed, number, oneOf as typedOneOf, string } from '../../src/api'
+import { boolean, number, oneOf as typedOneOf, string } from '../../src/api'
 import { descriptionTypes } from '../../src/core'
 import { catchErrType } from '../testHelpers'
 
@@ -35,20 +35,6 @@ describe('oneOf', () => {
 
   it('should throw `Error` with parameter of type "boolean"', () => {
     const actual = catchErrType(() => oneOf(number, true))
-    const expected = Error
-
-    expect(actual).toBe(expected)
-  })
-
-  it('should throw `Error` with parameter of type "action"', () => {
-    const actual = catchErrType(() => oneOf(number, action(() => () => 0)))
-    const expected = Error
-
-    expect(actual).toBe(expected)
-  })
-
-  it('should throw `Error` with parameter of type "computed"', () => {
-    const actual = catchErrType(() => oneOf(number, computed(() => 0)))
     const expected = Error
 
     expect(actual).toBe(expected)

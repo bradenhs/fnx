@@ -5,7 +5,7 @@ import { descriptionTypes } from '../core'
  * https://fnx.js.org/docs/api/optional.html
  */
 export function optional(target, key) {
-  if (target[descriptionTypes.optional] == undefined) {
+  if (target[descriptionTypes.optional] == null) {
     target[descriptionTypes.optional] = {}
   }
   target[descriptionTypes.optional][key] = key

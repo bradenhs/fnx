@@ -2,7 +2,7 @@ import * as core from '../../core'
 
 export const booleanProperty: core.Property = {
   set(target, key, value) {
-    if (value == undefined || typeof value === 'boolean') {
+    if (value == null || typeof value === 'boolean') {
       const didChange = value !== target[key]
       return {
         didChange, result: Reflect.set(target, key, value)

@@ -3,11 +3,11 @@ export interface Descriptor {
 }
 
 export interface ActionDescriptor<T extends (...args: any[]) => void> extends Descriptor {
-  fn(self: any, root?: any): T
+  fn(): T
 }
 
 export interface ComputedDescriptor<T> extends Descriptor {
-  fn(self: any, root?: any): T
+  fn(): T
 }
 
 export interface ParsedObjectDescriptor<T> extends Descriptor {

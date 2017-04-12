@@ -1,21 +1,19 @@
 // Other
-export * from './configure';
-export * from './createObservable';
-export * from './reaction';
-export * from './parseInto';
+export * from './reaction'
+export * from './Model'
 
 // Modifiers
-export * from './optional';
-export * from './readonly';
+export * from './action'
+export * from './computed'
+export * from './optional'
+export * from './readonly'
 
 // Properties
-export * from './action';
-export * from './arrayOf';
-export * from './boolean';
-export * from './complex';
-export * from './computed';
-export * from './mapOf';
-export * from './number';
-export * from './object';
-export * from './oneOf';
-export * from './string';
+export * from './arrayOf'
+export * from './boolean'
+export * from './complex'
+export * from './mapOf'
+export * from './number'
+export * from './object'
+export * from './oneOf'
+export * from './string'

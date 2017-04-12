@@ -1,12 +1,10 @@
 import * as core from '../../core'
 
 export const mapOfProperty: core.Property = {
-  set(target, key, value, description: core.ArrayOfDescriptor<any>, root) {
-    // TODO verify not just that it is an observable
-    if (core.isObservable(value)) {
-      return value
-    }
-
+  set(
+    target, key, value, description: core.ArrayOfDescriptor<any>, root,
+    parentObservable, path: string[]
+  ) {
     const proxy = new Proxy(value, {
       setPrototypeOf(): boolean {
         throw new Error('setPrototypeOf is disabled for fnx objects')
@@ -14,30 +12,32 @@ export const mapOfProperty: core.Property = {
       defineProperty(): boolean {
         throw new Error('Define property is disabled for fnx objects')
       },
-      deleteProperty(t, k) {
-        const result = Reflect.deleteProperty(t, k)
-        if (result) {
-          // Trigger change on map when one of it's properties is deleted
-          core.markObservablesDerivationsAsStale(target, key)
+      deleteProperty(t, k: string) {
+        if (Reflect.has(t, k)) {
+          core.startDiffCapture(proxy, k)
+          Reflect.deleteProperty(t, k)
+          core.endDiffCapture(proxy, k, true, path.concat([ k ]))
+          core.markObservablesComputationsAsStale(target, key)
           core.addObservablesReactionsToPendingReactions(target, key)
         }
-        return result
+        return true
       },
       get(t, k) {
         if (core.isObservableDesignatorKey(k)) {
           return true
         }
 
-        if (core.isDescriptionDesignator(k)) {
-          return description
+        if (core.isParentDesignatorKey(k)) {
+          return parentObservable
         }
-        if (k === 'toString') {
-          return () => {
-            core.incrementSerializationCounter()
-            const result = JSON.stringify(proxy, (_, v) => v === undefined ? null : v)
-            core.decrementSerializationCounter()
-            return result
-          }
+
+        if (core.isPathDesignatorKey(k)) {
+          return path
+        }
+
+        const method = core.virtualCollectionMethods[k]
+        if (method != null) {
+          return method({ proxy, root })
         }
 
         return core.getProperty(t, k, description.kind, root, proxy)
@@ -47,13 +47,23 @@ export const mapOfProperty: core.Property = {
           throw new Error('You cannot mutate state outside of an action')
         }
 
+        if (core.virtualCollectionMethods[k] != null) {
+          throw new Error(`The '${k}' key is reserved by fnx`)
+        }
+
+        if (typeof k !== 'string') {
+          throw new Error('Keys should only be of type string')
+        }
+
         // This is a new property meaning we should trigger a change for the parent
         if (!Reflect.has(t, k)) {
-          core.markObservablesDerivationsAsStale(target, key)
+          core.markObservablesComputationsAsStale(target, key)
           core.addObservablesReactionsToPendingReactions(target, key)
         }
 
-        return core.setProperty(t, k, v, description.kind, root)
+        return core.setProperty(
+          t, k, v, description.kind, root, proxy, path.concat([ k ])
+        )
       }
     })
 
@@ -64,7 +74,9 @@ export const mapOfProperty: core.Property = {
     }
 
     Object.getOwnPropertyNames(value).forEach(k => {
-      core.setProperty(value, k, value[k], description.kind, root)
+      core.setProperty(
+        value, k, value[k], description.kind, root, proxy, path.concat([ k ])
+      )
     })
 
     return {
