@@ -40,6 +40,8 @@
 
 ## Getting Started
 
+[![Join the chat at https://gitter.im/fnxjs/fnx](https://badges.gitter.im/fnxjs/fnx.svg)](https://gitter.im/fnxjs/fnx?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Clone the [fnx-starter repository](https://github.com/fnxjs/fnx-starter) for an example of FNX in action.
 
 Install with `yarn add fnx`  or  `npm install fnx`
