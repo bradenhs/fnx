@@ -17,3 +17,5 @@ const state = createObservable(State, initialState)
 
 state.toString() // '{"num":1}'
 ```
+
+**Important** Any value set to undefined is serialized as null due to how JSON.stringify behaves.
