@@ -50,6 +50,5 @@ export function mapOf<T>(kind: T) {
     use?(middleware: Middleware): Disposable
   } & {
     [key: string]: T
-    [key: number]: T
   }
 }

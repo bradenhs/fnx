@@ -350,4 +350,56 @@ describe('middleware', () => {
 
     expect(actual).toBe(expected)
   })
+
+  test('not calling next should prevent action execution', () => {
+    class App extends Model<App> {
+      count = fnx.number
+
+      @fnx.action
+      increment?() {
+        this.count++
+      }
+    }
+
+    const app = new App({ count: 0 })
+
+    app.use(() => 0)
+
+    app.increment()
+
+    const actual = app.count
+    const expected = 0
+
+    expect(actual).toBe(expected)
+  })
+
+  test('should work with objects nested in arrays', () => {
+    class Obj extends Model<App> {
+      @fnx.action
+      increment?() {
+        this.getRoot().count++
+      }
+    }
+
+    class App extends Model<App> {
+      arr = fnx.arrayOf(fnx.object(Obj))
+      count = fnx.number
+    }
+
+    const app = new App({ count: 0, arr: [ { } ]})
+
+    let path
+
+    app.use((next, action) => {
+      path = action.path
+      next()
+    })
+
+    app.arr[0].increment()
+
+    const actual = path
+    const expected = [ 'arr', '0', 'increment' ]
+
+    expect(actual).toEqual(expected)
+  })
 })

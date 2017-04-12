@@ -223,4 +223,44 @@ describe('arrays', () => {
 
     expect(actual).toBe(expected)
   })
+
+  test('methods should be callable on arrays', () => {
+    class App extends Model<App> {
+      arr = fnx.arrayOf(fnx.number)
+      count = fnx.number
+    }
+
+    const app = new App({ count: 0, arr: [ ]})
+
+    let path
+
+    app.arr.use((next, action) => {
+      path = action.path
+      next()
+    })
+
+    app.arr.applySnapshot('[0]')
+
+    const actual = app.arr.getSnapshot({ asString: true })
+    const expected = '[0]'
+
+    expect(actual).toBe(expected)
+  })
+
+  test('try to key array without string key', () => {
+    class App extends Model<App> {
+      arr = fnx.arrayOf(fnx.number)
+      @fnx.action
+      break?() {
+        this.arr[Symbol()] = 'hello'
+      }
+    }
+
+    const app = new App({ arr: [ ]})
+
+    const actual = catchErrType(() => app.break())
+    const expected = Error
+
+    expect(actual).toBe(expected)
+  })
 })

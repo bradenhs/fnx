@@ -163,7 +163,10 @@ export function setProperty(
   if (set == null) {
     throw new Error(`Unrecognized property type: ${description.type.toString()}`)
   }
+
+  core.startDiffCapture(parentObservable, key)
   const setResult = set(target, key, value, description, root, parentObservable, path)
+  core.endDiffCapture(parentObservable, key, setResult.didChange, path)
 
   if (setResult.didChange) {
     markObservablesComputationsAsStale(target, key)

@@ -199,4 +199,39 @@ describe('maps', () => {
 
     expect(actual).toBe(expected)
   })
+
+  test('methods should be callable on maps', () => {
+    class App extends Model<App> {
+      map = fnx.mapOf(fnx.number)
+      count = fnx.number
+    }
+
+    const app = new App({ count: 0, map: { }})
+
+    app.map.use(next => next())
+
+    app.map.applySnapshot('{"hi":0}')
+
+    const actual = app.map.getSnapshot({ asString: true })
+    const expected = '{"hi":0}'
+
+    expect(actual).toBe(expected)
+  })
+
+  test('try to key map without string key', () => {
+    class App extends Model<App> {
+      map = fnx.mapOf(fnx.number)
+      @fnx.action
+      break?() {
+        this.map[Symbol()] = 4
+      }
+    }
+
+    const app = new App({ map: { }})
+
+    const actual = catchErrType(() => app.break())
+    const expected = Error
+
+    expect(actual).toBe(expected)
+  })
 })

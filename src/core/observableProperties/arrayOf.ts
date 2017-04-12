@@ -13,7 +13,7 @@ export const arrayOfProperty: core.Property = {
         throw new Error('Define property is disabled for fnx objects')
       },
       deleteProperty(): boolean {
-        throw new Error('The delete operator may only be used for properties in maps')
+        throw new Error('The delete operator may not be used in arrays (has to do with json)')
       },
       get(t, k) {
         if (core.isObservableDesignatorKey(k)) {
@@ -31,6 +31,10 @@ export const arrayOfProperty: core.Property = {
         const method = core.virtualCollectionMethods[k]
         if (method != null) {
           return method({ proxy, root })
+        }
+
+        if (Reflect.has(Array.prototype, k)) {
+          return t[k]
         }
 
         return core.getProperty(t, k, description.kind, root, proxy)

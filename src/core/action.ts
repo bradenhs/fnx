@@ -2,6 +2,8 @@ import * as core from '../core'
 
 const actionsInProgress = new WeakMap<any, number>()
 
+let pauseTracking = false
+
 /**
  * An object that keeps track of reactions which need to be triggered after
  * we've finished executing actions.
@@ -14,6 +16,14 @@ const pendingReactions = new Map<symbol, symbol>()
  */
 export function incrementActionsInProgress(root) {
   actionsInProgress.set(root, (actionsInProgress.get(root) || 0) + 1)
+}
+
+export function pauseActionTracking() {
+  pauseTracking = true
+}
+
+export function resumeActionTracking() {
+  pauseTracking = false
 }
 
 /**
@@ -29,6 +39,9 @@ export function decrementActionsInProgress(root) {
  * @param root The root of the state tree you are testing
  */
 export function isActionInProgress(root) {
+  if (pauseTracking) {
+    return false
+  }
   return actionsInProgress.get(root) > 0
 }
 
@@ -90,7 +103,12 @@ export function wrapAction(fn: (...args: any[]) => any, root, proxy, key) {
  */
 function triggerReactions() {
   pendingReactions.forEach(id => {
-    core.getReaction(id).invoke()
+    const reaction = core.getReaction(id)
+    // Sometimes the reaction may be removed after being added to the list of pending reactions but
+    // before this function is triggered. For that reason we need to do a null check here.
+    if (reaction != null) {
+      reaction.invoke()
+    }
   })
 
   // Reset pending reactions

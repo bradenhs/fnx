@@ -1,33 +1,41 @@
 import * as core from '../core'
 
-let serializeAsJSONCounter = 0
-let serializeAsPlainObjectCounter = 0
+let snapshotAsJSONCounter = 0
+let snapshotAsPlainObjectCounter = 0
 
-export function isSerializingAsJSON() {
-  return serializeAsJSONCounter > 0
+export function isSnapshotingAsJSON() {
+  return snapshotAsJSONCounter > 0
 }
 
-export function isSerializingAsPlainObject() {
-  return serializeAsPlainObjectCounter > 0
+export function incrementSnapshotAsJSON() {
+  snapshotAsJSONCounter++
 }
 
-let deserializeFromJSON = false
-let deserializeFromPlainObject = false
-
-export function setIsDeserializingFromPlainObject(value: boolean) {
-  deserializeFromPlainObject = value
+export function decrementSnapshotAsJSON() {
+  snapshotAsJSONCounter--
 }
 
-export function isDeserializingFromJSON() {
-  return deserializeFromJSON
+export function isSnapshotingAsPlainObject() {
+  return snapshotAsPlainObjectCounter > 0
 }
 
-export function isDeserializingFromPlainObject() {
-  return deserializeFromPlainObject
+let applySnapshotFromJSON = false
+let applySnapshotFromPlainObject = false
+
+export function setIsApplyingSnapshotFromPlainObject(value: boolean) {
+  applySnapshotFromPlainObject = value
+}
+
+export function isApplyingSnapshotFromJSON() {
+  return applySnapshotFromJSON
+}
+
+export function isApplyingSnapshotFromPlainObject() {
+  return applySnapshotFromPlainObject
 }
 
 export function getSnapshotAsString(observable: object) {
-  serializeAsJSONCounter++
+  snapshotAsJSONCounter++
   let str = ''
   if (observable instanceof Array) {
     str += '['
@@ -67,15 +75,17 @@ export function getSnapshotAsString(observable: object) {
     }).join(',')
     str += '}'
   }
-  serializeAsJSONCounter--
+  snapshotAsJSONCounter--
   return str
 }
 
+// TODO what if complex type serialize from primitive to primitive?
+
 export function getSnapshot(observable: object, options?: { asJSON: boolean }) {
   if (options && options.asJSON) {
-    serializeAsJSONCounter++
+    snapshotAsJSONCounter++
   } else {
-    serializeAsPlainObjectCounter++
+    snapshotAsPlainObjectCounter++
   }
   let result
   if (observable instanceof Array) {
@@ -89,14 +99,14 @@ export function getSnapshot(observable: object, options?: { asJSON: boolean }) {
     } else {
       result[key] = observable[key]
     }
-    if (result[key] === undefined) {
-      result[key] = null
-    }
+    // if (result[key] === undefined) {
+    //   result[key] = null
+    // }
   })
   if (options && options.asJSON) {
-    serializeAsJSONCounter--
+    snapshotAsJSONCounter--
   } else {
-    serializeAsPlainObjectCounter--
+    snapshotAsPlainObjectCounter--
   }
   return Object.freeze(result)
 }
@@ -125,13 +135,13 @@ export function applySnapshot(
     throw new Error('input should be a string or a plain json object')
   }
   if (options && options.asJSON) {
-    deserializeFromJSON = true
+    applySnapshotFromJSON = true
   } else {
-    deserializeFromPlainObject = true
+    applySnapshotFromPlainObject = true
   }
   Object.keys(obj).forEach(k => {
     observable[k] = obj[k]
   })
-  deserializeFromJSON = false
-  deserializeFromPlainObject = false
+  applySnapshotFromJSON = false
+  applySnapshotFromPlainObject = false
 }

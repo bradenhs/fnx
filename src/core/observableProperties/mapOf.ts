@@ -13,13 +13,12 @@ export const mapOfProperty: core.Property = {
         throw new Error('Define property is disabled for fnx objects')
       },
       deleteProperty(t, k) {
-        const result = Reflect.deleteProperty(t, k)
-        if (result) {
-          // Trigger change on map when one of it's properties is deleted
+        if (Reflect.has(t, k)) {
+          Reflect.deleteProperty(t, k)
           core.markObservablesComputationsAsStale(target, key)
           core.addObservablesReactionsToPendingReactions(target, key)
         }
-        return result
+        return true
       },
       get(t, k) {
         if (core.isObservableDesignatorKey(k)) {

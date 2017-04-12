@@ -26,9 +26,9 @@ export abstract class Model<Root extends object> {
       }
       core.setParsingDescription(false)
       const object = { state: undefined }
-      core.setIsDeserializingFromPlainObject(true)
+      core.setIsApplyingSnapshotFromPlainObject(true)
       core.objectProperty.set(object, 'state', snapshot, description)
-      core.setIsDeserializingFromPlainObject(false)
+      core.setIsApplyingSnapshotFromPlainObject(false)
       properties.forEach(property => {
         core.skipPropertyInitialization(object.state, property)
       })

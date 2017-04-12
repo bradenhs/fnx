@@ -126,7 +126,40 @@ describe('complex', () => {
     expect(actual).toBe(expected)
   })
 
-  it('should allow storing constructors as complex types', () => {
+  it('should serialize complex types properly', () => {
+    class Animal {
+      constructor(public sound: string) { }
+      changeSound(newSound: string) {
+        this.sound = newSound
+      }
+      speak() {
+        return this.sound
+      }
+      toString() {
+        return this.sound
+      }
+    }
+
+    class App extends Model<App> {
+      animal = fnx.complex(
+        (a: Animal) => a.toString(),
+        sound => new Animal(sound)
+      )
+      @fnx.action
+      changeSound?(newSound: string) {
+        this.animal.changeSound(newSound)
+      }
+    }
+
+    const app = new App({ animal: new Animal('woof')})
+
+    const actual = app.getSnapshot({ asString: true })
+    const expected = '{"animal":"woof"}'
+
+    expect(actual).toBe(expected)
+  })
+
+  it('should not? allow storing constructors as complex types', () => {
     class A { }
     class B { }
     class C { }

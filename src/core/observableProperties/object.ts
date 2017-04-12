@@ -21,8 +21,16 @@ export const objectProperty: core.Property = {
       defineProperty(): boolean {
         throw new Error('Define property is disabled for fnx objects')
       },
-      deleteProperty(): boolean {
-        throw new Error('The delete operator may only be used for properties in maps')
+      deleteProperty(t, k): boolean {
+        if (!description.properties[k].optional) {
+          throw new Error('Only optional properties may be deleted from an object')
+        }
+        if (Reflect.has(t, k)) {
+          Reflect.deleteProperty(t, k)
+          core.markObservablesComputationsAsStale(target, key)
+          core.addObservablesReactionsToPendingReactions(target, key)
+        }
+        return true
       },
       get(t, k) {
         if (core.isObservableDesignatorKey(k)) {

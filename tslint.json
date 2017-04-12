@@ -107,7 +107,7 @@
     "prefer-method-signature": false,
     "quotemark": [ true, "single", "jsx-single" ],
     "semicolon": [ true, "never" ],
-    "space-before-function-paren": [ true, "never" ],
+    "space-before-function-paren": [ true, {"anonymous": "never", "named": "never", "asyncArrow": "always"} ],
     "variable-name": [ true, "check-format", "allow-pascal-case", "allow-leading-underscore" ],
     "whitespace": [
       false, "check-branch", "check-operator", "check-typecast",
