@@ -15,7 +15,7 @@
 
 * Model
   * [Model](/api/Model.md)
-  * [applyMutation](/api/applyMutation.md)
+  * [applyDiffs](/api/applyDiffs.md)
   * [applySnapshot](/api/applySnapshot.md)
   * [getRoot](/api/getRoot.md)
   * [getSnapshot](/api/getSnapshot.md)
