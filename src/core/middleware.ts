@@ -36,7 +36,12 @@ export function executeMiddlewareAroundAction(
   const nextFuncs: Next[] = [ ]
   let returnValue
   getMiddlewares(observable).forEach((middleware, index) => {
+    let runs = 0
     nextFuncs.push(() => {
+      runs++
+      if (runs > 1) {
+        throw new Error('next function may only be called zero or one times`')
+      }
       middleware(nextFuncs[index + 1], action)
       return {
         returnValue,
@@ -44,7 +49,12 @@ export function executeMiddlewareAroundAction(
       }
     })
   })
+  let actionRuns = 0
   nextFuncs.push(() => {
+    actionRuns++
+    if (actionRuns > 1) {
+      throw new Error('next function may only be called zero or one times`')
+    }
     core.clearDiff()
     returnValue = runAction()
     return {

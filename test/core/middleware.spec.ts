@@ -1,4 +1,5 @@
 import fnx, { Model } from '../../src/fnx'
+import { catchErrType } from '../testHelpers'
 
 describe('middleware', () => {
   it('verify middleware runs', () => {
@@ -401,5 +402,23 @@ describe('middleware', () => {
     const expected = [ 'arr', '0', 'increment' ]
 
     expect(actual).toEqual(expected)
+  })
+  it('should throw on triggering next twice', () => {
+    class App extends Model<App> {
+      @fnx.action
+      something?() { }
+    }
+
+    const app = new App({})
+
+    app.use(next => {
+      next()
+      next()
+    })
+
+    const actual = catchErrType(() => app.something())
+    const expected = Error
+
+    expect(actual).toBe(expected)
   })
 })

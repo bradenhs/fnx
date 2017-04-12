@@ -2,8 +2,8 @@ import * as core from '../core'
 
 export type Diff = {
   path: string[]
-  from: JSONValue
-  to: JSONValue
+  from?: JSONValue
+  to?: JSONValue
 }
 
 export type JSONValue = string | number | boolean | JSONObject | JSONArray
@@ -15,15 +15,30 @@ export interface JSONObject {
 export interface JSONArray extends Array<JSONValue> { }
 
 export function applyDiffs(observable: object, diffs: Diff[]) {
-  console.log(observable, diffs)
-  throw new Error('Apply Diffs is not yet implemented')
+  core.setIsApplyingSnapshotFromJSON(true)
+  diffs.forEach(diff => {
+    let node = observable
+    const key = diff.path[diff.path.length - 1]
+    for (let i = 0; i < diff.path.length - 1; i++) {
+      node = node[diff.path[i]]
+    }
+    if (diff.to === undefined) {
+      delete node[key]
+    } else {
+      node[key] = JSON.parse(JSON.stringify(diff.to))
+    }
+  })
+  core.setIsApplyingSnapshotFromJSON(false)
 }
 
+let diff: Diff[] = []
+
 export function clearDiff() {
+  diff = []
 }
 
 export function getDiff(): Diff[] {
-  return []
+  return diff
 }
 
 let isCapturingCounter = 0
@@ -44,9 +59,21 @@ export function endDiffCapture(parent: object, key: string, didChange: boolean, 
   }
 }
 
-export function recordDiff(from: object, to: object, path: string[], didChange?: boolean) {
+export function recordDiff(from: JSONValue, to: JSONValue, path: string[], didChange?: boolean) {
   if (isCapturingCounter === 0 && didChange && JSON.stringify(to) !== JSON.stringify(from)) {
-    console.log('AT', path, 'FROM', from, 'TO', to)
+    if (from === undefined) {
+      diff.push({
+        path, to
+      })
+    } else if (to === undefined) {
+      diff.push({
+        path, from
+      })
+    } else {
+      diff.push({
+        path, from, to
+      })
+    }
   }
 }
 

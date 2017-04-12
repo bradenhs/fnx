@@ -1,12 +1,5 @@
-import fnx, { Model } from '../src/fnx'
-// import { catchErrType } from './testHelpers'
+import fnx, { Model } from '../../src/fnx'
 
-/**
- * Use this file for constructing new test suites without having to worry about
- * running all the tests every single time.
- *
- * Run with `yarn run test-dev`
- */
 describe('apply diff', () => {
   it ('should apply diffs properly', () => {
     class Deep extends Model<One> {

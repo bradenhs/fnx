@@ -12,9 +12,11 @@ export const mapOfProperty: core.Property = {
       defineProperty(): boolean {
         throw new Error('Define property is disabled for fnx objects')
       },
-      deleteProperty(t, k) {
+      deleteProperty(t, k: string) {
         if (Reflect.has(t, k)) {
+          core.startDiffCapture(proxy, k)
           Reflect.deleteProperty(t, k)
+          core.endDiffCapture(proxy, k, true, path.concat([ k ]))
           core.markObservablesComputationsAsStale(target, key)
           core.addObservablesReactionsToPendingReactions(target, key)
         }

@@ -153,7 +153,7 @@ function checkForMutation(
     }
     complexValues.set(rootTarget,rootKey, newSerializedValue)
 
-    core.recordDiff(JSON.parse(oldSerializeValue), JSON.parse(newSerializedValue), path, true)
+    core.recordDiff(oldSerializeValue, newSerializedValue, path, true)
     core.markObservablesComputationsAsStale(rootTarget, rootKey)
     core.addObservablesReactionsToPendingReactions(rootTarget, rootKey)
   }

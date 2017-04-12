@@ -21,14 +21,16 @@ export const objectProperty: core.Property = {
       defineProperty(): boolean {
         throw new Error('Define property is disabled for fnx objects')
       },
-      deleteProperty(t, k): boolean {
+      deleteProperty(t, k: string): boolean {
         if (!description.properties[k].optional) {
           throw new Error('Only optional properties may be deleted from an object')
         }
         if (Reflect.has(t, k)) {
+          core.startDiffCapture(proxy, k)
           Reflect.deleteProperty(t, k)
-          core.markObservablesComputationsAsStale(target, key)
-          core.addObservablesReactionsToPendingReactions(target, key)
+          core.endDiffCapture(proxy, k, true, path.concat([ k ]))
+          core.markObservablesComputationsAsStale(proxy, key)
+          core.addObservablesReactionsToPendingReactions(proxy, key)
         }
         return true
       },

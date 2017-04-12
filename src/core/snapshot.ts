@@ -25,6 +25,9 @@ let applySnapshotFromPlainObject = false
 export function setIsApplyingSnapshotFromPlainObject(value: boolean) {
   applySnapshotFromPlainObject = value
 }
+export function setIsApplyingSnapshotFromJSON(value: boolean) {
+  applySnapshotFromJSON = value
+}
 
 export function isApplyingSnapshotFromJSON() {
   return applySnapshotFromJSON
