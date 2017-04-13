@@ -28,7 +28,8 @@
     var interval = setInterval(function() {
       if (document.readyState === 'interactive') {
         clearInterval(interval)
-        // editLinks()
+        console.log('remove target')
+        editLinks()
       }
     })
     function editLinks() {
@@ -36,7 +37,7 @@
       for (let i = 0; i < links.length; i++) {
         var link = links.item(i)
         if (link.href.startsWith('https://fnx.js.org')) {
-          link.target = '_self'
+          link.removeAttribute('target')
         }
       }
     }
