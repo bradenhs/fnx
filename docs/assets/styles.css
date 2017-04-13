@@ -93,8 +93,8 @@ p[align="center"] a {
   color: #999 !important;
   transition: all ease .4s;
   position: absolute;
-  margin-top: 8px;
-  margin-left: 8px;
+  margin-top: 7px;
+  margin-left: 7px;
   opacity: 0;
   transform: translateX(-10px);
 }
