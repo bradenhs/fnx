@@ -61,7 +61,7 @@ contributing](#contributing)).**
 **Introduction**
 
 FNX is a robust state management library optimized for ease of use. It's kinda like
-[Redux](https://redux.js.org) met [MobX](https://mobx.js.org) and had a baby. If you're familiar
+[Redux](http://redux.js.org) met [MobX](http://mobx.js.org) and had a baby. If you're familiar
 with either solution (or both) FNX shouldn't be too hard to grasp. FNX takes the best ideas from
 both these libraries and adds a few of it's own. What you end up getting is
 [transparently reactive](#transparent-reactive-programming)
