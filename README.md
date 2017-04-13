@@ -67,12 +67,12 @@ both these libraries and adds a few of it's own. What you end up getting is
 state management complete with:
 
 - [immutable serializable snapshots](/overview/Snapshots.html),
-- [efficient derived properties](/api/computed.html),
-- support for observing [complex properties](/api/complex.html) (such as native `Date` objects),
+- [efficient derived properties](api/computed.html),
+- support for observing [complex properties](api/complex.html) (such as native `Date` objects),
 - free runtime typechecking,
 - and a powerful [middleware api](/overview/Middleware.html) to top it off.
 
-The icing on the cake is easy integration with React through the [ReactiveComponent](/api/ReactiveComponent.html) api. In a way, FNX is kinda like React, but for data.
+The icing on the cake is easy integration with React through the [ReactiveComponent](api/ReactiveComponent.html) api. In a way, FNX is kinda like React, but for data.
 It abstracts away the tedious parts of state management (like serialization and keeping your view in
 sync with your model) leaving you with more time to build awesome stuff.
 
@@ -228,16 +228,16 @@ subscribing to change notifications. You don't need to explicitly declare you wa
 function when something changes – the function will run again automatically.
 
 There are a lot of libraries out there designed to make reactive programming easier. One
-such library is [RxJS](http://reactivex.io/rxjs/manual/overview.html). Libraries like RxJS,
+such library is [RxJS](http://reactivex.io/rxjs). Libraries like RxJS,
 however, are not _transparent_.  The transparent part means you can strip away all the fancy api
 calls typically needed to make reactive programming work. [ES6 Proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) enable
 FNX to apply all of those methods behind the scenes without you needing to grok an entirely new
 api just to perform simple mutations. Transparent reactive programming gives you
 the advantages of reactive programming without the obtuse apis that often accomany it. Actually, you
 won't need to change hardly anything about how you program. Simply mutate data inside of FNX
-[actions](/api/action.html). Transparency means you can use a utility library like
+[actions](api/action.html). Transparency means you can use a utility library like
 [Lodash](https://lodash.com) with no issues. Reactivity means FNX is silently taking notes of what's
-going on and making sure your [computed](/api/computed.html) values and view are
+going on and making sure your [computed](api/computed.html) values and view are
 kept up-to-date with your data.
 
 ## Contributing
