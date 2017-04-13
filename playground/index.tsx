@@ -75,11 +75,13 @@ const app = new AppModel({
   todos: { }
 })
 
-// Add a middleware to log out the current action being triggered
-app.use((next, action) => {
+function logger(next, action) {
   console.log(action.path.join('.'), action.args)
   next()
-})
+}
+
+// Add a middleware to log out the current action being triggered
+app.use(logger)
 
 // Wrap functional components with ReactiveComponent to observe
 // properties of the state tree access during their render. Anytime
