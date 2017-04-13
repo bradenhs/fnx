@@ -25,12 +25,10 @@
         return this.substr(position, searchString.length) === searchString;
       };
     }
-    console.log('run links6')
     var interval = setInterval(function() {
       if (document.readyState === 'interactive') {
         clearInterval(interval)
-        console.log('document ready')
-        editLinks()
+        // editLinks()
       }
     })
     function editLinks() {
