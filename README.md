@@ -1,7 +1,3 @@
-_FNX aspires to be a rock-solid, production-ready, state management solution. Currently, however,
-FNX is in its early stages. Until `v1.0.0` don't use it for anything critical. You can
-help FNX reach `v1.0.0` by asking questions, finding bugs, or suggesting improvements._
-
 <p align="center">
   <a href="https://fnx.js.org">
     <img width="580" src="https://cdn.rawgit.com/fnxjs/fnx/13b83156/assets/logo.svg" alt="FNX - Wickedly quick, stunningly simple, reactive state management."/>
@@ -42,8 +38,18 @@ help FNX reach `v1.0.0` by asking questions, finding bugs, or suggesting improve
 
 <br/>
 
+---
+
+**FNX aspires to be a rock-solid, production-ready, state management solution. Currently, however,
+FNX is in its early stages. Until `v1.0.0` don't use it for anything critical. You can
+help FNX reach `v1.0.0` by asking questions, finding bugs, or suggesting improvements.**
+
+---
+
 > Clone the [typescript-starter](https://github.com/fnxjs/typescript-starter) repository or
 > [babel-starter](https://github.com/fnxjs/babel-starter) repository for an example of FNX in action.
+
+---
 
 ## Getting Started
 
@@ -77,8 +83,7 @@ support older environments FNX isn't for you.
 
 Here's a simple React app using most of FNX's features. Checkout the
 [TypeScript setup](https://fnx.js.org/setup/TypeScript.html) page or
-[Babel setup](https://fnx.js.org/setup/Babel.html) page to learn how to properly configure a project
-to run this example yourself.
+[Babel setup](https://fnx.js.org/setup/Babel.html) page to properly configure a project to run FNX.
 
 ```javascript
 import fnx from 'fnx'
