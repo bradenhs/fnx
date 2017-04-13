@@ -92,6 +92,7 @@ p[align="center"] a {
   border: none !important;
   color: #999 !important;
   transition: all ease .3s;
+  position: absolute;
   opacity: 0;
   transform: translate(-10px);
 }
