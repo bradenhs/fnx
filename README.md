@@ -101,12 +101,12 @@ let nextTodoId = 0
 
 // Describe the state tree
 
-class TodoModel extends fnx.Model { // docs: https://fnx.js.org/api/Model.html
-  @fnx.readonly id = fnx.number // docs: https://fnx.js.org/api/number.html
-  text = fnx.string // docs: https://fnx.js.org/api/string.html
-  completed = fnx.boolean // docs: https://fnx.js.org/api/boolean.html
+class TodoModel extends fnx.Model {
+  @fnx.readonly id = fnx.number
+  text = fnx.string
+  completed = fnx.boolean
 
-  @fnx.action // docs: https://fnx.js.org/api/action.html
+  @fnx.action
   toggleComplete() {
     this.completed = !this.completed
   }
@@ -217,7 +217,7 @@ const App = ReactiveComponent(() => {
 ReactDOM.render(<App/>, document.querySelector('#app'))
 ```
 
-## [Transparent Reactive Programming?](#transparent-reactive-programming)
+## Transparent Reactive Programming?
 
 If that sounds hard and confusing to you, rest assured you are not alone. The good news is that
 it's really a lot simpler than it seems. In reactive programming, reading data is the same as
