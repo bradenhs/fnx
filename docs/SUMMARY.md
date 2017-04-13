@@ -1,48 +1,48 @@
 ### Overview
 
 * [Introduction](/README.md)
-* [Describing State](/overview/DescribingState.md)
-* [Reacting to Changes](/overview/ReactingToChanges.md)
-* [Snapshots](/overview/Snapshots.md)
-* [Middleware](/overview/Middleware.md)
-* [Design Patterns](/overview/DesignPatterns.md)
+* [Describing State](/docs/overview/DescribingState.md)
+* [Reacting to Changes](/docs/overview/ReactingToChanges.md)
+* [Snapshots](/docs/overview/Snapshots.md)
+* [Middleware](/docs/overview/Middleware.md)
+* [Design Patterns](/docs/overview/DesignPatterns.md)
 
 ### Setup
 
-* [TypeScript](/setup/TypeScript.md)
-* [Babel](/setup/Babel.md)
+* [TypeScript](/docs/setup/TypeScript.md)
+* [Babel](/docs/setup/Babel.md)
 
 ### API Reference
 
 * Model
-  * [Model](/api/Model.md)
-  * [applyDiffs](/api/applyDiffs.md)
-  * [applySnapshot](/api/applySnapshot.md)
-  * [getRoot](/api/getRoot.md)
-  * [getSnapshot](/api/getSnapshot.md)
-  * [use](/api/use.md)
+  * [Model](/docs/api/Model.md)
+  * [applyDiffs](/docs/api/applyDiffs.md)
+  * [applySnapshot](/docs/api/applySnapshot.md)
+  * [getRoot](/docs/api/getRoot.md)
+  * [getSnapshot](/docs/api/getSnapshot.md)
+  * [use](/docs/api/use.md)
 * Describing State
-  * [@action](/api/action.md)
-  * [@computed](/api/computed.md)
-  * [@optional](/api/optional.md)
-  * [@readonly](/api/readonly.md)
-  * [arrayOf](/api/arrayOf.md)
-  * [complex](/api/complex.md)
-  * [boolean](/api/boolean.md)
-  * [mapOf](/api/mapOf.md)
-  * [number](/api/number.md)
-  * [object](/api/object.md)
-  * [oneOf](/api/oneOf.md)
-  * [string](/api/string.md)
+  * [@action](/docs/api/action.md)
+  * [@computed](/docs/api/computed.md)
+  * [@optional](/docs/api/optional.md)
+  * [@readonly](/docs/api/readonly.md)
+  * [arrayOf](/docs/api/arrayOf.md)
+  * [complex](/docs/api/complex.md)
+  * [boolean](/docs/api/boolean.md)
+  * [mapOf](/docs/api/mapOf.md)
+  * [number](/docs/api/number.md)
+  * [object](/docs/api/object.md)
+  * [oneOf](/docs/api/oneOf.md)
+  * [string](/docs/api/string.md)
 * Reacting to Changes
-  * [reaction](/api/reaction.md)
-  * [ReactiveComponent](/api/ReactiveComponent.md)
+  * [reaction](/docs/api/reaction.md)
+  * [ReactiveComponent](/docs/api/ReactiveComponent.md)
 
 ### Patterns
 
-* [Asynchronous Actions](/patterns/AsynchronousActions.md)
-* [Mixins](/patterns/Mixins.md)
-* [Transactions](/patterns/Transactions.md)
+* [Asynchronous Actions](/docs/patterns/AsynchronousActions.md)
+* [Mixins](/docs/patterns/Mixins.md)
+* [Transactions](/docs/patterns/Transactions.md)
 
 ### Links
 

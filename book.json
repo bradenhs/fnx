@@ -4,7 +4,9 @@
   "plugins": [
     "edit-link", "github", "prism", "-highlight", "hide-published-with", "-sharing", "anchorjs"
   ],
-  "root": "/docs",
+  "structure": {
+    "summary": "docs/SUMMARY.md"
+  },
   "pluginsConfig": {
     "github": {
       "url": "https://github.com/fnxjs/fnx"
@@ -15,7 +17,7 @@
     },
     "theme-default": {
       "styles": {
-        "website": "assets/styles.css"
+        "website": "docs/assets/styles.css"
       }
     }
   }
