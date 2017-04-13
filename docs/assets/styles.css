@@ -93,11 +93,13 @@ p[align="center"] a {
   color: #999 !important;
   transition: all ease .3s;
   position: absolute;
+  margin-top: 5px;
+  margin-left: 5px;
   opacity: 0;
-  transform: translate(-10px);
+  transform: translateX(-10px);
 }
 
-.anchorjs-link:hover {
+*:hover > .anchorjs-link {
   opacity: 1;
-  transform: translate(0)
+  transform: translateX(0)
 }
