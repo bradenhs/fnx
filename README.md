@@ -63,8 +63,8 @@ FNX is a robust state management library optimized for ease of use. It's kinda l
 [Redux](https://redux.js.org) met [MobX](https://mobx.js.org) and had a baby. If you're familiar
 with either solution (or both) FNX shouldn't be too hard to grasp. FNX takes the best ideas from
 both these libraries and adds a few of it's own. What you end up getting is
-[transparently reactive](https://fnx.js.org/#transparent-reactive-programming)
-state management complete with [immutable serializable snapshots](https://fnx.js.org/overview/Snapshots.html),
+[transparently reactive](#transparent-reactive-programming)
+state management complete with <a href='https://fnx.js.org/overview/Snapshots.html'>immutable serializable snapshots</a>,
 [efficient derived properties](https://fnx.js.org/api/computed.html), support for observing
 [complex properties](https://fnx.js.org/api/complex.md) (such as native `Date` objects), free
 runtime typechecking, and a powerful
