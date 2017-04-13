@@ -28,6 +28,7 @@
     console.log('run links4')
     var links = document.getElementsByTagName('a')
     for (let i = 0; i < links.length; i++) {
+      console.log('hit link')
       var link = links.item(i)
       if (link.href.startsWith('https://fnx.js.org')) {
         console.log('here?')
