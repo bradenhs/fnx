@@ -87,3 +87,8 @@ p[align="center"] a {
   border: none !important;
   text-decoration: none !important;
 }
+
+.anchorjs {
+  text-decoration: none !important;
+  color: #999 !important;
+}

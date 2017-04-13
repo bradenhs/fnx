@@ -17,6 +17,10 @@
       "styles": {
         "website": "assets/styles.css"
       }
+    },
+    "anchorjs": {
+      "placement": "left",
+      "class": "anchorjs"
     }
   }
 }
