@@ -19,11 +19,19 @@
   <meta name="msapplication-TileImage" content="/assets/generated/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
   <script>
-    console.log('run links')
+    if (!String.prototype.startsWith) {
+      String.prototype.startsWith = function(searchString, position){
+        position = position || 0;
+        return this.substr(position, searchString.length) === searchString;
+      };
+    }
+    console.log('run links3')
     var links = document.getElementsByTagName('a')
     for (let i = 0; i < links.length; i++) {
       var link = links.item(i)
-      link.href = link.href.replace(/^https?:\/\/fnx.js.org/, '')
+      if (link.href.startsWith('https://fnx.js.org')) {
+        link.target = '_self'
+      }
     }
   </script>
 {% endblock %}
