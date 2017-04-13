@@ -6,11 +6,14 @@
     "**/.svn": true,
     "**/.hg": true,
     "**/.DS_Store": true,
+    // Hide generated files and folders
     "node_modules": true,
     "lib": true,
+    "umd": true,
     "coverage": true,
     "yarn.lock": true,
-    ".localbuild": true
+    ".localbuild": true,
+    "playground/umd": true
   },
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 1000,

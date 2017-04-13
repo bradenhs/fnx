@@ -3,6 +3,8 @@ node_modules
 .npm
 lib
 playground/bundle.js
+playground/umd
 .DS_Store
 coverage
+umd
 .localbuild

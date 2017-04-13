@@ -6,11 +6,17 @@
   "types": "./lib/fnx.d.ts",
   "scripts": {
     "lint": "tslint -c tslint.typed.json --type-check --project tsconfig.build.json --format stylish",
-    "clean": "rm -rf lib/*",
+    "clean": "yarn run clean:cjs && yarn run clean:umd",
+    "clean:cjs": "rm -rf lib/*",
+    "clean:umd": "rm -rf umd/*",
     "test": "jest",
     "test-travis": "yarn run build && yarn run test",
-    "prebuild": "yarn run clean && yarn run lint",
-    "build": "tsc --project ./tsconfig.build.json",
+    "prebuild": "yarn run lint",
+    "prebuild:cjs": "yarn run clean:cjs",
+    "prebuild:umd": "yarn run clean:umd",
+    "build": "yarn run build:cjs && yarn run build:umd",
+    "build:cjs": "tsc --project ./tsconfig.build.json",
+    "build:umd": "webpack -p --config scripts/webpack.fnx.config.js && webpack -p --config scripts/webpack.ReactiveComponent.config.js",
     "test-dev": "jest --config=\"test/dev.json\"",
     "playground": "yarn run local-install && webpack-dev-server --config playground/webpack.config.js",
     "local-install": "yarn run build && node scripts/localInstall.js"
@@ -22,7 +28,8 @@
   "files": [
     "lib",
     "react",
-    "LICENSE.md"
+    "LICENSE.md",
+    "umd"
   ],
   "author": "Braden Snell",
   "license": "MIT",

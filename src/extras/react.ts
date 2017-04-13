@@ -1,5 +1,19 @@
 import * as React from 'react'
-import * as core from '../core'
+import { _interalUseOnlyCore as core } from '../fnx'
+
+if (React == null) {
+  throw new Error(
+    'FNX ReactiveComponent Error: Missing Depedency - React (make sure the react script tag is ' +
+    'included before the ReactiveComponent script tag)'
+  )
+}
+
+if (core == null) {
+  throw new Error(
+    'FNX ReactiveComponent Error: Missing Depedency - fnx (make sure the fnx script tag is ' +
+    'included before the ReactiveComponent script tag)'
+  )
+}
 
 export interface ReactiveComponent<P, S> extends React.PureComponent<P, S> {
   componentWillReact?(): void

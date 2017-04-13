@@ -50,7 +50,20 @@ help FNX reach `v1.0.0` by asking questions, finding bugs, and suggesting improv
 
 **Install**
 
-`yarn add fnx`  or  `npm install fnx`
+_NPM Registry_
+
+`yarn add fnx`  or  `npm install fnx --save`
+
+_UMD Build_
+
+To expose the base API under the namespace `fnx` include this tag:
+
+`<script src="https://unpkg.com/fnx@0.0.27/umd/fnx.min.js"></script>`
+
+To expose [ReactiveComponent](/docs/api/ReactiveComponent.md) under the name
+`ReactiveComponent` include this tag:
+
+`<script src="https://unpkg.com/fnx@0.0.27/umd/ReactiveComponent.min.js"></script>`
 
 **Starter Projects**
 
@@ -72,13 +85,14 @@ state management complete with:
 - free runtime typechecking,
 - and a powerful [middleware api](docs/overview/Middleware.md) to top it off.
 
-The icing on the cake is easy integration with React through the [ReactiveComponent](docs/api/ReactiveComponent.md) api. In a way, FNX is kinda like React, but for data.
-It abstracts away the tedious parts of state management (like serialization and keeping your view in
-sync with your model) leaving you with more time to build awesome stuff.
+The icing on the cake is easy integration with React through the [ReactiveComponent](docs/api/ReactiveComponent.md)
+api. In a way, FNX is kinda like React, but for data. It abstracts away the tedious parts of state
+management (like serialization and keeping your view in sync with your model) leaving you with more
+time to build awesome stuff.
 
-Being the new kid on the block, FNX makes no compromises in order to support older JavaScript
+As the new kid on the block, FNX makes no compromises in order to support older JavaScript
 environments. It started as part of an academic research project at
-[Brigham Young University](https://byu.edu) and legacy support simply isn't part of the project's goals.
+[Brigham Young University](https://byu.edu) and legacy compatibility simply isn't part of the project's goals.
 [Proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy),
 [WeakMaps](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap),
 and [Symbols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
@@ -92,7 +106,9 @@ support for older environments FNX isn't for you.
 Here's a basic React app using most of FNX's features. Checkout the
 [TypeScript setup](docs/setup/TypeScript.md) page or
 [Babel setup](docs/setup/Babel.md) page to learn how to properly configure your
-project to work with FNX.
+project to work with FNX. A live editable example of the below code can be found
+[here](https://fnx.js.org/demo).
+
 
 ```javascript
 import fnx from 'fnx'
@@ -233,7 +249,7 @@ however, are not _transparent_.  The transparent part means you can strip away a
 calls typically needed to make reactive programming work. [ES6 Proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) enable
 FNX to apply all of those methods behind the scenes without you needing to grok an entirely new
 api just to perform simple mutations. Transparent reactive programming gives you
-the advantages of reactive programming without the obtuse apis that often accomany it. Actually, you
+the advantages of reactive programming without the obtuse APIs that often accomany it. Actually, you
 won't need to change hardly anything about how you program. Simply mutate data inside of FNX
 [actions](docs/api/action.md). Transparency means you can use a utility library like
 [Lodash](https://lodash.com) with no issues. Reactivity means FNX is silently taking notes of what's

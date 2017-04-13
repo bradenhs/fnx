@@ -1,12 +1,18 @@
-## `mapOf(kind)`
+## `mapOf`
+
+**Signature**
+
+```javascript
+mapOf(kind: TypeDescriptor)
+```
 
 `mapOf` describes an map in your state tree.
 
 ```javascript
-import { mapOf, string } from 'fnx'
+import fnx from 'fnx'
 
 class State {
-  stringMap = mapOf(string)
+  stringMap = fnx.mapOf(fnx.string)
 }
 ```
 
