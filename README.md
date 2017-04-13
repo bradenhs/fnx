@@ -42,8 +42,7 @@
 
 **FNX aspires to be a rock-solid, production-ready, state management solution. Currently, however,
 FNX is in its early stages. Until `v1.0.0` don't use it for anything critical. You can
-help FNX reach `v1.0.0` by [asking questions](#contributing), [finding bugs](#contributing), or
-[suggesting improvements](#contributing).**
+help FNX reach `v1.0.0` by asking questions, finding bugs, and suggesting improvements.**
 
 ---
 

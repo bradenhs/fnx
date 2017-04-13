@@ -26,20 +26,24 @@
       };
     }
     var interval = setInterval(function() {
-      if (document.readyState === 'interactive') {
+      if (document.readyState === 'ready') {
         clearInterval(interval)
-        console.log('remove target')
-        editLinks()
+        addPageChangeListener()
       }
     })
-    function editLinks() {
-      var links = document.getElementsByTagName('a')
-      for (let i = 0; i < links.length; i++) {
-        var link = links.item(i)
-        if (link.href.startsWith('https://fnx.js.org')) {
-          link.removeAttribute('target')
-        }
-      }
+    function addPageChangeListener() {
+      require(['gitbook'], function(gitbook) {
+        gitbook.events.bind('page.change', function() {
+          console.log('PAGE CHANGE')
+          // var links = document.getElementsByTagName('a')
+          // for (let i = 0; i < links.length; i++) {
+          //   var link = links.item(i)
+          //   if (link.href.startsWith('https://fnx.js.org')) {
+          //     link.removeAttribute('target')
+          //   }
+          // }
+        });
+      });
     }
   </script>
 {% endblock %}
