@@ -25,14 +25,21 @@
         return this.substr(position, searchString.length) === searchString;
       };
     }
-    console.log('run links4')
-    var links = document.getElementsByTagName('a')
-    for (let i = 0; i < links.length; i++) {
-      console.log('hit link')
-      var link = links.item(i)
-      if (link.href.startsWith('https://fnx.js.org')) {
-        console.log('here?')
-        link.target = '_self'
+    console.log('run links6')
+    var interval = setInterval(function() {
+      if (document.readyState === 'interactive') {
+        clearInterval(interval)
+        console.log('document ready')
+        editLinks()
+      }
+    })
+    function editLinks() {
+      var links = document.getElementsByTagName('a')
+      for (let i = 0; i < links.length; i++) {
+        var link = links.item(i)
+        if (link.href.startsWith('https://fnx.js.org')) {
+          link.target = '_self'
+        }
       }
     }
   </script>
