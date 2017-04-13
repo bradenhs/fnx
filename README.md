@@ -66,7 +66,7 @@ both these libraries and adds a few of it's own. What you end up getting is
 [transparently reactive](#transparent-reactive-programming)
 state management complete with:
 
-- <a href='https://fnx.js.org/overview/Snapshots.html' target='self'>immutable serializable snapshots</a>,
+- <a href='https://fnx.js.org/overview/Snapshots.html' target='_self'>immutable serializable snapshots</a>,
 - [efficient derived properties](https://fnx.js.org/api/computed.html),
 - support for observing [complex properties](https://fnx.js.org/api/complex.md) (such as native `Date` objects),
 - free runtime typechecking,
