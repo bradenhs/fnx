@@ -25,11 +25,12 @@
         return this.substr(position, searchString.length) === searchString;
       };
     }
-    console.log('run links3')
+    console.log('run links4')
     var links = document.getElementsByTagName('a')
     for (let i = 0; i < links.length; i++) {
       var link = links.item(i)
       if (link.href.startsWith('https://fnx.js.org')) {
+        console.log('here?')
         link.target = '_self'
       }
     }
