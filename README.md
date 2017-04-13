@@ -1,3 +1,7 @@
+_FNX aspires to be a rock-solid, production-ready, state management solution. Currently, however,
+FNX is in its early stages. Until `v1.0.0` don't use it for anything critical. You can
+help FNX reach `v1.0.0` by asking questions, finding bugs, or suggesting improvements._
+
 <p align="center">
   <a href="https://fnx.js.org">
     <img width="580" src="https://cdn.rawgit.com/fnxjs/fnx/13b83156/assets/logo.svg" alt="FNX - Wickedly quick, stunningly simple, reactive state management."/>
@@ -38,14 +42,10 @@
 
 <br/>
 
-**FNX aspires to be a rock-solid, production-ready, state management solution. Currently, however,
-FNX is in its early stages. Until `v1.0.0` don't use it for anything critical. You can
-help FNX reach `v1.0.0` by asking questions, finding bugs, or suggesting improvements.**
+> Clone the [typescript-starter](https://github.com/fnxjs/typescript-starter) repository or
+> [babel-starter](https://github.com/fnxjs/babel-starter) repository for an example of FNX in action.
 
 ## Getting Started
-
-> Clone the [typescript-starter repository](https://github.com/fnxjs/typescript-starter) or
-> [babel-starter repository](https://github.com/fnxjs/babel-starter) for an example of FNX in action.
 
 **Install**
 
@@ -59,9 +59,10 @@ with either library (or both) FNX shouldn't be too hard to grasp. FNX takes the 
 both these libraries and adds a few of it's own. What you end up getting is transparently reactive
 state management complete with immutable snapshots, easy serialization, efficient derived properties,
 and a powerful middleware api. FNX enforces at runtime the shape of your state tree based on the
-description you provide. Easy integration with React is available through the `ReactiveComponent`
+description you provide. Easy integration with React is available through the
+[ReactiveComponent](https://fnx.js.org/api/ReactiveComponent.html)
 api. In a way FNX is kinda like React but for data. It abstracts away the tedious parts
-of state management like keeping your view in sync with your data and serialization.
+of state management like serialization and keeping your view in sync with your data.
 
 As the new kid on the block, FNX makes no compromises in order to support older enviroments.
 [Proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy),
