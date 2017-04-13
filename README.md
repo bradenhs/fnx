@@ -58,12 +58,12 @@ _UMD Build_
 
 To expose the base API under the namespace `fnx` include this tag:
 
-`<script src="https://unpkg.com/fnx@0.0.27/umd/fnx.min.js"></script>`
+`<script src="https://unpkg.com/fnx@0.0.28/umd/fnx.min.js"></script>`
 
 To expose [ReactiveComponent](/docs/api/ReactiveComponent.md) under the name
 `ReactiveComponent` include this tag:
 
-`<script src="https://unpkg.com/fnx@0.0.27/umd/ReactiveComponent.min.js"></script>`
+`<script src="https://unpkg.com/fnx@0.0.28/umd/ReactiveComponent.min.js"></script>`
 
 **Starter Projects**
 
