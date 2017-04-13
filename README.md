@@ -46,8 +46,8 @@ help FNX reach `v1.0.0` by asking questions, finding bugs, or suggesting improve
 
 ---
 
-Clone the [typescript-starter](https://github.com/fnxjs/typescript-starter) repository or
-[babel-starter](https://github.com/fnxjs/babel-starter) repository for an example of FNX in action.
+_Clone the [typescript-starter](https://github.com/fnxjs/typescript-starter) repository or
+[babel-starter](https://github.com/fnxjs/babel-starter) repository for an example of FNX in action._
 
 ---
 
