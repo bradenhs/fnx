@@ -4,9 +4,7 @@
   "plugins": [
     "edit-link", "github", "prism", "-highlight", "hide-published-with", "-sharing", "anchorjs"
   ],
-  "structure": {
-    "summary": "docs/SUMMARY.md"
-  },
+  "structure.summary": "docs/SUMMARY.md",
   "pluginsConfig": {
     "github": {
       "url": "https://github.com/fnxjs/fnx"
