@@ -88,7 +88,15 @@ p[align="center"] a {
   text-decoration: none !important;
 }
 
-.anchorjs {
-  text-decoration: none !important;
+.anchorjs-link {
+  border: none !important;
   color: #999 !important;
+  transition: all ease .3s;
+  opacity: 0;
+  transform: translate(-10px);
+}
+
+.anchorjs-link:hover {
+  opacity: 1;
+  transform: translate(0)
 }
