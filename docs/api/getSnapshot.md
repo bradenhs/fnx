@@ -1,1 +1,1 @@
-# getSnapshot
+## `getSnapshot`

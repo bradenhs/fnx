@@ -1,11 +1,17 @@
-## `arrayOf(kind)`
+## `arrayOf`
+
+Signature:
+
+```javascript
+fnx.arrayOf(type: TypeDescriptor)
+```
 
 `arrayOf` describes an array in your state tree.
 
 ```javascript
-import { arrayOf, string } from 'fnx'
+import fnx from 'fnx'
 
 class State {
-  stringArray = arrayOf(string)
+  stringArray = fnx.arrayOf(fnx.string)
 }
 ```

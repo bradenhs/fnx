@@ -1,4 +1,11 @@
-## applyDiffs
+## `applyDiffs`
+
+Signature:
+
+```javascript
+stateTreeInstance.applyDiffs(diffs: Diff[])
+// where stateTreeInstance is an fnx.object, fnx.arrayOf, or fnx.mapOf
+```
 
 Apply diffs takes the diff object return by the `next` function in middlewares and applies it to the
 state tree.
@@ -44,4 +51,6 @@ counterOne.count === counterTwo.count // true
 ```
 
 The above example shows how two structurally identical state trees could be kept in sync with using
-middleware and the `applyDiffs` function.
+middleware and the `applyDiffs` function. A great use case for this would be keeping two clients in
+sync over the internet since the the `diff` object returned from the next function is serializable
+with `JSON.stringify`.

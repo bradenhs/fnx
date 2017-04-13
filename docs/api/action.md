@@ -1,4 +1,10 @@
-## @action
+## `@action`
+
+Signature:
+
+```javascript
+@fnx.action classMethod() { ... }
+```
 
 Actions decorate methods on your model and indicate which parts of your code can mutate the state of
 your application.
