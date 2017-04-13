@@ -18,32 +18,4 @@
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="/assets/generated/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
-  <script>
-    if (!String.prototype.startsWith) {
-      String.prototype.startsWith = function(searchString, position){
-        position = position || 0;
-        return this.substr(position, searchString.length) === searchString;
-      };
-    }
-    var interval = setInterval(function() {
-      if (document.readyState === 'ready') {
-        clearInterval(interval)
-        addPageChangeListener()
-      }
-    })
-    function addPageChangeListener() {
-      require(['gitbook'], function(gitbook) {
-        gitbook.events.bind('page.change', function() {
-          console.log('PAGE CHANGE')
-          // var links = document.getElementsByTagName('a')
-          // for (let i = 0; i < links.length; i++) {
-          //   var link = links.item(i)
-          //   if (link.href.startsWith('https://fnx.js.org')) {
-          //     link.removeAttribute('target')
-          //   }
-          // }
-        });
-      });
-    }
-  </script>
 {% endblock %}
