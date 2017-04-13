@@ -3,6 +3,7 @@
 * [Introduction](/README.md)
 * [Describing State](/overview/DescribingState.md)
 * [Reacting to Changes](/overview/ReactingToChanges.md)
+* [Snapshots](/overview/Snapshots.md)
 * [Middleware](/overview/Middleware.md)
 * [Design Patterns](/overview/DesignPatterns.md)
 

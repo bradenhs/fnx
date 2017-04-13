@@ -46,44 +46,50 @@ help FNX reach `v1.0.0` by asking questions, finding bugs, or suggesting improve
 
 ---
 
-_Clone the [typescript-starter](https://github.com/fnxjs/typescript-starter) repository or
-[babel-starter](https://github.com/fnxjs/babel-starter) repository for an example of FNX in action._
-
----
-
 ## Getting Started
 
 **Install**
 
 `yarn add fnx`  or  `npm install fnx`
 
+**Starter Projects**
+
+- [typescript-starter](https://github.com/fnxjs/typescript-starter)
+- [babel-starter](https://github.com/fnxjs/babel-starter)
+
 **Introduction**
 
-FNX is a powerful state management library optimized for ease of use. It's kinda like
+FNX is a robust state management library optimized for ease of use. It's kinda like
 [Redux](https://redux.js.org) met [MobX](https://mobx.js.org) and had a baby. If you're familiar
-with either library (or both) FNX shouldn't be too hard to grasp. FNX takes the best ideas from
-both these libraries and adds a few of it's own. What you end up getting is transparently reactive
-state management complete with immutable snapshots, easy serialization, efficient derived properties,
-and a powerful middleware api. FNX enforces at runtime the shape of your state tree based on the
-description you provide. Easy integration with React is available through the
-[ReactiveComponent](https://fnx.js.org/api/ReactiveComponent.html)
-api. In a way FNX is kinda like React but for data. It abstracts away the tedious parts
-of state management like serialization and keeping your view in sync with your data.
+with either solution (or both) FNX shouldn't be too hard to grasp. FNX takes the best ideas from
+both these libraries and adds a few of it's own. What you end up getting is
+[transparently reactive](https://fnx.js.org/#transparent-reactive-programming)
+state management complete with [immutable serializable snapshots](https://fnx.js.org/overview/Snapshots.html),
+[efficient derived properties](https://fnx.js.org/api/computed.html), support for observing
+[complex properties](https://fnx.js.org/api/complex.md) (such as native `Date` objects), free
+runtime typechecking, and a powerful
+[middleware api](https://fnx.js.org/overview/Middleware.html) to top it off.
+The icing on the cake is easy integration with React through the [ReactiveComponent](https://fnx.js.org/api/ReactiveComponent.html) api. In a way, FNX is kinda like React, but for data.
+It abstracts away the tedious parts of state management (like serialization and keeping your view in
+sync with your model) and leaves you with more time to build awesome stuff.
 
-As the new kid on the block, FNX makes no compromises in order to support older enviroments.
+Being the new kid on the block, FNX makes no compromises in order to support older JavaScript
+environments. It started as part of an academic research project at
+[Brigham Young University](https://byu.edu) and legacy support simply isn't part of the project's goals.
 [Proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy),
 [WeakMaps](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap),
 and [Symbols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
 are among the ES6 features FNX uses internally to provide the best state management solution possible.
-The good news is that the vast majority of javascript runtime environments support these features
+The good news is that the vast majority of JavaScript runtime environments support these features
 **today** (think pretty much everything minus IE11 and older). The bad news is that if you need
-support older environments FNX isn't for you.
+support for older environments FNX isn't for you.
 
-**Example**
+**Simple Example**
 
-Here's a simple React app using most of FNX's features. Checkout the
+Here's a basic React app using most of FNX's features. Checkout the
 [TypeScript setup](https://fnx.js.org/setup/TypeScript.html) page or
-[Babel setup](https://fnx.js.org/setup/Babel.html) page to properly configure a project to run FNX.
+[Babel setup](https://fnx.js.org/setup/Babel.html) page to learn how to properly configure your
+project to work with FNX.
 
 ```javascript
 import fnx from 'fnx'
@@ -95,12 +101,12 @@ let nextTodoId = 0
 
 // Describe the state tree
 
-class TodoModel extends fnx.Model {
-  @fnx.readonly id = fnx.number
-  text = fnx.string
-  completed = fnx.boolean
+class TodoModel extends fnx.Model { // docs: https://fnx.js.org/api/Model.html
+  @fnx.readonly id = fnx.number // docs: https://fnx.js.org/api/number.html
+  text = fnx.string // docs: https://fnx.js.org/api/string.html
+  completed = fnx.boolean // docs: https://fnx.js.org/api/boolean.html
 
-  @fnx.action
+  @fnx.action // docs: https://fnx.js.org/api/action.html
   toggleComplete() {
     this.completed = !this.completed
   }
@@ -210,6 +216,26 @@ const App = ReactiveComponent(() => {
 
 ReactDOM.render(<App/>, document.querySelector('#app'))
 ```
+
+## [Transparent Reactive Programming?](#transparent-reactive-programming)
+
+If that sounds hard and confusing to you, rest assured you are not alone. The good news is that
+it's really a lot simpler than it seems. In reactive programming, reading data is the same as
+subscribing to change notifications. You don't need to explicitly declare you want to rerun a
+function when something changes – the function will run again automatically.
+
+There are a lot of libraries out there designed to make reactive programming easier. One
+such library is [RxJS](http://reactivex.io/rxjs/manual/overview.html). Libraries like RxJS,
+however, are not _transparent_.  The transparent part means you can strip away all the fancy api
+calls typically needed to make reactive programming work. [ES6 Proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) enable
+FNX to apply all of those methods behind the scenes without you needing to grok an entirely new
+api just to perform simple mutations. Transparent reactive programming gives you
+the advantages of reactive programming without the obtuse apis that often accomany it. Actually, you
+won't need to change hardly anything about how you program. Simply mutate data inside of FNX
+[actions](https://fnx.js.org/api/action.html). Transparency means you can use a utility library like
+[Lodash](https://lodash.com) with no issues. Reactivity means FNX is silently taking notes of what's
+going on and making sure your [computed](https://fnx.js.org/api/computed.html) values and view are
+kept up-to-date with your data.
 
 ## Contributing
 
