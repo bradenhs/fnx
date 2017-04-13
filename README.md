@@ -64,11 +64,14 @@ FNX is a robust state management library optimized for ease of use. It's kinda l
 with either solution (or both) FNX shouldn't be too hard to grasp. FNX takes the best ideas from
 both these libraries and adds a few of it's own. What you end up getting is
 [transparently reactive](#transparent-reactive-programming)
-state management complete with <a href='https://fnx.js.org/overview/Snapshots.html'>immutable serializable snapshots</a>,
-[efficient derived properties](https://fnx.js.org/api/computed.html), support for observing
-[complex properties](https://fnx.js.org/api/complex.md) (such as native `Date` objects), free
-runtime typechecking, and a powerful
-[middleware api](https://fnx.js.org/overview/Middleware.html) to top it off.
+state management complete with:
+
+- <a href='https://fnx.js.org/overview/Snapshots.html'>immutable serializable snapshots</a>
+- [efficient derived properties](https://fnx.js.org/api/computed.html)
+- support for observing [complex properties](https://fnx.js.org/api/complex.md) (such as native `Date` objects)
+- free runtime typechecking
+- a powerful [middleware api](https://fnx.js.org/overview/Middleware.html) to top it off
+
 The icing on the cake is easy integration with React through the [ReactiveComponent](https://fnx.js.org/api/ReactiveComponent.html) api. In a way, FNX is kinda like React, but for data.
 It abstracts away the tedious parts of state management (like serialization and keeping your view in
 sync with your model) and leaves you with more time to build awesome stuff.
