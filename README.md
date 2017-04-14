@@ -79,7 +79,7 @@ state management complete with:
 - [immutable serializable snapshots](docs/overview/Snapshots.md),
 - [efficient derived properties](docs/api/computed.md),
 - support for observing [complex properties](docs/api/complex.md) (such as native `Date` objects),
-- free runtime typechecking,
+- free runtime type-checking,
 - and a powerful [middleware api](docs/overview/Middleware.md) to top it off.
 
 The icing on the cake is easy integration with React through the [ReactiveComponent](docs/api/ReactiveComponent.md)
@@ -103,9 +103,8 @@ support for older environments FNX isn't for you.
 Here's a basic React app using most of FNX's features. Checkout the
 [TypeScript setup](docs/setup/TypeScript.md) page or
 [Babel setup](docs/setup/Babel.md) page to learn how to properly configure your
-project to work with FNX. A live editable example of the below code can be found
-[here](https://fnx.js.org/demo).
-
+project to work with FNX. `ReactiveComponent` and all properties of `fnx` are documented in the API
+Reference section.
 
 ```javascript
 import fnx from 'fnx'
@@ -242,10 +241,10 @@ function when something changes – the function will run again automatically.
 
 There are a lot of libraries out there designed to make reactive programming easier. One
 such library is [RxJS](http://reactivex.io/rxjs). Libraries like RxJS,
-however, are not _transparent_.  The transparent part means you can strip away all the fancy api
+however, are not _transparent_.  The transparent part means you can strip away all the fancy API
 calls typically needed to make reactive programming work. [ES6 Proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) enable
 FNX to apply all of those methods behind the scenes without you needing to grok an entirely new
-api just to perform simple mutations. Transparent reactive programming gives you
+API just to perform simple mutations. Transparent reactive programming gives you
 the advantages of reactive programming without the obtuse APIs that often accompany it. Actually, you
 won't need to change hardly anything about how you program. Simply mutate data inside of FNX
 [actions](docs/api/action.md). Transparency means you can use a utility library like

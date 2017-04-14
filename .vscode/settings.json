@@ -18,5 +18,8 @@
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 1000,
   "tslint.autoFixOnSave": true,
-  "editor.rulers": [ 100 ]
+  "editor.rulers": [
+    100
+  ],
+  "cSpell.enabled": true
 }
