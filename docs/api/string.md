@@ -3,9 +3,9 @@
 `string` describes a string property in your state tree.
 
 ```javascript
-import { string } from 'fnx'
+import fnx from 'fnx'
 
-class State {
-  string = string
+class State extends fnx.Model {
+  str = fnx.string
 }
 ```

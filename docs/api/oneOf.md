@@ -1,11 +1,11 @@
-## `oneOf(t1, t2, ... , tn)`
+## `oneOf`
 
 `oneOf` allows you to specify a property on the state tree as one of the types given.
 
 ```javascript
-import { oneOf, number, string }
+import fnx from 'fnx'
 
-class State {
-  numOrStr = oneOf(number, string)
+class State extends fnx.Model {
+  numOrStr = fnx.oneOf(fnx.number, fnx.string)
 }
 ```

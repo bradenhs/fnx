@@ -3,9 +3,9 @@
 `number` describes number property in your state tree.
 
 ```javascript
-import { number } from 'fnx'
+import fnx from 'fnx'
 
-class State {
-  num = number
+class State extends fnx.Model {
+  num = fnx.number
 }
 ```

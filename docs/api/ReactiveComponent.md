@@ -1,6 +1,6 @@
 ## `ReactiveComponent`
 
-`ReactiveComponent` is used with [React](https://facebook.github.io/react/) can either be called as
+`ReactiveComponent` is used with [React](https://facebook.github.io/react/) and can either be called as
 a function to encapsulate a functional component or extended as a class to allow for stateful
 components or ones that need lifecycle hooks.
 
@@ -10,20 +10,20 @@ It's important to note that `ReactiveComponent` is imported from 'fnx/react'.
 import React from 'react'
 import ReactDOM from 'react-dom'
 import ReactiveComponent from 'fnx/react'
-import { createObservable, number, action } from 'fnx'
+import fnx from 'fnx'
 
-class State {
+class State extends fnx.Model {
   count = number
-  increment = action(s => () => {
-    s.count++
-  })
+
+  @fnx.action
+  increment() {
+    this.count++
+  }
 }
 
-const initialState = {
+const state = new State({
   count: 0
-}
-
-const state = createObservable(State, initialState)
+})
 
 const Button = ReactiveComponent(() =>
   <button onClick={ state.increment }>Increment</button>

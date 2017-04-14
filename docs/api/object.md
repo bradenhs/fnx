@@ -3,13 +3,13 @@
 `object` takes a description class and defines an object in the state tree.
 
 ```javascript
-import { object, number } from 'fnx'
+import fnx from 'fnx'
 
-class Foo {
-  num = number
+class Foo extends fnx.Model {
+  num = fnx.number
 }
 
 class Bar {
-  foo = object(Foo)
+  foo = fnx.object(Foo)
 }
 ```
