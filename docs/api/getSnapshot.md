@@ -24,9 +24,9 @@ const person = new Person({
   dateOfBirth: new Date(9000)
 })
 
-person.getSnapshot() // { firstName: 'foo', lastName: 'bar', dateOfBirth: }
-person.getSnapshot({ asJSON: true })
-person.getSnapshot({ asString: true })
+person.getSnapshot() // object with unserialized dateOfBirth
+person.getSnapshot({ asJSON: true }) // object with serialized dateOfBirth
+person.getSnapshot({ asString: true }) // this string: '{"firstName":"foo","lastName":"bar","dateOfBirth":"Thu, 01 Jan 1970 00:00:09 GMT"}'
 ```
 
 The `getSnapshot` function is a built-in computed method on the state tree. This means the results
