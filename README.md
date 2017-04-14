@@ -246,7 +246,7 @@ however, are not _transparent_.  The transparent part means you can strip away a
 calls typically needed to make reactive programming work. [ES6 Proxies](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) enable
 FNX to apply all of those methods behind the scenes without you needing to grok an entirely new
 api just to perform simple mutations. Transparent reactive programming gives you
-the advantages of reactive programming without the obtuse APIs that often accomany it. Actually, you
+the advantages of reactive programming without the obtuse APIs that often accompany it. Actually, you
 won't need to change hardly anything about how you program. Simply mutate data inside of FNX
 [actions](docs/api/action.md). Transparency means you can use a utility library like
 [Lodash](https://lodash.com) with no issues. Reactivity means FNX is silently taking notes of what's
