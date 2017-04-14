@@ -70,3 +70,6 @@ property not specified in the model)
 course, when that property has been marked as optional)
 - Actions, computed properties, and other methods are virtual. They are non-enumerable properties
 of your state tree.
+-Since JSON has no concept of values being set to `undefined` you can't set properties of FNX models
+to undefined either. If the property is optional (or on a map) you can simply delete it using the
+delete operator. You can also set properties to `null` since JSON does understand that.
