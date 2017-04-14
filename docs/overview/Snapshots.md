@@ -3,7 +3,7 @@
 Snapshots allow you to capture your state tree at a specific point in time. They can then later
 be applied back to your state tree to restore your state to a previous value. What's more snapshots
 can be constructed in a completely serializable way. This means they can easily be persisted and
-transported. Coupled [reactions](/docs/api/reaction.md) snapshots can give you a reliable
+transported. Coupled with [reactions](/docs/api/reaction.md) snapshots can give you a reliable
 persistence system with practically no code.
 
 ```javascript
