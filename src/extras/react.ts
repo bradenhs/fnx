@@ -24,7 +24,7 @@ export interface ReactiveComponentType {
   new <P, S>(props: P, context?: any): ReactiveComponent<P, S>
 }
 
-const ReactiveComponent = class extends React.PureComponent<{}, {}> {
+export const ReactiveComponent = class extends React.PureComponent<{}, {}> {
   constructor(props, context) {
     if (typeof arguments[0] === 'function') {
       const render = arguments[0]
@@ -69,4 +69,6 @@ const ReactiveComponent = class extends React.PureComponent<{}, {}> {
   }
 } as any as ReactiveComponentType
 
+(ReactiveComponent as any).default = ReactiveComponent
+module.exports = ReactiveComponent
 export default ReactiveComponent
