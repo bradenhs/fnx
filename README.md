@@ -60,7 +60,7 @@ UMD Build
 
 `<script src="https://unpkg.com/fnx@[VERSION]/umd/ReactiveComponent.min.js"></script>`
 
-_(Make sure you replace "[VERSION]" with the NPM version of FNX you'd like to use - e.g. "0.0.31")_
+_(Make sure you replace "[VERSION]" with the NPM version of FNX you'd like to use - e.g. "0.0.32")_
 
 **Starter Projects**
 
