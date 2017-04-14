@@ -8,3 +8,4 @@ playground/umd
 coverage
 umd
 .localbuild
+test/typescript/test/index.js

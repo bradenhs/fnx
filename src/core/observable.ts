@@ -259,10 +259,12 @@ export function getReactionsOfObservable(object: any, key: string) {
   if (!observablesReactions.has(object, key)) {
     observablesReactions.set(object, key, new Map())
   }
-  return observablesReactions.get(object, key)
+  return observablesReactions.get(
+    object, key
+  ) as any as { reactionId: symbol; roundAdded: number }[]
 }
 
-export function getComputationsOfObservable(
+function getComputationsOfObservable(
   object: object, key: string
 ): Map<symbol, { computation: core.Computation, roundSet: number }> {
   if (!observablesComputations.has(object, key)) {

@@ -12,7 +12,7 @@
     "umd": true,
     "coverage": true,
     "yarn.lock": true,
-    ".localbuild": true,
+    ".localbuild": false,
     "playground/umd": true
   },
   "files.autoSave": "afterDelay",
