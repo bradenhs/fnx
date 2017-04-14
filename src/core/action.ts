@@ -37,7 +37,7 @@ export function isActionInProgress(root) {
  * have stopped running.
  */
 export function addObservablesReactionsToPendingReactions(
-  target: any, key: PropertyKey,
+  target: any, key: string,
 ) {
   const reactions = core.getReactionsOfObservable(target, key)
 

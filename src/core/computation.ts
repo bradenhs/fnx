@@ -5,7 +5,7 @@ export interface Computation {
   readonly id: symbol
   readonly fn: Function
   readonly object: object
-  readonly key: PropertyKey
+  readonly key: string
   stale: boolean
   value: any
   round: number

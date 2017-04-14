@@ -3,10 +3,10 @@ import { Diff } from '../core'
 import { ObjectKeyWeakMap } from '../utils'
 
 export type Property = {
-  set: (target?: object, key?: PropertyKey, value?: any,
+  set: (target?: object, key?: string, value?: any,
         description?: core.Descriptor, root?: object,
         parentObservable?: object, path?: string[]) => { didChange: boolean, result: boolean }
-  get: (target?: object, key?: PropertyKey, description?: core.Descriptor,
+  get: (target?: object, key?: string, description?: core.Descriptor,
         root?: object, proxy?: object) => any
 }
 
@@ -230,7 +230,7 @@ export function getProperty(target, key, description: core.Descriptor, root, pro
  * can know to trigger this reaction.
  */
 export function addReactionToObservable(
-  object: any, key: PropertyKey, reactionId: symbol, roundAdded: number
+  object: any, key: string, reactionId: symbol, roundAdded: number
 ) {
   if (observablesReactions.has(object, key)) {
     observablesReactions.get(object, key).set(reactionId, { reactionId, roundAdded })
@@ -240,7 +240,7 @@ export function addReactionToObservable(
 }
 
 export function addComputationToObservable(
-  object, key: PropertyKey, computation: core.Computation
+  object, key: string, computation: core.Computation
 ) {
   if (observablesComputations.has(object, key)) {
     observablesComputations.get(object, key)
@@ -255,7 +255,7 @@ export function addComputationToObservable(
 /**
  * Returns all reactions attached to specified observable.
  */
-export function getReactionsOfObservable(object: any, key: PropertyKey) {
+export function getReactionsOfObservable(object: any, key: string) {
   if (!observablesReactions.has(object, key)) {
     observablesReactions.set(object, key, new Map())
   }
@@ -263,7 +263,7 @@ export function getReactionsOfObservable(object: any, key: PropertyKey) {
 }
 
 export function getComputationsOfObservable(
-  object: object, key: PropertyKey
+  object: object, key: string
 ): Map<symbol, { computation: core.Computation, roundSet: number }> {
   if (!observablesComputations.has(object, key)) {
     observablesComputations.set(object, key, new Map())
@@ -275,7 +275,7 @@ export function getComputationsOfObservable(
  * Removes the reaction from the observable's collections of reactions.
  */
 export function removeReactionFromObservable(
-  object: object, key: PropertyKey, reactionId: symbol,
+  object: object, key: string, reactionId: symbol,
 ) {
   if (observablesReactions.has(object, key)) {
     observablesReactions.get(object, key).delete(reactionId)
@@ -283,7 +283,7 @@ export function removeReactionFromObservable(
 }
 
 export function removeComputationFromObservable(
-  object: object, key: PropertyKey, computationId: symbol
+  object: object, key: string, computationId: symbol
 ) {
   if (observablesComputations.has(object, key)) {
     observablesComputations.get(object, key).delete(computationId)

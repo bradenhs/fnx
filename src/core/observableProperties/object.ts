@@ -57,7 +57,7 @@ export const objectProperty: core.Property = {
         }
         return core.getProperty(t, k, description.properties[k], root || proxy, proxy)
       },
-      set(t, k, v) {
+      set(t, k: string, v) {
         if (skipInit.get(proxy, k)) {
           return skipInit.set(proxy, k, false)
         }

@@ -1,5 +1,3 @@
-// Import the entire api with the default export or grab
-// exactly what you need with named imports
 import fnx from 'fnx-local'
 import ReactiveComponent from 'fnx-local/react'
 
