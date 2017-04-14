@@ -50,20 +50,15 @@ help FNX reach `v1.0.0` by asking questions, finding bugs, and suggesting improv
 
 **Install**
 
-_NPM Registry_
+| NPM Registry |
+| --- |
+| `yarn add fnx` or `npm install fnx --save` |
 
-`yarn add fnx`  or  `npm install fnx --save`
-
-_UMD Build_
-
-To expose the base API under the namespace `fnx` include this tag:
-
-`<script src="https://unpkg.com/fnx@0.0.29/umd/fnx.min.js"></script>`
-
-To expose [ReactiveComponent](/docs/api/ReactiveComponent.md) under the name
-`ReactiveComponent` include this tag:
-
-`<script src="https://unpkg.com/fnx@0.0.29/umd/ReactiveComponent.min.js"></script>`
+| UMD Build |
+| --- |
+|_(Replace "[VERSION]" with the npm version of fnx you'd like to use e.g. 0.0.31)_ |
+| `<script src="https://unpkg.com/fnx@[VERSION]/umd/fnx.min.js"></script>`|
+| `<script src="https://unpkg.com/fnx@[VERSION]/umd/ReactiveComponent.min.js"></script>` |
 
 **Starter Projects**
 
