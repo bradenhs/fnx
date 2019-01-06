@@ -40,7 +40,7 @@
 
 ---
 
-**FNX was a fun project. I'm not working on it anymore and have no plans to do so, but I learned a ton so it was completely worth it! If you're interested in this checkout mobx or mobx-state-tree.**
+**FNX was a fun project. I'm not working on it anymore and have no plans to do so, but I learned a ton so it was completely worth it! If you're interested in using a library like this checkout mobx or mobx-state-tree.**
 
 ---
 
