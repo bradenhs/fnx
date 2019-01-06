@@ -40,9 +40,7 @@
 
 ---
 
-**FNX aspires to be a rock-solid, production-ready, state management solution. Currently, however,
-FNX is in its early stages. Until `v1.0.0` don't use it for anything critical. You can
-help FNX reach `v1.0.0` by asking questions, finding bugs, and suggesting improvements.**
+**FNX was a fun project. I'm not working on it anymore and have no plans to do so, but I learned a ton so it was completely worth it! If you're interested in this checkout mobx or mobx-state-tree.**
 
 ---
 
